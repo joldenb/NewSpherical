@@ -1,0 +1,62 @@
+<div id="topic_relations" class="admin_form">
+  <h4 style="margin: 20px 0 20px -15px"><span class="blue">Relations for</span> <%= @ctx.display_identifier %>:</h4>
+
+  <div style="margin:0 0 40px;">
+      <div class="swiper-container with_hdr" id="existing_relations_swiper" style="padding-left:4px;">
+        <div id="remove_relations_btn" class="swiper_header">
+            <span>Related Topics</span>
+            <span id="remove_relations" class="icon_btn in_bar" data-ctx="<%= @ctx.id %>">
+              <span class="topical-btn blue right"><span class="blue_arrow rmv">&nbsp;</span>&nbsp;</span>
+              <span id="remove_selections_progress" class="leading_text">Remove</span>
+            </span>
+        </div>
+        <% if related_topics.present? -%>
+        <div class="swiper-wrapper">
+            <% related_topics.each_with_index do |topic, index| -%>
+                <div class="swiper-slide">
+                    <div class="swiper-entity" id="<%= topic.id %>">
+                        <h3><%= topic.display_identifier %></h3>
+                    </div>
+                </div>
+            <% end -%>
+        </div>
+        <% else -%>
+          <h3 class="empty">No Related Topics Yet</h3>
+        <% end -%>
+      </div>
+  </div>
+
+  <div style="margin:0;">
+    <div class="swiper-container with_hdr" id="choose_relations_swiper" style="padding-left:4px;">
+      <div id="choose_relations_btn" class="swiper_header">
+          <span>Select Relations</span>
+          <span id="find_topics">
+            <%= form_tag('#', :id => "find_topics_form") do %>
+              <%= hidden_field_tag("ctx", @ctx.id) %>
+              <input id="search_term" type="search" name="search_term" placeholder="Search" class="search_box">
+            <% end -%>
+          </span>
+          <span id="find_topics_spnr">
+            <%= image_tag("ajax-loader.gif", :size => "23x23", :id => "loading", :style => "display:none;") %>
+          </span>
+          <span id="save_relations" class="icon_btn in_bar medium" data-ctx="<%= @ctx.id %>">
+            <span class="topical-btn blue right"><span class="blue_arrow">&nbsp;</span>&nbsp;</span>
+            <span id="save_selections_progress" class="leading_text">Add</span>
+          </span>
+      </div>
+
+      <div class="swiper-wrapper">
+        <%= render :partial => "available_topics", :locals => {:topics => topic_results} %>
+      </div>
+
+      <h3 class="empty" style="display:none;">No Results</h3>
+    </div>
+  </div>
+
+
+  <p>
+    <span id="exit_relations" class="topical-btn black exit_btn"><span class="arrow lft">&nbsp;</span>&nbsp;</span>
+  </p>
+  
+  
+</div>

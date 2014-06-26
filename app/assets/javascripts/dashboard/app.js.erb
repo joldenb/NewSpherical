@@ -1,0 +1,68 @@
+'use strict';
+
+angular.module('sphericalApp', [
+  'ngSanitize',
+  'ngAnimate',
+  'ui.router',
+  'sphericalApp.filters',
+  'sphericalApp.services',
+  'sphericalApp.directives',
+  'sphericalApp.controllers'
+]).constant('SPHR_HST', '<%= ENV['FULLHOST'] %>')
+.config(['$sceDelegateProvider', 'SPHR_HST',function($sceDelegateProvider, SPHR_HST) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+       "self",
+       SPHR_HST + "**"]);
+}])
+.config(['$stateProvider', '$urlRouterProvider', 'SPHR_HST', function($stateProvider, $urlRouterProvider, SPHR_HST) {
+  $urlRouterProvider.otherwise("/");
+  $stateProvider
+    .state('home', {
+        url: '/',
+        templateUrl: SPHR_HST + "dashboard/home",
+        controller: 'MainCtrl'
+    })
+    .state('home.topic', {
+        url: '^/topic/:topic'
+    })
+    .state('home.topic.story', {
+        url: '^/topic/:topic/story/:story'
+    })
+    .state('home.ctrlpanel', {
+        url: 'ctrlpanel/:destination',
+        views: {
+          "ctrlpanel@home" : {
+            templateUrl: function ($stateParams){
+              return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
+            },
+            controller: 'UserCtrl'
+          }
+        }
+    })
+    .state('home.topic.ctrlpanel', {
+        url: '/ctrlpanel/:destination',
+        views: {
+          "ctrlpanel@home" : {
+            templateUrl: function ($stateParams){
+              return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
+            },
+            controller: 'UserCtrl'
+          }
+        }
+    })
+    .state('home.topic.story.ctrlpanel', {
+        url: '/ctrlpanel/:destination',
+        views: {
+          "ctrlpanel@home" : {
+            templateUrl: function ($stateParams){
+              return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
+            },
+            controller: 'UserCtrl'
+          }
+        }
+    })
+}])
+.run(['$templateCache', 'SPHR_HST', function($templateCache, SPHR_HST) {
+    $templateCache.put(SPHR_HST + "dashboard/home");
+    $templateCache.put(SPHR_HST + "dashboard/topic_swiper");
+}]);

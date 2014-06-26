@@ -1,0 +1,15 @@
+(function(){
+    var script=document.createElement('script');
+    script.src='<%= dashboard_url("spherical_dashboard") %>';
+    script.async=true;
+    var entry=document.getElementsByTagName('script')[0];
+    entry.parentNode.insertBefore(script,entry);
+
+    var sphere = document.createElement('div');
+    sphere.id = 'spherical_dashboard_container';
+
+    var dash = document.createElement('div');
+    dash.id = 'dashboard_content';
+    sphere.appendChild(dash);
+    document.body.appendChild(sphere);
+})();

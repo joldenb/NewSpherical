@@ -1,0 +1,40 @@
+body {
+    background: #000 image-url('stratocu640.jpg') no-repeat center top;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+@media screen and (min-width: 481px) {
+    body {
+        background: #000 image-url('stratocu1280.jpg') no-repeat center top;
+    }
+}
+@media screen and (min-width: 1280px) {
+    body {
+        background: #000 image-url('stratocu2000.jpg') no-repeat center top;
+    }
+}
+
+fieldset {
+    input {
+        margin: 10px 0;
+        padding: 0.3em;
+        background: #f9f9f9;
+        border: 1px solid #aaa;
+        @include border-radius(4px);
+        @include box-shadow(0 1px 4px rgba(0,0,0,0.2) inset);
+        font-size: .85em;
+        width: 11.5em;
+    }
+}
+
+.signin_container {
+    position: absolute;
+    left: 40%;
+    top: 100px;
+    width: 300px;
+    height: 250px;
+    border: 2px solid #464646;
+    @include border-radius(8px);
+    background: #222;
+    padding-top: 30px;
+}
+

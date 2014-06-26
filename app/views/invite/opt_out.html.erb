@@ -1,0 +1,16 @@
+<div id="invitation_opt_out" class="topical_invite">
+    <h3><%= @message ? @message : @error_message %></h3>
+
+    <% unless @error_message.present? -%>
+        <%= form_tag('#', :id => 'opt_out_form') do -%>
+            <p><%= radio_button_tag("opt_out", "group", true) %> Opt-out from the <%= @ctx_name %> Planetwork group.</p>
+            <p><%= radio_button_tag("opt_out", "global") %> Opt-out from all Planetwork groups.</p>
+        <% end -%>
+        <div id="decline_invitation" class="topical-btn blue" style="width:14em;margin:35px auto;">Opt-Out (cannot be undone)</div>
+        
+        <p id="error_notice" style="margin:-20px 0 20px">&nbsp;</p>
+
+        <p>Or, you could change your mind and <a href="<%= @accept_link %>">accept.</a></p>
+    <% end -%>
+
+</div>

@@ -1,0 +1,50 @@
+<div style="padding:0 10px;position:relative;margin-top:-30px;">
+  <h3>Send a link to<br /><span class="blue">"<%= article.headline %>"</span><br />and an invitation to join <%= ctx_name %></h3>
+  <div id="send_emails" class="admin_form inv_methods">
+
+    <p style="margin:10px 0 0;">Enter email addresses and optionally names to go with them, either one on a line or separated by commas.</p>
+
+    <%= form_tag('#', :id => "invitations_form") do %>
+      <%= hidden_field_tag("context", ctx_id) %>
+      <%= hidden_field_tag("article_id", article.id) %>
+      <% if true -%>
+      <p style="margin:0;">Invite as:
+          <span><%= radio_button_tag("role", "participant", true) %> Participant</span>
+          <span><%= radio_button_tag("role", "curator") %> Curator</span>
+          <span><%= radio_button_tag("role", "demo") %> Demo</span>
+      </p>
+      <% end -%>
+      <%= text_area_tag("invitation_addresses", nil, :rows => 4, :cols => 75) %><br />
+
+    <p style="margin:10px 0 0;">Your invitation will look like this (<strong><em>edit yellow regions as desired</em></strong>):</p>
+
+    <div id="invitation_sample" style="padding:0 5px;">
+      <p>To: (<em>name or email</em>),</p>
+
+      <%= text_area_tag("invitation_text", "#{current_user.handle.capitalize} wants to share an article headlined \"#{article.headline}\" and invite you to join #{ctx_name}, a Topical group.", :rows => 7, :cols => 75, :class => "editable") %><br />
+
+      <p style="margin:5px 0 0;">If you wish to view the article and optionally accept the invitation, please click on the following link:<br />
+        (<em>A link will be provided here.</em>)
+      </p>
+
+      <p style="margin:5px 0 0;">Topical is a private demo site.  By accepting the invitation you agree to abide by our terms of non-disclosure available at <a href="https://topical.planetwork.net/nda" target="_blank">https://topical.planetwork.net/nda</a>.</p>
+
+      <p style="margin:5px 0 0;">If you don't wish to accept, you may still view the article.</p>
+
+      <%= text_area_tag("invitation_sig", "Warm regards,\n#{current_user.handle.capitalize}", :rows => 2, :cols => 75, :class => "editable") %>
+    </div>
+
+    <% end %>
+    
+    <p id="send_invitations" class="icon_btn">
+        <span class="topical-btn blue"><span class="blue_arrow">&nbsp;</span>&nbsp;</span>
+        <span id="progress" class="trailing_text">Send Invitations</span>
+    </p>
+
+    <p>
+      <span rel="<%= ctx_id %>" ref="<%= article.id %>" data-pos="<%= position %>" id="exit_share" class="topical-btn black exit_btn" style="margin-left:15px;"><span class="arrow lft">&nbsp;</span>&nbsp;</span>
+    </p>
+
+    <div id="failure_report"></div>
+  </div>
+</div>

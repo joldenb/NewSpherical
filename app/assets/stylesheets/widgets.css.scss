@@ -1,0 +1,75 @@
+.sphere-btn {
+    position: relative;
+    padding: 0.45em 20px;
+    font: .8em "Helvetica Neue",Helvetica,Arial,sans-serif;
+    @include border-radius(16px);
+    @include box-shadow(#555 0px 1px 1px);
+    min-width: 30px;
+    text-align: center;
+    cursor: pointer;
+    .arrow {
+        position: absolute;
+        top: 3px;
+        left: 5px;
+        background: #222 image-url('icons-18-white.png') no-repeat -216px 50%;
+        height: 18px;
+        width: 18px;
+        @include border-radius(9px);
+        @include box-shadow(0px 1px 0px 0px rgba(255,255,255,0.4));
+        &.rt {
+            background: #222 image-url('icons-18-white.png') no-repeat -108px 50%;
+        }
+        &.lft {
+            background: #222 image-url('icons-18-white.png') no-repeat -145px 50%;
+        }
+    }
+    .blue_arrow {
+        position: absolute;
+        top: 3px;
+        left: 5px;
+        background: #2d4e6d image-url('icons-18-white.png') no-repeat -360px 50%;
+        height: 18px;
+        width: 18px;
+        @include border-radius(9px);
+        @include box-shadow(0px 1px 0px 0px rgba(255,255,255,0.4));
+        &.rmv {
+            background: #2d4e6d image-url('icons-18-white.png') no-repeat -396px 50%;
+        }
+    }
+    &.blue {
+        @include background-image(linear-gradient(top, #5f9cc5, #396b9e));
+        color: #fff;
+    }
+    &.black {
+        @include background-image(linear-gradient(top, #999, #333));
+        color: #fff;
+    }
+    &.pwblue {
+        @include background-image(linear-gradient(top, #3c61b6, #5a7ccb));
+        color: #fff;
+    }
+    &.bigblue {
+        @include background-image(linear-gradient(top, #5f9cc5, #396b9e));
+        @include box-shadow(0px 1px 4px 0px rgba(0,0,0,0.3));
+        border: 1px solid #044062;
+        color: #fff;
+        font-size: .9em;
+        font-weight: bold;
+        line-height: 1.6;
+        width: 8em;
+        margin: 5px auto;
+        text-shadow: 0px 1px 1px #194b7e;
+    }
+    &.biggray {
+        @include background-image(linear-gradient(top, #bbb, #999));
+        @include box-shadow(0px 1px 4px 0px rgba(0,0,0,0.3));
+        border: 1px solid #999;
+        color: #fff;
+        font-size: .9em;
+        font-weight: bold;
+        line-height: 1.6;
+        width: 8em;
+        margin: 5px auto;
+        text-shadow: 0px 1px 1px #194b7e;
+    }
+}

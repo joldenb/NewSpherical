@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+logfile = "#{Rails.root}/log/item_sweeper.log"
+log = File.new(logfile, 'a')
+
+now = Time.now.to_i
+sweep_to = TopicalUtils.item_elevation_expiration.hours.ago
+sweep_back_to = now - sweep_to.to_i
+sweep_back = Time.at(now - (2 * sweep_back_to)).utc
+
+collector = Hash.new(0)
+
+begin
+    #collect and sum all unexpired elevations.
+    ItemElevator.where(:created_at.gte => sweep_to).each do |elv|
+        item = "#{elv.item_id}:#{elv.context_id}"
+        collector[item] += elv.elevation
+    end
+
+    #zero out expired elevations, going back twice the expiration interval.
+    #ItemContext.where(:updated_at.lt => sweep_to).and(:updated_at.gt => sweep_back).update_all(elevation: 0)
+    ItemContext.where(:updated_at.gt => sweep_back).update_all(elevation: 0)
+
+    #update item_contexts with unexpired elevations.
+    collector.each do |k,v|
+        item, ctx = k.split(':')
+        ItemContext.where(:item_id => item, :context_id => ctx).set(:elevation, v)
+    end
+
+    log.write("#{Time.now.utc}: swept to #{sweep_to}\n")
+rescue => e
+    log.write("#{Time.now.utc}: #{e.class} #{e.message}\n")
+end
+
+
+log.close
+exit

@@ -1,0 +1,9 @@
+<% if topics.present? -%>
+    <% topics.each_with_index do |topic, index| -%>
+        <div class="swiper-slide">
+            <div class="swiper-entity" id="<%= topic.id %>">
+                <h3><%= topic.display_identifier %></h3>
+            </div>
+        </div>
+    <% end -%>
+<% end -%>

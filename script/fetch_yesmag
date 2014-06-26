@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+logfile = "#{Rails.root}/log/yesmag.log"
+log = File.new(logfile, 'a')
+feed = YesMagazineNewsFeed.new
+topics = YesMagazine[:topics].keys
+
+topics.each do |topic|
+  begin
+    result = feed.get_rss(topic)
+    result.each do |item|
+      ItemAgent.new(topic.to_s.gsub(/\_/, '-'), item).create_or_update_feed_item("yesmag")
+    end
+    log.write("#{Time.now}: #{result.size} #{topic} items\n")
+  rescue => e
+    log.write("#{Time.now}: #{e.class} #{e.message}\n")
+  end
+end
+
+log.close
+exit

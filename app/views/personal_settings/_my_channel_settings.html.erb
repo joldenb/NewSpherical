@@ -1,0 +1,49 @@
+<div id="my_channel" style="background: #888;padding:10px;">
+  <div style="overflow:hidden;">
+      <div class="swiper-container with_hdr no_left_margin" id="my_channel_swiper" style="padding-left:0;overflow:visible;">
+        <div id="remove_topics_btn" class="swiper_header">
+            <span>My Channel Topics</span>
+            <span id="remove_topics" class="icon_btn channel_chsr">
+              <span class="topical-btn blue right"><span class="blue_arrow rmv">&nbsp;</span>&nbsp;</span>
+              <span id="remove_topics_progress" class="leading_text">Remove</span>
+            </span>
+        </div>
+        <% if mychannel_topics.present? -%>
+        <div class="swiper-wrapper" style="padding-left:5px;overflow:visible;">
+            <% mychannel_topics.each_with_index do |topic, index| -%>
+                <div class="swiper-slide">
+                    <div class="swiper-entity" id="<%= topic.id %>">
+                        <h3><%= topic.display_identifier %></h3>
+                    </div>
+                </div>
+            <% end -%>
+        </div>
+        <% else -%>
+          <h3 class="empty" style="margin-top:20px;font-size:1.3em;">No Topics Yet</h3>
+        <% end -%>
+      </div>
+
+    <div class="swiper-container with_hdr no_left_margin" id="choose_topics_swiper" style="padding-left:0;overflow:visible;margin-top:10px;">
+      <div id="choose_topics_btn" class="swiper_header">
+          <span>Select Topics<% unless is_mobile? -%> for My Channel<% end -%></span>
+          <span id="find_topics">
+            <%= form_tag('#', :id => "find_topics_form") do %>
+              <input id="search_term" type="search" name="search_term" placeholder="Search" class="search_box" style="margin: -1px 0 0 70px;">
+            <% end -%>
+          </span>
+          <span id="find_topics_spnr">
+            <%= image_tag("ajax-loader.gif", :size => "23x23", :id => "loading", :style => "display:none;") %>
+          </span>
+          <span id="add_topics" class="icon_btn channel_chsr">
+            <span class="topical-btn blue right"><span class="blue_arrow">&nbsp;</span>&nbsp;</span>
+            <span id="add_topics_progress" class="leading_text">Add</span>
+          </span>
+      </div>
+
+      <%= render :partial => "my_channel_topics", :locals => {:topic_results => topic_results} %>
+
+      <h3 class="empty" style="margin-top:20px;font-size:1.3em;display:none;">No Results</h3>
+    </div>
+  </div>
+  
+</div>

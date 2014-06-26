@@ -1,0 +1,38 @@
+<div id="planetwork_login" class="signin_content">
+  <h3>Authorize <%= @pre_auth.client.name %> to use your account?</h3>
+
+  <% if @pre_auth.scopes %>
+  <p style="margin:30px 0;font-size: .95em;text-shadow: none;">
+    This application will be able to see a <strong>list of topics</strong> in which you are a Curator, and <strong>post items</strong> to those topics on your behalf.
+  </p>
+  <ul>
+    <% @pre_auth.scopes.each do |scope| %>
+      <li><%= t scope, :scope => [:doorkeeper, :scopes]  %></li>
+    <% end %>
+  </ul>
+  <% end %>
+
+  <div>
+    <div style="float:left;">
+      <%= form_tag oauth_authorization_path, :method => :post do %>
+        <%= hidden_field_tag :client_id, @pre_auth.client.uid %>
+        <%= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri %>
+        <%= hidden_field_tag :state, @pre_auth.state %>
+        <%= hidden_field_tag :response_type, @pre_auth.response_type %>
+        <%= hidden_field_tag :scope, @pre_auth.scope %>
+        <%= submit_tag "Authorize", :class => "btn success" %>
+      <% end %>
+    </div>
+    <div style="float:left;margin:0 20px;">or</div>
+    <div style="float:left;">
+      <%= form_tag oauth_authorization_path, :method => :delete do %>
+        <%= hidden_field_tag :client_id, @pre_auth.client.uid %>
+        <%= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri %>
+        <%= hidden_field_tag :state, @pre_auth.state %>
+        <%= hidden_field_tag :response_type, @pre_auth.response_type %>
+        <%= hidden_field_tag :scope, @pre_auth.scope %>
+        <%= submit_tag "Deny", :class => "btn" %>
+      <% end %>
+    </div>
+  </div>
+</div>

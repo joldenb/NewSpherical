@@ -1,0 +1,45 @@
+<div id="user_area" ng-controller="UserCtrl">
+    <div id="users_controls">
+        <div class="control_panels" ng-repeat="panel in controlPanels">
+            <div class="panel" ng-class="{highlight: panel.highlight}" ng-style="panel.bg" highlight-panel click-panel panelobj="panel"><h3>{{panel.text}}</h3></div>
+        </div>
+    </div>
+    <div class="expand" ng-class="panelstate.classes" ng-show="panelstate.visible">
+        <div ui-view="ctrlpanel"></div>
+        <div class="closebox" panel-closer>&nbsp;</div>
+    </div>
+</div>
+
+<div id="dashlogo"><img alt="" ng-src="{{spheredata.dashlogo}}"></div>
+
+
+<div ng-controller="ActivityCtrl" class="activity_ctrl">
+    <div class="topic-swiper" topic-swiper slidearray="spheredata.topics"></div>
+
+    <div class="controls_bar">
+        <div class="topic_controls">
+            <div class="control" topic-cntrl-btn btntarget="all" tool-tip>
+                <span ng-class="{active:currentTopicIdx >= 0}">&nbsp;</span>
+                <div class="tooltip_above">All Topics<div class="arrow">&nbsp;</div></div>   
+            </div>
+            <div class="control" topic-cntrl-btn btntarget="previous" tool-tip>
+                <span ng-class="{active:currentTopicIdx > 0}" style="background-position:-21px 0;">&nbsp;</span>
+                <div class="tooltip_above">Previous Topic<div class="arrow">&nbsp;</div></div>
+            </div>
+            <div class="control" topic-cntrl-btn btntarget="next" tool-tip>
+                <span ng-class="{active:(currentTopicIdx < spheredata.num_topics-1 && currentTopicIdx >= 0)}" style="background-position:-46px 0;">&nbsp;</span>
+                <div class="tooltip_above">Next Topic<div class="arrow">&nbsp;</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="activity_window">
+        <div class="topic_indicator" ng-show="topicIndicatorVisible" id="{{currentTopic.id}}">
+            <img src="{{currentTopic.pic}}" brkn-img />
+            <h3>{{currentTopic.name}}</h3>
+        </div>
+        <div class="item_display">
+            <div class="item-swiper" item-swiper itemarray="topicItems"></div>
+        </div>
+    </div>
+</div>

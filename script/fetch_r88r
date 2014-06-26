@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+logfile = "#{Rails.root}/log/r88r.log"
+log = File.new(logfile, 'a')
+feed = R88rNewsFeed.new
+topics = R88R[:topics].keys
+
+topics.each do |topic|
+  begin
+    result = feed.get_headlines(topic)
+    result.each do |item|
+      ItemAgent.new(topic.to_s.gsub(/\_/, '-'), item).create_or_update_r88r_item
+    end
+    log.write("#{Time.now}: #{result.size} #{topic} items\n")
+  rescue => e
+    log.write("#{Time.now}: #{e.class} #{e.message}\n")
+  end
+end
+
+log.close
+exit

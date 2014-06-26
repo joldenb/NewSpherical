@@ -1,0 +1,32 @@
+<div id="invitation_accept" class="topical_invite">
+    <% if @article -%>
+        <h3 style="margin:15px 10px 0;"><%= @message ? @message : @error_message %></h3>
+
+        <% unless @error_message.present? -%>
+          <% if @new_group_invite -%>
+            <div id="new_group_accept" class="topical-btn blue" style="width:8em;margin:15px auto 25px;">Click to Accept</div>
+          <% else -%>
+            <div id="accept_invitation" class="topical-btn blue" style="width:8em;margin:15px auto 25px;">Click to Accept</div>
+          <% end -%>
+        <% end -%>
+
+        <p id="error_notice"></p>
+
+        <div id="topical_news_content" style="display:block;"><div id="tn_wrapper">
+            <%= render :partial => "api/news_item_content", :locals => {:item => @article[:item], :author => @article[:author]} %>
+            <div style="clear:both"></div>
+        </div></div>
+    <% else -%>
+        <h3><%= @message ? @message : @error_message %></h3>
+
+        <% unless @error_message.present? -%>
+          <% if @new_group_invite -%>
+            <div id="new_group_accept" class="topical-btn blue" style="width:8em;margin:35px auto;">Click to Accept</div>
+          <% else -%>
+            <div id="accept_invitation" class="topical-btn blue" style="width:8em;margin:35px auto;">Click to Accept</div>
+          <% end -%>
+        <% end -%>
+
+        <p id="error_notice"></p>
+    <% end -%>
+</div>

@@ -1,0 +1,45 @@
+server {
+  listen 50.116.19.102:80;
+  server_name hpct.planetwork.net;
+  root /var/www/hpct/public;
+  
+  passenger_enabled on;
+  rails_env production;
+  rails_spawn_method smart-lv2;
+  rails_app_spawner_idle_time 0;
+
+  access_log /var/log/nginx/hpct-access.log;
+  error_log /var/log/nginx/hpct-error.log;
+
+#  location / {
+#    auth_basic "Restricted";
+#    auth_basic_user_file /etc/nginx/htpwds/.htpasswd-hpct;
+#  }
+
+  ## if the request uri has a trailing slash,
+  ## set a $req variable to the request uri without the trailing slash
+  if ($request_uri ~ ^(.*)/$) {
+    set $req $1;
+  }
+
+  ## Serve on-disk files directly
+  if ($request_filename ~* \.(html|js|css|jpg|gif|png|pdf|txt)$) {
+    break;
+  }
+
+  ## Rewrite all the requests to the maintenance.html page if it exists.
+  if (-f $document_root/maintenance.html) {
+    return 503;
+  }
+
+  error_page 503 @503;
+  location @503 {
+    rewrite  ^(.*)$  /maintenance.html break;
+  }
+  
+  ## deny access to dot files, i.e. '.git'
+  location ~ /\. {
+    deny all;
+  }
+
+}

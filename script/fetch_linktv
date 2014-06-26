@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+logfile = "#{Rails.root}/log/linktv.log"
+log = File.new(logfile, 'a')
+feed = LinkTvNewsFeed.new
+topics = LinkTV[:topics].keys
+
+topics.each do |topic|
+  begin
+    result = feed.get_rss(topic)
+    result.each do |item|
+      ItemAgent.new(topic.to_s.gsub(/\_/, '-'), item).create_or_update_linktv_item
+    end
+    log.write("#{Time.now}: #{result.size} #{topic} items\n")
+  rescue => e
+    log.write("#{Time.now}: #{e.class} #{e.message}\n")
+  end
+end
+
+log.close
+exit

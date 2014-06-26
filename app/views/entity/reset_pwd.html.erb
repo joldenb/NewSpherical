@@ -1,0 +1,23 @@
+<div id="reset" class="topical_reset">
+    <h3>Reset Password for <span class="blue"><%= @user.handle rescue "unknown" %></span></h3>
+    <% if @reset_allowed -%>
+        <form method="post" id="user_pwd_rst" action="#" accept-charset="UTF-8">
+            <div style="margin:0;padding:0;display:inline">
+            <input type="hidden" value="" name="utf8">
+            <input type="hidden" value="<%= form_authenticity_token %>" name="authenticity_token">
+            </div>
+            <fieldset style="text-align:center;">
+              <input type="password" placeholder="New Password" name="password" id="password" />
+              <br />
+              <input type="password" placeholder="New Password Again" name="password_conf" id="password_conf" />
+            </fieldset>
+            
+            <p id="rst_submit_notice" class="above-btn-notice">&nbsp;</p>
+            <div id="rst_submit" class="topical-btn bigblue">Reset</div>
+        </form>
+    <% else -%>
+        <h4 class="alert"><%= @error %></h4>
+        <p style="text-align:center;"><a href="/" target="_top">Return to Signin Page</a></p>
+    <% end -%>
+
+</div>

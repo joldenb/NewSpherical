@@ -1,0 +1,111 @@
+/*jshint jquery: true, browser: true, devel: true */
+(function($) {
+    var dispatcher = null;
+    $.TopicalDashboardFunctions.forums = {
+        startWebsockets: function(ctx) {
+            dispatcher = new WebSocketRails("<%= ENV['WEBSOCKETS_HOST'] %>/websocket");
+            dispatcher.on_open = function(data) {
+              // console.log('Connection has been established');
+              // You can trigger new server events inside this callback if you wish. 
+              dispatcher.bind('welcome', function(data) {
+                  console.log(data.message);
+              });
+            };
+            
+            var success = function(response) {
+              var msg = JSON.parse(response.message);
+              $.each(msg, function(n, item) {
+                  var $formatted = $.TopicalDashboardFunctions.forums.formatForumMessage(item);
+                  $formatted.appendTo('#forum_wrapper');
+              });
+            };
+
+            var failure = function(response) {
+              console.log("That just totally failed: "+ response.message);
+            };
+
+            var message = {ctx_id: ctx};
+            dispatcher.trigger('forum.recent_messages', message, success, failure); 
+            dispatcher.trigger('forum.count_clients', message);
+            dispatcher.bind('client_count', function(data) {
+                var d = JSON.parse(data),
+                num_present = d.message.length,
+                $authors = $('.author', '#forum_wrapper').children('span');
+                $authors.removeClass('present');
+                console.log(d.message);
+                $('#forum_num_present').html(num_present);
+                $.each(d.message, function() {
+                  var authr = this;
+                  $.grep(
+                    $authors, function(d) {
+                      $author = $(d);
+                      if ($author.text() == authr) {
+                          $author.addClass('present');
+                      }
+                    }
+                  );
+                });
+            });
+        },
+        rcvNewMessage: function(ctx) {
+            var channel = dispatcher.subscribe(ctx);
+            // bind to a channel event
+            channel.bind('new_forum_message', function(data) {
+              var d = JSON.parse(data);
+              console.log('channel event received: ' + data);
+              var item = d.msg,
+              $formatted = $.TopicalDashboardFunctions.forums.formatForumMessage(item);
+              $formatted.prependTo('#forum_wrapper');
+            });
+        },
+        rcvPresenceMessage: function(ctx) {
+            var channel = dispatcher.subscribe(ctx);
+            channel.bind('forum_presence_message', function(data) {
+              var d = JSON.parse(data),
+              num_present = d.msg.length,
+              $authors = $('.author', '#forum_wrapper').children('span');
+              $authors.removeClass('present');
+              console.log('presence event received: ' + d.msg);
+              $('#forum_num_present').html(num_present);
+              $.each(d.msg, function() {
+                  var authr = this;
+                  $.grep(
+                    $authors, function(d) {
+                      $author = $(d);
+                      if ($author.text() == authr) {
+                        $author.addClass('present');
+                      }
+                    }
+                );
+              });
+            });
+        },
+        formatForumMessage: function(item) {
+            var thumb, author, mtext;
+            if (item.thumb) {
+              thumb = $('<div class="author_img"><img src="' + item.thumb + '"></div>');
+            } else {
+              thumb = $('<div class="author_img"><i class="icon-user"></i></div>');
+            }
+            author = $('<p class="author"></p>')
+            .html('by <span class="present">' + item.author + '</span><br />' + item.timestamp + ' ago')
+            .prepend(thumb);
+
+            mtext = $('<p class="forum_text">' + item.text + '</p>');
+
+            var formatted = $('<div class="forum_post"></div>')
+            .append(author)
+            .append(mtext);
+            return formatted;
+        },
+        closeForumClient: function(ctx) {
+            console.log('closing client');
+            try{
+                dispatcher.trigger('forum.close_client');
+            }
+            catch(e){
+                //suppress error if dispatcher null
+            }
+        }
+    };
+})(jQuery);

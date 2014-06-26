@@ -1,0 +1,32 @@
+<div id="ts_wrapper">
+    <h3 style="padding-bottom:10px;">Personal Settings</h3>
+
+    <ul class="listmenu psettings">
+        <li id="curate_btn" class="section_btn">
+            <a href="#">Curate Bookmarklet</a>
+            <span class="arrow rt">&nbsp;</span>
+        </li>
+        <li id="curate" class="setsec">
+            <p>Drag the "Curate" link below to your bookmark bar, and use it to recommend any web page to your Planetwork Dashboard groups.</p>
+
+            <p id="recommender" style="margin-top:0;padding-top:0;"><a href='javascript:(function(){var b=document.getElementsByTagName("body")[0];var s=document.createElement("script");s.src="<%= api_url('external_dashboard_loader') %>";s.async=true;b.appendChild(s);var dc=document.createElement("div");dc.id="topical_dashboard_loadspace";b.appendChild(dc);})();'>Curate</a></p>
+        </li>
+
+        <li id="mychannel_btn" class="section_btn">
+            <a href="#">My Channel</a>
+            <span class="arrow rt">&nbsp;</span>
+        </li>
+        <li id="mychannel" class="setsec">
+            <%= render :partial => "my_channel_settings", :locals => {:mychannel_topics => mychannel_topics, :topic_results => topic_results} %>
+        </li>
+
+        <li id="profile_btn" class="section_btn">
+            <a href="#">Personal Profile</a>
+            <span class="arrow rt">&nbsp;</span>
+        </li>
+        <li id="pprofile" class="setsec">
+
+        </li>
+    </ul>
+
+</div>

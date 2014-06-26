@@ -1,0 +1,134 @@
+server {
+  listen 173.255.202.27:80;
+  server_name cooling.planetwork.net cooling2.planetwork.net;
+  root /var/www/pw/cooling2/public;
+
+  access_log /var/log/nginx/cooling2-access.log;
+  error_log /var/log/nginx/cooling2-error.log;
+
+  ## Rewrite all the requests to the maintenance.html page if it exists.
+  if (-f $document_root/maintenance.html) {
+    return 503;
+  }
+  
+  location / {
+    # needed to forward user's IP address to rails
+    proxy_set_header  X-Real-IP  $remote_addr;
+
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    
+    # If the file exists as a static file serve it directly without
+    # running all the other rewite tests on it
+    if (-f $request_filename) { 
+      break; 
+    }
+
+    # check for index.html for directory index
+    # if its there on the filesystem then rewite 
+    # the url to add /index.html to the end of it
+    # and then break to send it to the next config rules.
+    if (-f $request_filename/index.html) {
+      rewrite (.*) $1/index.html break;
+    }
+
+    # this is the meat of the rails page caching config
+    # it adds .html to the end of the url and then checks
+    # the filesystem for that file. If it exists, then we
+    # rewite the url to have explicit .html on the end 
+    # and then send it on its way to the next config rule.
+    # if there is no file on the fs then it sets all the 
+    # necessary headers and proxies to our upstream mongrels
+    if (-f $request_filename.html) {
+      rewrite (.*) $1.html break;
+    }
+
+    if (!-f $request_filename) {
+      proxy_pass http://coolingthin;
+      break;
+    }
+  }
+
+  error_page 503 @503;
+  location @503 {
+    rewrite  ^(.*)$  /maintenance.html break;
+  }
+
+}
+
+server {
+  listen 173.255.202.27:443;
+  server_name cooling.planetwork.net cooling2.planetwork.net;
+  root /var/www/pw/cooling2/public;
+
+  access_log /var/log/nginx/cooling2-access.log;
+  error_log /var/log/nginx/cooling2-error.log;
+
+  ## Rewrite all the requests to the maintenance.html page if it exists.
+  if (-f $document_root/maintenance.html) {
+    return 503;
+  }
+  
+   location / {
+     # needed to forward user's IP address to rails
+     proxy_set_header  X-Real-IP  $remote_addr;
+
+     # needed for HTTPS
+     proxy_set_header X_FORWARDED_PROTO https;
+
+     proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_set_header Host $http_host;
+     proxy_http_version 1.1;
+     proxy_set_header Upgrade $http_upgrade;
+     proxy_set_header Connection $connection_upgrade;
+     
+     # If the file exists as a static file serve it directly without
+     # running all the other rewite tests on it
+     if (-f $request_filename) { 
+       break; 
+     }
+
+     # check for index.html for directory index
+     # if its there on the filesystem then rewite 
+     # the url to add /index.html to the end of it
+     # and then break to send it to the next config rules.
+     if (-f $request_filename/index.html) {
+       rewrite (.*) $1/index.html break;
+     }
+
+     # this is the meat of the rails page caching config
+     # it adds .html to the end of the url and then checks
+     # the filesystem for that file. If it exists, then we
+     # rewite the url to have explicit .html on the end 
+     # and then send it on its way to the next config rule.
+     # if there is no file on the fs then it sets all the 
+     # necessary headers and proxies to our upstream mongrels
+     if (-f $request_filename.html) {
+       rewrite (.*) $1.html break;
+     }
+
+     if (!-f $request_filename) {
+       proxy_pass http://coolingthin;
+       break;
+     }
+   }
+
+
+  error_page 503 @503;
+  location @503 {
+    rewrite  ^(.*)$  /maintenance.html break;
+  }
+
+ ## see http://blog.leetsoft.com/2007/7/25/nginx-gzip-ssl
+  gzip_buffers 16 8k;
+
+  ssl on;
+  ssl_certificate /etc/nginx/ssl/cooling.chained.crt;
+  ssl_certificate_key /etc/nginx/ssl/cooling.key;
+  ssl_protocols SSLv3 TLSv1 TLSv1.1 TLSv1.2;
+  ssl_prefer_server_ciphers on;
+  ssl_ciphers  ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!MD5:!aNULL:!eNULL:!NULL:!DH:!EDH:!AESGCM;
+}
