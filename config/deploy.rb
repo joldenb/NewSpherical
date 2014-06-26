@@ -11,8 +11,8 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :domain, 'alpha2.planetwork.net'
-set :deploy_to, '/var/www/topical'
-set :repository, 'git@github.com:planetwork/topical.git'
+set :deploy_to, '/var/www/spherical'
+set :repository, 'git@github.com:planetwork/spherical.git'
 set :branch, 'master'
 set :term_mode, :system  # otherwise won't ask for github ssh passphrase
 
@@ -76,7 +76,7 @@ namespace :thin do
   task :restart do
     queue %{
       echo "-----> Restarting thin"
-      #{echo_cmd %[bundle exec thin restart -C /etc/thin/topical.yml]}
+      #{echo_cmd %[bundle exec thin restart -C /etc/thin/spherical.yml]}
     }
   end
 end
@@ -92,7 +92,7 @@ task :deploy => :environment do
     invoke :'rails:assets_precompile'
 
     to :launch do
-      #bundle exec thin restart -C /etc/thin/topical.yml
+      #bundle exec thin restart -C /etc/thin/spherical.yml
       invoke :'thin:restart'
     end
   end
