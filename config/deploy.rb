@@ -98,6 +98,9 @@ task :deploy => :environment do
   end
 end
 
+# to force an asset reload even if no assets have changed:
+# mina deploy force_assets=true
+
 # For help in making your deploy script, see the Mina documentation:
 #
 #  - http://nadarei.co/mina
