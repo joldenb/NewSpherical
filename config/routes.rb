@@ -9,6 +9,7 @@ Topical::Application.routes.draw do
 
   get "/sphere/signin" => 'sphere#signin'
   
+  
   match "dashboard(/:action(/:id)(.:format))" => 'dashboard', :as => "dashboard", :via => [:get, :options]
   
   get "/invite/invitations_form/:group_id" => 'invite#invitations_form'
