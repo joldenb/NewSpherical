@@ -60,6 +60,6 @@ class ForumController < WebsocketRails::BaseController
     end
 
     def redis_cnx
-        @redis_cnx ||= Redis.new
+        $redis
     end
 end
