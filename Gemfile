@@ -11,6 +11,7 @@ gem 'omniauth-twitter'
 gem 'omniauth-linkedin'
 gem 'omniauth-facebook'
 gem 'doorkeeper', '~> 0.7.0'
+gem 'jwt'
 
 gem 'rack-oauth2'
 gem 'eventmachine', '~> 1.0.3'

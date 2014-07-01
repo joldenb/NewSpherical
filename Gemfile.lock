@@ -342,6 +342,7 @@ DEPENDENCIES
   foreman
   jbuilder (~> 1.2)
   jquery-rails (>= 2.0.2)
+  jwt
   kaminari
   mini_magick
   minitest-rails
