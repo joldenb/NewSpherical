@@ -16,7 +16,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
         }
     };
 }])
-.directive('clickPanel', ['$timeout', '$window', 'SPHR_HST', function($timeout, $window, SPHR_HST) {
+.directive('clickPanel', ['$timeout', '$window', '$http', 'SPHR_HST', function($timeout, $window, $http, SPHR_HST) {
     return {
         restrict: 'A',
         scope: {
@@ -27,7 +27,16 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
                 $('#spherical_dashboard_container').hide('slow');
             },
             signin = function() {
-                $window.location.href = SPHR_HST +'sphere/signin';
+                //console.log($window.location.href);
+                //$window.location.href = SPHR_HST +'sphere/signin';
+                var url = SPHR_HST +'sphere/signin_token',
+                sndata = {rtn: $window.location.href,
+                        statename: scope.$parent.state.current.name,
+                        stateparams: scope.$parent.state.params};
+                $http.post(url, sndata)
+                .success(function(data) {
+                  $window.location.href = SPHR_HST +'sphere/signin/' + data.token;
+                });
             };
             elm.on('click', function() {
                 if (scope.panelobj.action == 'expand') {

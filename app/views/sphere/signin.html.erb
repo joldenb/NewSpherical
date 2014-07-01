@@ -1,16 +1,17 @@
 <div class="signin_container">
-    <form method="post" id="user_signin" action="#" accept-charset="UTF-8">
+    <%= form_tag("/sphere/signin_submit") do %>
       <fieldset style="text-align:center;">
-        <input type="text" placeholder="User-handle or Email" name="user[cred]" id="user_cred" />
+        <input type="text" placeholder="User-handle or Email" name="user[cred]" value="<%= flash[:cred] %>" />
         <br />
-        <input type="password" placeholder="Password" name="user[password]" id="user_password" />
+        <input type="password" placeholder="Password" name="user[password]" />
       </fieldset>
       
-      <p id="submit_notice" class="above-btn-notice red"><% if @msg -%><%= @msg %><% else -%>&nbsp;<% end -%></p>
+      <p class="submit_notice"><% if flash[:msg] -%><%= flash[:msg] %><% else -%>&nbsp;<% end -%></p>
 
-      <div id="signin_submit" class="sphere-btn bigblue">Sign In</div>
+      <button class="sphere-btn bigblue">Sign In</button>
       
-    </form>
-    
-    
+    <% end -%>
+
+
+    <p style="background:#fff;"><%= session[:user_id] %></p>
 </div>

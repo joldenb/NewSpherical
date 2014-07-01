@@ -36,4 +36,9 @@ fieldset {
     @include border-radius(8px);
     background: #222;
     padding-top: 30px;
+    text-align: center;
+    .submit_notice {
+        color: #d00;
+        margin: 10px 0 0;
+    }
 }

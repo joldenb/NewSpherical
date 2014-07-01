@@ -4,7 +4,6 @@ class ChannelInfo
   
   field :ip_addresses, :type => Array 
   field :dashboard_logo, :type => String
-
-  
+  field :allowed_rdr_hosts, :type => Array
 
 end

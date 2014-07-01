@@ -7,7 +7,9 @@ Topical::Application.routes.draw do
   get "/auth/:provider/callback" => 'entity#oauth_signin'
   get "/auth/failure" => 'entity#oauth_failure'
 
-  get "/sphere/signin" => 'sphere#signin'
+  get "/sphere/signin(/:token)" => 'sphere#signin', :as => 'signin'
+  post "/sphere/signin_token" => 'sphere#signin_token'
+  post "/sphere/signin_submit" => 'sphere#signin_submit'
   
   
   match "dashboard(/:action(/:id)(.:format))" => 'dashboard', :as => "dashboard", :via => [:get, :options]
