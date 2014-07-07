@@ -35,6 +35,11 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
                 .success(function(data) {
                   $window.location.href = SPHR_HST +'sphere/signin/' + data.token;
                 });
+            },
+            signout = function() {
+                var rtn = $window.location.href;
+                delete $window.sessionStorage.token;
+                $window.location.href = SPHR_HST +'sphere/dashboard_signout?rtn=' + rtn;
             };
             elm.on('click', function() {
                 if (scope.panelobj.action == 'expand') {
@@ -61,6 +66,9 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
                             break;
                         case 'signin':
                             signin();
+                            break;
+                        case 'signout':
+                            signout();
                             break;
                     }
                 };

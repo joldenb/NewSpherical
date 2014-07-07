@@ -46,9 +46,9 @@ class SphereController < ApplicationController
                 # make a temporary token for the client to retrieve 
                 # the jwt and the return state
                 signin_jwt_token = SecureRandom.urlsafe_base64(20)
-                token_value = [jwt, rtnstate, user.handle]
+                token_value = [jwt, rtnstate]
                 $redis.rpush("jtoken:#{signin_jwt_token}", token_value)
-                $redis.expire("jtoken:#{signin_jwt_token}", 300)
+                $redis.expire("jtoken:#{signin_jwt_token}", 30)
                 # return the temp token to the client's signin state uri
                 return_uri = signin_return + signin_jwt_token
                 redirect_to(return_uri) and return  
@@ -64,10 +64,10 @@ class SphereController < ApplicationController
 
     def signin_verify
         verify_token = params[:token].to_s
-        jwt, rtnstate, handle = $redis.lrange("jtoken:#{verify_token}", 0, -1)
+        jwt, rtnstate = $redis.lrange("jtoken:#{verify_token}", 0, -1)
         if jwt && rtnstate
             $redis.del("jtoken:#{verify_token}")
-            render :json => {"jwt" => jwt, "rtnstate" => JSON.parse(rtnstate), "user_handle" => handle} and return
+            render :json => {"jwt" => jwt, "rtnstate" => JSON.parse(rtnstate)} and return
         else
             render(:nothing => true, :status => 401) and return
         end    
@@ -123,6 +123,21 @@ class SphereController < ApplicationController
     def signout_submit
         reset_session
         render :signin
+    end
+
+    def dashboard_signout
+        if matcher = /Bearer[\s]+token=\"([^"]+)\"/i.match(request.headers['HTTP_AUTHORIZATION'])
+          $redis.del("sess:#{JWT.decode(matcher[1], ENV['JWT_HKEY'])}")
+        end
+        reset_session
+        uri = URI(params[:rtn].to_s)
+        if Context.find_by("channel_info.allowed_rdr_hosts" => uri.host)
+            return_uri = %Q{#{uri.scheme}://#{uri.host}/#/}
+            redirect_to(return_uri) and return
+        else
+            redirect_to(root_url)
+        end
+
     end
 
     ##

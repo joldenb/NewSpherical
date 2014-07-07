@@ -13,6 +13,7 @@ Topical::Application.routes.draw do
   get "/sphere/signin_verify/:token" => 'sphere#signin_verify'
   get "/sphere/user_ctlpanel_data"  => 'sphere#user_ctlpanel_data'
   post "/sphere/signout_submit" => 'sphere#signout_submit'
+  get "/sphere/dashboard_signout" => 'sphere#dashboard_signout'
   
   
   match "dashboard(/:action(/:id)(.:format))" => 'dashboard', :as => "dashboard", :via => [:get, :options]
