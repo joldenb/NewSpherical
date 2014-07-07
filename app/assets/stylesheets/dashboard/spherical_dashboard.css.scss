@@ -31,16 +31,18 @@
             .control_panels {
                 float: left;
                 margin: 1px 1px 0 0;
-                width: 16.51%;
+                width: 24.85%;
                 .panel {
                     position: relative;
-                    height: 57px;
+                    height: 99px;
                     opacity: 0.4;
                     padding: 25px 0 0;
                     cursor: pointer;
                     h3 {
                         text-align: center;
                         font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                        width: 70%;
+                        margin: 0 auto;
                     }
                     &.highlight {
                         opacity: 1.0;
