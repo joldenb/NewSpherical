@@ -67,24 +67,19 @@ angular.module('sphericalApp', [
     .state('signin', {
         url: '^/signin/:token',
         resolve: {
-          signedIn: function($rootScope) {
-              return $rootScope.signedin;
-          },
           sessionStore: function($window) {
               return $window.sessionStorage;
           },
           SigninVerify: 'SigninVerify'
         },
-        controller: function($stateParams, $state, signedIn, sessionStore, SigninVerify) {
+        controller: function($stateParams, $state, sessionStore, SigninVerify) {
             SigninVerify.get($stateParams.token)
             .then(function(signin_data) {
                 if (signin_data) {
                   sessionStore.token = signin_data.jwt;
-                  signedIn = signin_data.user_handle;
                   $state.go(signin_data.rtnstate.statename, signin_data.rtnstate.stateparams);
                 } else {
                   delete sessionStore.token;
-                  signedIn = false;
                   $state.go('home');
                 }
             });

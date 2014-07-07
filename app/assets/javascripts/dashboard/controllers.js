@@ -6,7 +6,6 @@
 
 angular.module('sphericalApp.controllers', [])
     .controller('MainCtrl', ['$scope', '$rootScope', '$state', 'SphereInfo', function($scope, $rootScope, $state, SphereInfo) {
-        $rootScope.signedin = false;
         $scope.spheredata = {};
         SphereInfo.sphereData.then(function(d) {
             $scope.spheredata.dashlogo = d.data.dashlogo;
