@@ -1,7 +1,7 @@
 <div id="user_area" ng-controller="UserCtrl">
     <div id="users_controls">
         <div class="control_panels" ng-repeat="panel in controlPanels">
-            <div class="panel" ng-class="{highlight: panel.highlight}" ng-style="panel.bg" highlight-panel click-panel panelobj="panel"><h3>{{panel.text}}</h3></div>
+            <div class="panel" ng-class="{highlight: panel.highlight}" ng-style="panel.bg" highlight-panel click-panel panelobj="panel"><h3>{{panel.text}}<br />{{panel.current_user}}</h3></div>
         </div>
     </div>
     <div class="expand" ng-class="panelstate.classes" ng-show="panelstate.visible">

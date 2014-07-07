@@ -6,43 +6,22 @@
 
 angular.module('sphericalApp.controllers', [])
     .controller('MainCtrl', ['$scope', '$rootScope', '$state', 'SphereInfo', function($scope, $rootScope, $state, SphereInfo) {
+        $rootScope.signedin = false;
         $scope.spheredata = {};
         SphereInfo.sphereData.then(function(d) {
             $scope.spheredata.dashlogo = d.data.dashlogo;
         });
         $scope.openDash = false;
     }])
-    .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', function($scope, $rootScope, $state, $timeout, SPHR_HST) {
+    .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData) {
         $scope.state = $state;
         $scope.panelstate = {};
         $scope.panelstate.visible = false;
         $scope.panelstate.classes = [];
-        $scope.controlPanels = [
-            {bg: {'background-color':'#C8E1C2'}},
-            {bg: {'background-color':'#009E2D'}},
-            {bg: {'background':'#88BCE2 url(' + SPHR_HST + 'assets/adduser.png) no-repeat 40px 33px'},
-                    highlight: true,
-                    text: 'Sign Up',
-                    action: 'expand',
-                    expanded_bg: 'drkblue',
-                    destination: 'signup_form'},
-            {bg: {'background':'#0080c9 url(' + SPHR_HST + 'assets/login-icon.png) no-repeat 40px 40px'},
-                    highlight: true,
-                    text: 'Signin',
-                    action: 'signin'},
-            {bg: {'background':'#073a70 url(' + SPHR_HST + 'assets/close_dashboard.png) no-repeat 40px 40px'},
-                    highlight: true,
-                    text: 'Close',
-                    action: 'close'},
-            {bg: {'background-color':'#2672EC'}},
-            {bg: {'background-color':'#2E8DEF'}},
-            {bg: {'background-color':'#557C30'}},
-            {bg: {'background-color':'#C38456'}},
-            {bg: {'background-color':'#008299'}},
-            {bg: {'background-color':'#00A0B1'}},
-            {bg: {'background-color':'#008299'}},
-            {bg: {'background-color':'#00A0B1'}}
-        ];
+        ControlPanelData.get().then(function(d) {
+            $scope.controlPanels = d.panels;
+        });
+        
         $rootScope.$on('$stateChangeSuccess', 
             function(event, toState, toParams, fromState, fromParams) { 
                 if (!/ctrlpanel/.test(toState.name)) {

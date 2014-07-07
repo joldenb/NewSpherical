@@ -16,6 +16,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_dashboard_session
+    if matcher = /Bearer[\s]+token=\"([^"]+)\"/i.match(request.headers['HTTP_AUTHORIZATION'])
+      sess = $redis.hgetall("sess:#{JWT.decode(matcher[1], ENV['JWT_HKEY'])}")
+    end
+    sess.present? ? sess : nil
+  end
+
+  def current_dashboard_user
+    if current_dashboard_session
+      Entity.find(current_dashboard_session["user_id"])
+    end
+  end
+
   def authenticity_token_verified?
     session[:_csrf_token] == params[:authenticity_token] || session[:_csrf_token] == request.headers['X-CSRF-Token']
   end

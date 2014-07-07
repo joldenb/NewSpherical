@@ -1,5 +1,16 @@
 <div class="signin_container">
-    <%= form_tag("/sphere/signin_submit") do %>
+  <% if current_user -%>
+    <%= form_tag("/sphere/signout_submit", :id => "signout_form") do %>
+      <fieldset style="text-align:center;">
+        <p class="signedin_notice">You are signed in as: <em><%= current_user.handle %></em></p>
+      
+        <p class="submit_notice"><% if flash[:msg] -%><%= flash[:msg] %><% else -%>&nbsp;<% end -%></p>
+
+        <button class="sphere-btn bigblue">Sign Out</button>
+
+    <% end -%>
+  <% else -%>
+    <%= form_tag("/sphere/signin_submit", :id => "signin_form") do %>
       <fieldset style="text-align:center;">
         <input type="text" placeholder="User-handle or Email" name="user[cred]" value="<%= flash[:cred] %>" />
         <br />
@@ -9,9 +20,7 @@
       <p class="submit_notice"><% if flash[:msg] -%><%= flash[:msg] %><% else -%>&nbsp;<% end -%></p>
 
       <button class="sphere-btn bigblue">Sign In</button>
-      
+
     <% end -%>
-
-
-    <p style="background:#fff;"><%= session[:user_id] %></p>
+  <% end -%>
 </div>

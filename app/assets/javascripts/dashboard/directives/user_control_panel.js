@@ -27,8 +27,6 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
                 $('#spherical_dashboard_container').hide('slow');
             },
             signin = function() {
-                //console.log($window.location.href);
-                //$window.location.href = SPHR_HST +'sphere/signin';
                 var url = SPHR_HST +'sphere/signin_token',
                 sndata = {rtn: $window.location.href,
                         statename: scope.$parent.state.current.name,

@@ -1,5 +1,5 @@
 class SphereController < ApplicationController
-    
+    after_filter :add_cors_headers
 
     def signin_token
         uri = URI(params[:rtn].to_s)
@@ -7,7 +7,7 @@ class SphereController < ApplicationController
             token = SecureRandom.urlsafe_base64(20)
             rtnstate = {"statename" => params[:statename],
                         "stateparams" => params[:stateparams]}.to_json
-            token_value = [uri, rtnstate]
+            token_value = [%Q{#{uri.scheme}://#{uri.host}/#/signin/}, rtnstate]
             $redis.rpush("sntoken:#{token}", token_value)
             $redis.expire("sntoken:#{token}", 30)
             render :json => {"token" => token} and return
@@ -21,7 +21,8 @@ class SphereController < ApplicationController
         token = params[:token]
         signin_token_value = $redis.lrange("sntoken:#{token}", 0, -1)
         if signin_token_value.present?
-            session[:return_uri], session[:rtnstate] = signin_token_value
+            session[:signin_return], session[:rtnstate] = signin_token_value
+            $redis.del("sntoken:#{token}")
         end
     end
 
@@ -34,8 +35,22 @@ class SphereController < ApplicationController
         end
         
         if user = valid_signin(params[:user][:password].to_s, user_query)
-            return_uri = signin_user(user.id.to_s)
-            if return_uri
+            signin_return, rtnstate = signin_user(user.id.to_s)
+            if signin_return
+                # set session_key for future authorization
+                session_key = SecureRandom.urlsafe_base64(20)
+                $redis.hset("sess:#{session_key}", "user_id", user.id.to_s)
+                $redis.expire("sess:#{session_key}", 3600)
+                # enter the session_key into a JWT for the client to save
+                jwt = JWT.encode(session_key, ENV['JWT_HKEY'])
+                # make a temporary token for the client to retrieve 
+                # the jwt and the return state
+                signin_jwt_token = SecureRandom.urlsafe_base64(20)
+                token_value = [jwt, rtnstate, user.handle]
+                $redis.rpush("jtoken:#{signin_jwt_token}", token_value)
+                $redis.expire("jtoken:#{signin_jwt_token}", 300)
+                # return the temp token to the client's signin state uri
+                return_uri = signin_return + signin_jwt_token
                 redirect_to(return_uri) and return  
             else
                 redirect_to(root_url) and return
@@ -48,9 +63,69 @@ class SphereController < ApplicationController
     end
 
     def signin_verify
-        render :text => session[:rtnstate], :content_type => 'application/json'
+        verify_token = params[:token].to_s
+        jwt, rtnstate, handle = $redis.lrange("jtoken:#{verify_token}", 0, -1)
+        if jwt && rtnstate
+            $redis.del("jtoken:#{verify_token}")
+            render :json => {"jwt" => jwt, "rtnstate" => JSON.parse(rtnstate), "user_handle" => handle} and return
+        else
+            render(:nothing => true, :status => 401) and return
+        end    
     end
 
+    def user_ctlpanel_data
+        panels = []
+        if current_dashboard_user
+            panels << {:bg => {'background-color' => '#0080c9'}}
+            panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
+             :highlight =>  true,
+             :text =>  'Invite',
+             :action =>  'expand',
+             :expanded_bg =>  'drkblue',
+             :destination =>  'invite_form'}
+            panels << {:bg => {'background' => "#0080c9 url(#{ENV['FULLHOST']}assets/login-icon.png) no-repeat 50% 60px"},
+             :highlight =>  true,
+             :text =>  "Sign Out",
+             :action =>  'signout',
+             :current_user => current_dashboard_user.handle}
+            panels << {:bg => {'background' => "#073a70 url(#{ENV['FULLHOST']}assets/close_dashboard.png) no-repeat 50% 60px"},
+             :highlight =>  true,
+             :text =>  'Close Dashboard',
+             :action =>  'close'}
+            panels << {:bg => {'background-color' => '#2672EC'}}
+            panels << {:bg => {'background-color' => '#2E8DEF'}}
+            panels << {:bg => {'background-color' => '#557C30'}}
+            panels << {:bg => {'background-color' => '#88BCE2'}}
+        else
+            panels << {:bg => {'background-color' => '#0080c9'}}
+            panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
+             :highlight =>  true,
+             :text =>  'Sign Up for New Account',
+             :action =>  'expand',
+             :expanded_bg =>  'drkblue',
+             :destination =>  'signup_form'}
+            panels << {:bg => {'background' => "#0080c9 url(#{ENV['FULLHOST']}assets/login-icon.png) no-repeat 50% 60px"},
+             :highlight =>  true,
+             :text =>  'Sign In',
+             :action =>  'signin'}
+            panels << {:bg => {'background' => "#073a70 url(#{ENV['FULLHOST']}assets/close_dashboard.png) no-repeat 50% 60px"},
+             :highlight =>  true,
+             :text =>  'Close Dashboard',
+             :action =>  'close'}
+            panels << {:bg => {'background-color' => '#2672EC'}}
+            panels << {:bg => {'background-color' => '#2E8DEF'}}
+            panels << {:bg => {'background-color' => '#557C30'}}
+            panels << {:bg => {'background-color' => '#88BCE2'}}
+        end
+        render(:json => {:panels => panels})
+    end
+
+    def signout_submit
+        reset_session
+        render :signin
+    end
+
+    ##
     private
 
     def valid_signin(passwd, user_query=nil)
@@ -66,10 +141,19 @@ class SphereController < ApplicationController
     end
 
     def signin_user(user_id)
-        return_uri = session[:return_uri]
+        signin_return = session[:signin_return]
+        rtnstate = session[:rtnstate]
         reset_session
         session[:user_id] = user_id
-        return_uri
+        [signin_return, rtnstate]
+    end
+    
+
+    def add_cors_headers
+      response.headers["Access-Control-Allow-Origin"] = "*"
+      response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+      response.headers["Access-Control-Allow-Credentials"] = "true"
+      response.headers["Access-Control-Allow-Headers"] = "x-csrf-token, authorization, accept, content-type"
     end
     
 end
