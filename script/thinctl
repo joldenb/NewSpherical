@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd /Users/victor/Sites/spherical
+bundle exec thin $1 -C /usr/local/etc/thin/spherical.yml
