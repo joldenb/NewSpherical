@@ -7,8 +7,9 @@ class SphereController < ApplicationController
             token = SecureRandom.urlsafe_base64(20)
             rtnstate = {"statename" => params[:statename],
                         "stateparams" => params[:stateparams]}.to_json
-            token_value = [%Q{#{uri.scheme}://#{uri.host}/#/signin/}, rtnstate]
-            $redis.rpush("sntoken:#{token}", token_value)
+            #token_value = [%Q{#{uri.scheme}://#{uri.host}/#/signin/}, rtnstate]
+            $redis.rpush("sntoken:#{token}", %Q{#{uri.scheme}://#{uri.host}/#/signin/})
+            $redis.rpush("sntoken:#{token}", rtnstate)
             $redis.expire("sntoken:#{token}", 30)
             render :json => {"token" => token} and return
         else
@@ -46,8 +47,9 @@ class SphereController < ApplicationController
                 # make a temporary token for the client to retrieve 
                 # the jwt and the return state
                 signin_jwt_token = SecureRandom.urlsafe_base64(20)
-                token_value = [jwt, rtnstate]
-                $redis.rpush("jtoken:#{signin_jwt_token}", token_value)
+                #token_value = [jwt, rtnstate]
+                $redis.rpush("jtoken:#{signin_jwt_token}", jwt)
+                $redis.rpush("jtoken:#{signin_jwt_token}", rtnstate)
                 $redis.expire("jtoken:#{signin_jwt_token}", 30)
                 # return the temp token to the client's signin state uri
                 return_uri = signin_return + signin_jwt_token
