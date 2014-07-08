@@ -78,7 +78,9 @@ class SphereController < ApplicationController
     def user_ctlpanel_data
         panels = []
         if current_dashboard_user
-            panels << {:bg => {'background-color' => '#0080c9'}}
+            panels << {:bg => {'background-color' => '#0080c9'},
+            :text => 'My Profile',
+            :highlight =>  true}
             panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
              :highlight =>  true,
              :text =>  'Invite',
@@ -94,12 +96,21 @@ class SphereController < ApplicationController
              :highlight =>  true,
              :text =>  'Close Dashboard',
              :action =>  'close'}
-            panels << {:bg => {'background-color' => '#2672EC'}}
-            panels << {:bg => {'background-color' => '#2E8DEF'}}
-            panels << {:bg => {'background-color' => '#557C30'}}
-            panels << {:bg => {'background-color' => '#88BCE2'}}
+            panels << {:bg => {'background-color' => '#2672EC'},
+                :text => 'My Channel',
+            :highlight =>  true}
+            panels << {:bg => {'background-color' => '#2E8DEF'},
+                :text => 'Tools',
+            :highlight =>  true}
+            panels << {:bg => {'background-color' => '#557C30'},
+                :text => 'Settings',
+            :highlight =>  true}
+            panels << {:bg => {'background-color' => '#88BCE2'},
+                :text => 'Forum',
+            :highlight =>  true}
         else
-            panels << {:bg => {'background-color' => '#0080c9'}}
+            panels << {:bg => {'background-color' => '#0080c9'},
+                :text => 'My Profile'}
             panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
              :highlight =>  true,
              :text =>  'Sign Up for New Account',
@@ -114,10 +125,14 @@ class SphereController < ApplicationController
              :highlight =>  true,
              :text =>  'Close Dashboard',
              :action =>  'close'}
-            panels << {:bg => {'background-color' => '#2672EC'}}
-            panels << {:bg => {'background-color' => '#2E8DEF'}}
-            panels << {:bg => {'background-color' => '#557C30'}}
-            panels << {:bg => {'background-color' => '#88BCE2'}}
+            panels << {:bg => {'background-color' => '#2672EC'},
+                :text => 'My Channel'}
+            panels << {:bg => {'background-color' => '#2E8DEF'},
+                :text => 'Tools'}
+            panels << {:bg => {'background-color' => '#557C30'},
+                :text => 'Settings'}
+            panels << {:bg => {'background-color' => '#88BCE2'},
+                :text => 'Forum'}
         end
         render(:json => {:panels => panels})
     end
