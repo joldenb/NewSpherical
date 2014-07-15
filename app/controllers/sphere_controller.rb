@@ -7,7 +7,6 @@ class SphereController < ApplicationController
             token = SecureRandom.urlsafe_base64(20)
             rtnstate = {"statename" => params[:statename],
                         "stateparams" => params[:stateparams]}.to_json
-            #token_value = [%Q{#{uri.scheme}://#{uri.host}/#/signin/}, rtnstate]
             $redis.rpush("sntoken:#{token}", %Q{#{uri.scheme}://#{uri.host}/#/signin/})
             $redis.rpush("sntoken:#{token}", rtnstate)
             $redis.expire("sntoken:#{token}", 30)
@@ -24,6 +23,23 @@ class SphereController < ApplicationController
         if signin_token_value.present?
             session[:signin_return], session[:rtnstate] = signin_token_value
             $redis.del("sntoken:#{token}")
+
+            #if user is already signed in to Spherical bounce them back
+            if current_user && session[:signin_return] && session[:rtnstate]
+                if session[:sess] && $redis.exists("sess:#{session[:sess]}")
+                    $redis.expire("sess:#{session[:sess]}", 3600)
+                    jwt = JWT.encode(session[:sess], ENV['JWT_HKEY'])
+                    return_uri = make_signin_token(session[:sess], session[:signin_return], session[:rtnstate], jwt)
+                    redirect_to(return_uri) and return  
+                else
+                    session_key = SecureRandom.urlsafe_base64(20)
+                    $redis.hset("sess:#{session_key}", "user_id", current_user.id.to_s)
+                    $redis.expire("sess:#{session_key}", 3600)
+                    jwt = JWT.encode(session_key, ENV['JWT_HKEY'])
+                    return_uri = make_signin_token(session_key, session[:signin_return], session[:rtnstate], jwt)
+                    redirect_to(return_uri) and return  
+                end
+            end
         end
     end
 
@@ -44,15 +60,7 @@ class SphereController < ApplicationController
                 $redis.expire("sess:#{session_key}", 3600)
                 # enter the session_key into a JWT for the client to save
                 jwt = JWT.encode(session_key, ENV['JWT_HKEY'])
-                # make a temporary token for the client to retrieve 
-                # the jwt and the return state
-                signin_jwt_token = SecureRandom.urlsafe_base64(20)
-                #token_value = [jwt, rtnstate]
-                $redis.rpush("jtoken:#{signin_jwt_token}", jwt)
-                $redis.rpush("jtoken:#{signin_jwt_token}", rtnstate)
-                $redis.expire("jtoken:#{signin_jwt_token}", 30)
-                # return the temp token to the client's signin state uri
-                return_uri = signin_return + signin_jwt_token
+                return_uri = make_signin_token(session_key, signin_return, rtnstate, jwt)
                 redirect_to(return_uri) and return  
             else
                 redirect_to(root_url) and return
@@ -107,7 +115,10 @@ class SphereController < ApplicationController
             :highlight =>  true}
             panels << {:bg => {'background-color' => '#88BCE2'},
                 :text => 'Forum',
-            :highlight =>  true}
+            :highlight =>  true,
+            :action =>  'expand',
+            :expanded_bg =>  'drkblue',
+            :destination =>  'forum'}
         else
             panels << {:bg => {'background-color' => '#0080c9'},
                 :text => 'My Profile'}
@@ -178,6 +189,18 @@ class SphereController < ApplicationController
         reset_session
         session[:user_id] = user_id
         [signin_return, rtnstate]
+    end
+
+    def make_signin_token(session_key, signin_return, rtnstate, jwt)
+        session[:sess] = session_key
+        # make a temporary token for the client to retrieve 
+        # the jwt and the return state
+        signin_jwt_token = SecureRandom.urlsafe_base64(20)
+        $redis.rpush("jtoken:#{signin_jwt_token}", jwt)
+        $redis.rpush("jtoken:#{signin_jwt_token}", rtnstate)
+        $redis.expire("jtoken:#{signin_jwt_token}", 30)
+        # return the temp token to the client's signin state uri
+        signin_return + signin_jwt_token
     end
     
 

@@ -42,8 +42,8 @@ angular.module('sphericalApp.services', [])
       return {
         request: function (config) {
           config.headers = config.headers || {};
-          if ($window.sessionStorage.token) {
-            config.headers.Authorization = 'Bearer token="' + $window.sessionStorage.token + '"';
+          if ($window.sessionStorage.spheretoken) {
+            config.headers.Authorization = 'Bearer token="' + $window.sessionStorage.spheretoken + '"';
           }
           return config;
         },

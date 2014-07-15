@@ -8,7 +8,8 @@ angular.module('sphericalApp', [
   'sphericalApp.services',
   'sphericalApp.directives',
   'sphericalApp.controllers'
-]).constant('SPHR_HST', '<%= ENV['FULLHOST'] %>')
+]).constant('SPHR_HST', "<%= ENV['FULLHOST'] %>")
+.constant('WEBSOCKETS_URL', "<%= ENV['WEBSOCKETS_URL'] %>")
 .config(['$sceDelegateProvider', 'SPHR_HST',function($sceDelegateProvider, SPHR_HST) {
     $sceDelegateProvider.resourceUrlWhitelist([
        "self",
@@ -38,7 +39,15 @@ angular.module('sphericalApp', [
             templateUrl: function ($stateParams){
               return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
             },
-            controller: 'UserCtrl'
+            controllerProvider: function($stateParams) {
+                var controller_name = 'UserCtrl';
+                switch($stateParams.destination) {
+                    case 'forum':
+                        controller_name = 'MainForumCtrl';
+                        break;
+                }
+                return controller_name;
+            }
           }
         }
     })
@@ -49,7 +58,15 @@ angular.module('sphericalApp', [
             templateUrl: function ($stateParams){
               return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
             },
-            controller: 'UserCtrl'
+            controllerProvider: function($stateParams) {
+                var controller_name = 'UserCtrl';
+                switch($stateParams.destination) {
+                    case 'forum':
+                        controller_name = 'MainForumCtrl';
+                        break;
+                }
+                return controller_name;
+            }
           }
         }
     })
@@ -60,7 +77,15 @@ angular.module('sphericalApp', [
             templateUrl: function ($stateParams){
               return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
             },
-            controller: 'UserCtrl'
+            controllerProvider: function($stateParams) {
+                var controller_name = 'UserCtrl';
+                switch($stateParams.destination) {
+                    case 'forum':
+                        controller_name = 'MainForumCtrl';
+                        break;
+                }
+                return controller_name;
+            }
           }
         }
     })
@@ -76,10 +101,10 @@ angular.module('sphericalApp', [
             SigninVerify.get($stateParams.token)
             .then(function(signin_data) {
                 if (signin_data) {
-                  sessionStore.token = signin_data.jwt;
+                  sessionStore.spheretoken = signin_data.jwt;
                   $state.go(signin_data.rtnstate.statename, signin_data.rtnstate.stateparams);
                 } else {
-                  delete sessionStore.token;
+                  delete sessionStore.spheretoken;
                   $state.go('home');
                 }
             });
@@ -90,4 +115,5 @@ angular.module('sphericalApp', [
 .run(['$templateCache', 'SPHR_HST', function($templateCache, SPHR_HST) {
     $templateCache.put(SPHR_HST + "dashboard/home");
     $templateCache.put(SPHR_HST + "dashboard/topic_swiper");
+    $templateCache.put(SPHR_HST + "dashboard/profile_pic");
 }]);

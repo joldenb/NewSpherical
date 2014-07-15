@@ -14,6 +14,8 @@ Topical::Application.routes.draw do
   get "/sphere/user_ctlpanel_data"  => 'sphere#user_ctlpanel_data'
   post "/sphere/signout_submit" => 'sphere#signout_submit'
   get "/sphere/dashboard_signout" => 'sphere#dashboard_signout'
+
+  post "/forum_persistence/save_forum_post" => 'forum_persistence#save_forum_post'
   
   
   match "dashboard(/:action(/:id)(.:format))" => 'dashboard', :as => "dashboard", :via => [:get, :options]

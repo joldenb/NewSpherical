@@ -287,6 +287,115 @@
                 }
             }
         }
+        .forum {
+            background: #fff;
+            margin: 1px;
+            color: #222;
+            .present {
+                color: #299efa;
+                font-weight: bold;
+            }
+            .forum_banner {
+                float: left;
+                background: #073a70;
+                color: #fff;
+                width: 252px;
+                height: 247px;
+                overflow: hidden;
+                h3 {
+                    text-align: center;
+                    margin: 7px 5px;
+                    font-weight: normal;
+                    font-size: .9em;
+                }
+                .forum_posting {
+                    background: #fff;
+                    width: 252px;
+                    height: 214px;
+                    margin-top: 10px;
+                    .presence_indicator {
+                        background: #efefef;
+                        font-size: .85em;
+                        height: 25px;
+                        padding: 10px 15px 0;
+                        color: #555;
+                        text-align: left;
+                    }
+                }
+            }
+            .forum_posts {
+                float: right;
+                background: #fff;
+                height: 247px;
+                width: 415px;
+                overflow: auto;
+                .forum_post {
+                    margin: 10px;
+                }
+                .author {
+                    font-size: .75em;
+                    color: #555;
+                }
+                .author_img {
+                    width: 30px;
+                    height: 30px;
+                    float: left;
+                    text-align: center;
+                    vertical-align: middle;
+                    border: 1px solid #d4d4d4;
+                    margin-right: 7px;
+                    img {
+                        max-width: 100%;
+                    }
+                }
+                .forum_text {
+                    clear: left;
+                    margin: 10px 0;
+                    border-bottom: 1px solid #d4d4d4;
+                    padding-bottom: 8px;
+                    font-size: .85em;
+                    color: #222;
+                }
+            }
+            .forum_post_menu {
+                height: 35px;
+                background: #f9f9f9;
+                .post_button {
+                    float: left;
+                    background: #e9e9e9;
+                    font-size: .75em;
+                    width: 60px;
+                    height: 35px;
+                    border: none;
+                    padding: 5px;
+                    color: #555;
+                    text-align: center;
+                    cursor: pointer;
+                }
+                .feedback {
+                    float: right;
+                    background: #f9f9f9;
+                    font-size: .85em;
+                    height: 20px;
+                    padding: 10px 15px 5px;
+                    color: #093;
+                    text-align: right;
+                    &.red {
+                        color: #f30;
+                    }
+                }
+            }
+            .forum_post_text {
+                margin: 0;
+                resize: none;
+                overflow: auto;
+                font: .75em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                padding: 5px;
+                background: #fff;
+                border: 1px solid #e8e8e8;
+                height: 146px;
+            }
+        }
         .activity_window {
             position: relative;
             height: 500px;

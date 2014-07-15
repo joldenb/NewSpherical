@@ -38,7 +38,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
             },
             signout = function() {
                 var rtn = $window.location.href;
-                delete $window.sessionStorage.token;
+                delete $window.sessionStorage.spheretoken;
                 $window.location.href = SPHR_HST +'sphere/dashboard_signout?rtn=' + rtn;
             };
             elm.on('click', function() {

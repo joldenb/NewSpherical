@@ -2,9 +2,7 @@
 /* global angular */
 'use strict';
 
-/* Controllers */
-
-angular.module('sphericalApp.controllers', [])
+angular.module('sphericalApp.MainControllers', [])
     .controller('MainCtrl', ['$scope', '$rootScope', '$state', 'SphereInfo', function($scope, $rootScope, $state, SphereInfo) {
         $scope.spheredata = {};
         SphereInfo.sphereData.then(function(d) {

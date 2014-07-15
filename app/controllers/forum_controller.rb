@@ -13,10 +13,10 @@ class ForumController < WebsocketRails::BaseController
     def close_client
         #delete the current user from each topic channel to which they may be sub'd.
         #keys are channel names prefixed with "prsnc"
-        redis_cnx.keys("prsnc*").each do |p|
-            if redis_cnx.hdel(p, current_user.handle) > 0
+        $redis.keys("prsnc*").each do |p|
+            if $redis.hdel(p, current_user.handle) > 0
                 ctx_id = p.sub('prsnc', '')
-                WebsocketRails[ctx_id].trigger(:forum_presence_message, {:msg => redis_cnx.hkeys(p), :tlm => ctx_id}.to_json)
+                WebsocketRails[ctx_id].trigger(:forum_presence_message, {:msg => $redis.hkeys(p), :tlm => ctx_id}.to_json)
             end
         end
         connection.close!
@@ -25,11 +25,11 @@ class ForumController < WebsocketRails::BaseController
     def count_clients
         ctx_id = message[:ctx_id]
         #value set to Time.now so stale hkeys can be swept
-        redis_cnx.hset("prsnc#{ctx_id}", current_user.handle, Time.now.to_i)
+        $redis.hset("prsnc#{ctx_id}", current_user.handle, Time.now.to_i)
         #broadcast the new presence array to users on this channel
-        WebsocketRails[ctx_id].trigger(:forum_presence_message, {:msg => redis_cnx.hkeys("prsnc#{ctx_id}")}.to_json)
+        WebsocketRails[ctx_id].trigger(:forum_presence_message, {:msg => $redis.hkeys("prsnc#{ctx_id}")}.to_json)
         #send connected users array to user joining this channel
-        new_message = {:message => redis_cnx.hkeys("prsnc#{ctx_id}")}.to_json
+        new_message = {:message => $redis.hkeys("prsnc#{ctx_id}")}.to_json
         send_message :client_count, new_message
     end
 
@@ -59,7 +59,4 @@ class ForumController < WebsocketRails::BaseController
         @user ||= Entity.find(session[:user_id])
     end
 
-    def redis_cnx
-        $redis
-    end
 end
