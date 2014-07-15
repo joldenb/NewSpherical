@@ -5,7 +5,7 @@
 angular.module('sphericalApp.ForumControllers', [])
     .controller('MainForumCtrl', ['$scope', '$rootScope', '$state', '$http', '$timeout', 'SPHR_HST', 'WEBSOCKETS_URL', function($scope, $rootScope, $state, $http, $timeout, SPHR_HST, WEBSOCKETS_URL) {
         $scope.forum_name = "Planetwork Forum";
-        $scope.forum_ctx_id = '529a18537551133a27000001';
+        $scope.forum_ctx_id = "511bd1477551132ace000001";
 
         $scope.forum = {}
         $scope.forum.presence = [];
