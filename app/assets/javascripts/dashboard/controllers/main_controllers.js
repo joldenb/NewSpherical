@@ -63,6 +63,18 @@ angular.module('sphericalApp.MainControllers', [])
 
         $scope.state = $state;
         $scope.rootScope = $rootScope;
+        $scope.storiesVisible = true;
+        $scope.discussionsVisible = false;
+
+        $scope.activityShow = function(show) {
+            if (show == 'discussions') {
+                $scope.storiesVisible = false;
+                $scope.discussionsVisible = true;
+            } else {
+                $scope.storiesVisible = true;
+                $scope.discussionsVisible = false;
+            }
+        }
 
         //$rootScope.$on('$stateChangeStart', 
         //    function(event, toState, toParams, fromState, fromParams) { 

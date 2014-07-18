@@ -16,7 +16,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
         }
     };
 }])
-.directive('clickPanel', ['$timeout', '$window', '$http', 'SPHR_HST', function($timeout, $window, $http, SPHR_HST) {
+.directive('clickPanel', ['$timeout', '$window', '$http', '$rootScope', 'SPHR_HST', function($timeout, $window, $http, $rootScope, SPHR_HST) {
     return {
         restrict: 'A',
         scope: {

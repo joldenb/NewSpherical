@@ -116,7 +116,7 @@ class SphereController < ApplicationController
             panels << {:bg => {'background-color' => '#88BCE2'},
                 :text => 'Forum',
             :highlight =>  true,
-            :action =>  'expand',
+            :action =>  'forum',
             :expanded_bg =>  'drkblue',
             :destination =>  'forum'}
         else

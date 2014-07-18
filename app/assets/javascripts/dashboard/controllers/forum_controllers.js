@@ -20,6 +20,7 @@ angular.module('sphericalApp.ForumControllers', [])
         $scope.forum.show_fdbk = false;
         $scope.forum.error_fdbk = false;
         $scope.forum.fdbk = "Sending...";
+        $scope.forum.form_visible = false;
         $scope.forum.submit_post = function() {
             if (/^[\s]*$/.test($scope.forum_post_text)) {
                 $scope.forum_post_text = ""; //why doesn't this work here?
@@ -37,10 +38,11 @@ angular.module('sphericalApp.ForumControllers', [])
                     function(response) {
                         $scope.forum.fdbk = "Sent!";
                         $timeout(function() {
+                            $scope.forum.form_visible = false;
                             $scope.forum_post_text = "";
                             $scope.forum.show_fdbk = false;
                             $scope.forum.fdbk = "Sending...";
-                        }, 1000);
+                        }, 1500);
                     }
                 )
                 .error(

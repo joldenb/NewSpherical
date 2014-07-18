@@ -3,15 +3,35 @@
 'use strict';
 
 angular.module('sphericalApp.ForumPanelDirectives', [])
-.directive('highlightPanel', [function() {
+.directive('highlightButton', [function() {
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {
             elm.on('mouseenter', function() {
-                elm.addClass('tmphighlight');
+                elm.addClass('highlight');
             })
             .on('mouseleave', function() {
-                elm.removeClass('tmphighlight');
+                elm.removeClass('highlight');
+            });
+        }
+    };
+}])
+.directive('commentOc', [function() {
+    return {
+        restrict: 'A',
+        link: function(scope, elm, attrs) {
+            elm.on('click', function() {
+                if (!scope.forum.form_visible) {
+                    scope.$apply(function() {
+                        scope.forum.form_visible = true;
+                    });
+                    elm.html('Close');
+                } else {
+                    scope.$apply(function() {
+                        scope.forum.form_visible = false;
+                    });
+                    elm.html('Comment');
+                }
             });
         }
     };
@@ -33,15 +53,5 @@ angular.module('sphericalApp.ForumPanelDirectives', [])
                 $scope.addr = $scope.imgaddr;
             }
         }
-        //link: function(scope, elm, attrs) {
-        //    var addr = SPHR_HST + "assets/nopic.png";
-        //    if (/^\/uploads\/entity\/profile_pic/.test(scope.imgaddr)) {
-        //        addr = SPHR_HST + scope.imgaddr;
-        //    } else if (/^https?:\/\//.test(scope.imgaddr)) {
-        //        addr = scope.imgaddr;
-        //    }
-        //    var img = '<img src="' + addr + '" brkn-img />';
-        //    elm.append(img);
-        //}
     };
 }])
