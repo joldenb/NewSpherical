@@ -30,6 +30,14 @@ angular.module('sphericalApp.services', [])
           });
         };
     }])
+    .service('UserInfo', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+        this.signedin = function() {
+          return $http.get(SPHR_HST + 'sphere/signed_in')
+          .then(function(response) {
+            return response.data;
+          });
+        };
+    }])
     .service('ControlPanelData', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
          this.get = function() {
             return $http.get(SPHR_HST + 'sphere/user_ctlpanel_data')

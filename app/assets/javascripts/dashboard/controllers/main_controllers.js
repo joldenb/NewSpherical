@@ -51,8 +51,12 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.panelstate.classes = [];
         }
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SphereInfo', 'TopicItems', function($scope, $rootScope, $state, $timeout, SphereInfo, TopicItems) {
-       
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SphereInfo', 'TopicItems', 'UserInfo', function($scope, $rootScope, $state, $timeout, SphereInfo, TopicItems, UserInfo) {
+
+        UserInfo.signedin().then(function(d) {
+            $scope.signedin = d.signedin;
+        });
+
         $scope.spheredata = {};
         $scope.currentTopic = {};
         $scope.currentTopicIdx = -1;

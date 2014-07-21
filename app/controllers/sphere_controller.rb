@@ -83,6 +83,14 @@ class SphereController < ApplicationController
         end    
     end
 
+    def signed_in
+        if current_dashboard_user
+            render :json => {"signedin" => current_dashboard_user.handle}
+        else
+            render :json => {"signedin" => false}
+        end
+    end
+
     def user_ctlpanel_data
         panels = []
         if current_dashboard_user
