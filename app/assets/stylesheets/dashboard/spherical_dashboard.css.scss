@@ -134,6 +134,12 @@
                 left: 60px;
                 background: transparent image-url('tooltip_arrow_down.png') no-repeat 0 0;
             }
+            &.twoln {
+                top: -55px;
+                .arrow {
+                    top: 40px;
+                }
+            }
         }
         .menu {
             position: absolute;
@@ -263,7 +269,6 @@
             background: #222;
             margin: 2px 0;
             .topic_controls {
-                float: left;
                 margin: 0 0 0 20px;
             }
             .control {
@@ -277,7 +282,26 @@
                     top: 3px;
                     left: 2px;
                     opacity: 0.2;
-                    background: #222 image-url('topic_controls_sprite.png') no-repeat 0 0;  
+                    background: #222 image-url('topic_controls_thin_sprite.png') no-repeat 0 0;  
+                    width: 20px;
+                    height: 25px;
+                    &.active {
+                        opacity: 1;
+                    }
+                }
+            }
+            .control_rt {
+                float: right;
+                position: relative;
+                width: 40px;
+                background: #222;
+                margin: 1px 0;
+                .discussion {
+                    position: absolute;
+                    top: 3px;
+                    left: 2px;
+                    opacity: 0.2;
+                    background: #222 image-url('discussion.png') no-repeat 0 0;  
                     width: 20px;
                     height: 25px;
                     &.active {
