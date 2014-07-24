@@ -18,9 +18,15 @@ class ApplicationController < ActionController::Base
 
   def current_dashboard_session
     if matcher = /Bearer[\s]+token=\"([^"]+)\"/i.match(request.headers['HTTP_AUTHORIZATION'])
-      sess = $redis.hgetall("sess:#{JWT.decode(matcher[1], ENV['JWT_HKEY'])}")
+      sess_key = JWT.decode(matcher[1], ENV['JWT_HKEY'])
+      sess = $redis.hgetall("sess:#{sess_key}")
     end
-    sess.present? ? sess : nil
+    if sess.present?
+      $redis.expire("sess:#{sess_key}", 3600) #refresh session expiry
+      sess
+    else
+      nil
+    end
   end
 
   def current_dashboard_user

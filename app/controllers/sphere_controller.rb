@@ -85,7 +85,8 @@ class SphereController < ApplicationController
 
     def signed_in
         if current_dashboard_user
-            render :json => {"signedin" => current_dashboard_user.handle}
+            render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
+                                            "id" => current_dashboard_user.id.to_s}}
         else
             render :json => {"signedin" => false}
         end
