@@ -31,7 +31,7 @@ angular.module('sphericalApp.ItemSwiperDirectives', [])
                     },
                     onTouchEnd: function(e) {
                         var actv = e.activeSlide,
-                        has_topic = itemSwiperCtrl.parentController.state.includes('home.topic.**'),
+                        has_topic = itemSwiperCtrl.parentController.state.includes('sphere.topic.**'),
                         current_topic = itemSwiperCtrl.parentController.currentTopic;
                         if (actv > 1) {
                             itemSwiperCtrl.parentController.topicSwiper.swipeTo(actv - 1, 300, false);
@@ -42,7 +42,7 @@ angular.module('sphericalApp.ItemSwiperDirectives', [])
                         actv_slide_id = angular.element(actv_slide).children()[0].id;
                         if (has_topic) {
                            itemSwiperCtrl.parentController.state.go(
-                               'home.topic.story', {story: actv_slide_id}
+                               'sphere.topic.story', {story: actv_slide_id}
                            ); 
                        } else {
                             itemSwiperCtrl.parentController.slide_select(0, current_topic.id, actv_slide_id);

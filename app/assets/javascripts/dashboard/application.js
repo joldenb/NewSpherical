@@ -14,3 +14,6 @@
 //= require dashboard/services
 //= require dashboard/directives
 //= require dashboard/controllers
+//= require showdown
+//= require markdown
+//= require angular-uuid4.min

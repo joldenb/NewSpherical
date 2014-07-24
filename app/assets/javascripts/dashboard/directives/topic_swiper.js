@@ -55,7 +55,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                     // on the parent controller of its and this controller, i.e. MainCtrl
                     topicSwiperCtrl.parentController.itemSwiper.swipeTo(this_index,500,false);
                     topicSwiperCtrl.parentController.state.go(
-                        'home.topic.story', {story: attrs.id}
+                        'sphere.topic.story', {story: attrs.id}
                     );
                 }
 			});
@@ -69,25 +69,25 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
             btntarget: '@'
         },
         link: function(scope, elm, attrs) {
-            var mainController = scope.$parent,
+            var activityController = scope.$parent,
             all = function() {
-                var topic_index = mainController.currentTopicIdx;
+                var topic_index = activityController.currentTopicIdx;
                 if (topic_index >= 0) {
-                    mainController.restore_topic_list();
+                    activityController.restore_topic_list();
                 }
             },
             previous = function() {
-                var topic_index = mainController.currentTopicIdx;
+                var topic_index = activityController.currentTopicIdx;
                 if (topic_index > 0) {
                     previous_topic_index = topic_index - 1;
-                    mainController.adjacent_topic(previous_topic_index);
+                    activityController.adjacent_topic(previous_topic_index);
                 }
             },
             next = function() {
-                var topic_index = mainController.currentTopicIdx;
-                if (topic_index < mainController.spheredata.num_topics-1 && topic_index >= 0) {
+                var topic_index = activityController.currentTopicIdx;
+                if (topic_index < activityController.spheredata.num_topics-1 && topic_index >= 0) {
                     next_topic_index = topic_index + 1;
-                    mainController.adjacent_topic(next_topic_index);
+                    activityController.adjacent_topic(next_topic_index);
                 }
             },
             btnAction = function(btntarget) {

@@ -5,5 +5,5 @@ angular.module('sphericalApp.directives', [
     'sphericalApp.TopicSwiperDirectives',
     'sphericalApp.ItemSwiperDirectives',
     'sphericalApp.UserControlPanelDirectives',
-    'sphericalApp.ForumPanelDirectives'
+    'sphericalApp.DiscussionDirectives'
 ]);

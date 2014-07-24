@@ -32,10 +32,6 @@ class DashboardController < ApplicationController
       render 'dashboard/tpls/item_swiper'
     end
 
-    def profile_pic
-      render 'dashboard/tpls/profile_pic'
-    end
-
 
     def sphereinfo
       if channelctx = Context.find_by(:identifier => "planetwork")

@@ -3,11 +3,11 @@
 'use strict';
 
 angular.module('sphericalApp.ForumControllers', [])
-    .controller('MainForumCtrl', ['$scope', '$rootScope', '$state', '$http', '$timeout', '$filter', 'SPHR_HST', 'WEBSOCKETS_URL', function($scope, $rootScope, $state, $http, $timeout, $filter, SPHR_HST, WEBSOCKETS_URL) {
+    .controller('MainForumCtrl', ['$scope', '$rootScope', '$state', '$http', '$timeout', '$filter', 'SPHR_HST', 'WEBSOCKETS_URL', 'ForumData', function($scope, $rootScope, $state, $http, $timeout, $filter, SPHR_HST, WEBSOCKETS_URL, ForumData) {
         $scope.forum_name = "Planetwork Forum";
         $scope.forum_ctx_id = "511bd1477551132ace000001";
 
-        $scope.forum = {}
+        $scope.forum = ForumData;
         $scope.forum.presence = [];
         $scope.forum.posts = [];
         $scope.forum.presence_counter = 0;
@@ -16,20 +16,20 @@ angular.module('sphericalApp.ForumControllers', [])
             return filtered.length > 0;
         }
 
-        $scope.forum_post_text = "";
+        $scope.forum.forum_post_text = "";
         $scope.forum.show_fdbk = false;
         $scope.forum.error_fdbk = false;
         $scope.forum.fdbk = "Sending...";
-        $scope.forum.form_visible = false;
+        ForumData.form_visible = false;
         $scope.forum.submit_post = function() {
-            if (/^[\s]*$/.test($scope.forum_post_text)) {
-                $scope.forum_post_text = ""; //why doesn't this work here?
+            if (/^[\s]*$/.test($scope.forum.forum_post_text)) {
+                $scope.forum.forum_post_text = ""; //why doesn't this work here?
                 $scope.forum.show_fdbk = true;
                 $scope.forum.error_fdbk = true;
                 $scope.forum.fdbk = "Enter some text!";
             } else {
-                var data = {forum_post_text: $scope.forum_post_text, ctx_id: $scope.forum_ctx_id};
-                $scope.forum_post_text = " ";
+                var data = {forum_post_text: $scope.forum.forum_post_text, ctx_id: $scope.forum_ctx_id};
+                $scope.forum.forum_post_text = " ";
                 $scope.forum.fdbk = "Sending...";
                 $scope.forum.error_fdbk = false;
                 $scope.forum.show_fdbk = true;
@@ -38,8 +38,8 @@ angular.module('sphericalApp.ForumControllers', [])
                     function(response) {
                         $scope.forum.fdbk = "Sent!";
                         $timeout(function() {
-                            $scope.forum.form_visible = false;
-                            $scope.forum_post_text = "";
+                            ForumData.form_visible = false;
+                            $scope.forum.forum_post_text = "";
                             $scope.forum.show_fdbk = false;
                             $scope.forum.fdbk = "Sending...";
                         }, 1500);
@@ -47,7 +47,7 @@ angular.module('sphericalApp.ForumControllers', [])
                 )
                 .error(
                     function(response, status) {
-                        $scope.forum_post_text = "";
+                        $scope.forum.forum_post_text = "";
                         $scope.forum.error_fdbk = true;
                         $scope.forum.fdbk = response.error;
                     }

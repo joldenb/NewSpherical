@@ -8,7 +8,11 @@ angular.module('sphericalApp.MainControllers', [])
         SphereInfo.sphereData.then(function(d) {
             $scope.spheredata.dashlogo = d.data.dashlogo;
         });
-        $scope.openDash = false;
+        if ($state.includes('sphere')) {
+            $scope.openDash = true;
+        } else {
+            $scope.openDash = false;
+        }
     }])
     .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData) {
         $scope.state = $state;
@@ -51,10 +55,11 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.panelstate.classes = [];
         }
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SphereInfo', 'TopicItems', 'UserInfo', function($scope, $rootScope, $state, $timeout, SphereInfo, TopicItems, UserInfo) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', function($scope, $rootScope, $state, $timeout, SphereInfo, TopicItems, UserInfo, ActivityVis) {
 
+        $scope.visible = ActivityVis;
         UserInfo.signedin().then(function(d) {
-            $scope.signedin = d.signedin;
+            ActivityVis.signedin = d.signedin;
         });
 
         $scope.spheredata = {};
@@ -66,17 +71,17 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.topicIndicatorVisible = false;
 
         $scope.state = $state;
-        $scope.rootScope = $rootScope;
-        $scope.storiesVisible = true;
-        $scope.discussionsVisible = false;
+        //$scope.rootScope = $rootScope;
 
         $scope.activityShow = function(show) {
             if (show == 'discussions') {
-                $scope.storiesVisible = false;
-                $scope.discussionsVisible = true;
+                ActivityVis.stories = false;
+                ActivityVis.discussions = true;
+                ActivityVis.discussion_edit = false;
             } else {
-                $scope.storiesVisible = true;
-                $scope.discussionsVisible = false;
+                ActivityVis.stories = true;
+                ActivityVis.discussions = false;
+                ActivityVis.discussion_edit = false;
             }
         }
 
@@ -176,11 +181,11 @@ angular.module('sphericalApp.MainControllers', [])
             });
             if (current_story_id) {
                 $state.go(
-                    'home.topic.story', {topic: $scope.currentTopic.name, story: current_story_id}
+                    'sphere.topic.story', {topic: $scope.currentTopic.name, story: current_story_id}
                 );
             } else {
                $state.go(
-                   'home.topic', {topic: $scope.currentTopic.name}
+                   'sphere.topic', {topic: $scope.currentTopic.name}
                ); 
             }
         };
@@ -188,23 +193,31 @@ angular.module('sphericalApp.MainControllers', [])
             restore_topic_list();
             $scope.$apply(function() {
                 $scope.topicIndicatorVisible = false;
+                ActivityVis.stories = true;
+                ActivityVis.discussions = false;
+                ActivityVis.discussion_edit = false;
             });
             // $scope.topicSwiper is instantiated by the swiperReady directive
             $scope.topicSwiper.init();
             $state.go(
-                'home'
+                'sphere'
             );
         };
         $scope.adjacent_topic = function(adjacent_topic_index) {
             switch_topics($scope.main_topics[adjacent_topic_index].id);
             $scope.currentTopicIdx = adjacent_topic_index;
             update_current_topic(adjacent_topic_index);
+            $scope.$apply(function() {
+                ActivityVis.stories = true;
+                ActivityVis.discussions = false;
+                ActivityVis.discussion_edit = false;
+            });
             // $scope.topicSwiper and $scope.itemSwiper are instantiated by the swiperReady
             // and itemSwiperReady directives
             $scope.topicSwiper.init();
             $scope.itemSwiper.init();
             $state.go(
-                'home.topic', {topic: $scope.currentTopic.name}
+                'sphere.topic', {topic: $scope.currentTopic.name}
             );
         };
         $scope.slide_to_item = function() {

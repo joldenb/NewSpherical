@@ -33,6 +33,9 @@ var Spherical = (function(window, undefined) {
                     $('#spherical_open').css({color:'#fff'}).on('click', function(e) {
                         e.preventDefault();
                         $('#spherical_dashboard_container').show('slow');
+                        if (!/sphere/.test(window.location.href)) {
+                            window.location.href = '/#/sphere';
+                        }
                     });
                     angular.bootstrap(document, ['sphericalApp']);
                 }

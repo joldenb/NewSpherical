@@ -1,8 +1,6 @@
 'use strict';
 
-/* Services */
-
-angular.module('sphericalApp.services', [])
+angular.module('sphericalApp.MainServices', [])
     .factory('SphereInfo', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         var sphereInfo = {};
         sphereInfo.sphereData = $http.get(SPHR_HST + "dashboard/sphereinfo")

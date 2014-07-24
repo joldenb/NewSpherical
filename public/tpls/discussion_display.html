@@ -1,0 +1,35 @@
+<div class="post">
+    <div class="post_banner">
+        <h3>Post</h3>
+    </div>
+</div>
+<div class="forum">
+    <div class="forum_banner">
+        <h3>Discussion</h3>
+        <div class="forum_posting">
+            <div class="presence_indicator">Now present: <span class="present">{{forum.presence_counter}}</span>
+            <div class="comment_oc" comment-oc highlight-button>Comment</div></div>
+            <div class="forum_posting_form" ng-show="forum.form_visible">
+                <form novalidate>
+                    <fieldset>
+                        <textarea class="forum_post_text" name="forum_post_text" placeholder="Write a comment..." rows="4" ng-model="forum.forum_post_text"></textarea>
+                    </fieldset>
+                </form>
+                <div class="forum_post_menu">
+                    <button class="post_button" ng-click="forum.submit_post()" highlight-button>Post...</button>
+                    <div ng-class="{red: forum.error_fdbk}" class="feedback" ng-show="forum.show_fdbk">{{forum.fdbk}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="forum_posts">
+        <div ng-repeat="post in forumposts">
+            <div class="forum_post">
+                <div class="author_img" post-author-image imgaddr="post.thumb"></div>
+                <p class="author">by <span ng-class="{present: forum.is_present(post.author)}">{{post.author}}</span><br />{{post.timestamp}} ago</p>
+                <p class="forum_text">{{post.text}}</p>
+            </div>
+        </div>
+    </div>
+</div>

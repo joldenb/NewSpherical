@@ -4,6 +4,8 @@ angular.module('sphericalApp', [
   'ngSanitize',
   'ngAnimate',
   'ui.router',
+  'btford.markdown',
+  'uuid4',
   'sphericalApp.filters',
   'sphericalApp.services',
   'sphericalApp.directives',
@@ -19,23 +21,23 @@ angular.module('sphericalApp', [
   $httpProvider.interceptors.push('authInterceptor');
 }])
 .config(['$stateProvider', '$urlRouterProvider', 'SPHR_HST', function($stateProvider, $urlRouterProvider, SPHR_HST) {
-  $urlRouterProvider.otherwise("/");
+  //$urlRouterProvider.otherwise("/");
   $stateProvider
-    .state('home', {
-        url: '/',
+    .state('sphere', {
+        url: '/sphere',
         templateUrl: SPHR_HST + "dashboard/home",
         controller: 'MainCtrl'
     })
-    .state('home.topic', {
-        url: '^/topic/:topic'
+    .state('sphere.topic', {
+        url: '/topic/:topic'
     })
-    .state('home.topic.story', {
-        url: '^/topic/:topic/story/:story'
+    .state('sphere.topic.story', {
+        url: '/story/:story'
     })
-    .state('home.ctrlpanel', {
-        url: 'ctrlpanel/:destination',
+    .state('sphere.ctrlpanel', {
+        url: '/ctrlpanel/:destination',
         views: {
-          "ctrlpanel@home" : {
+          "ctrlpanel@sphere" : {
             templateUrl: function ($stateParams){
               return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
             },
@@ -51,10 +53,10 @@ angular.module('sphericalApp', [
           }
         }
     })
-    .state('home.topic.ctrlpanel', {
+    .state('sphere.topic.ctrlpanel', {
         url: '/ctrlpanel/:destination',
         views: {
-          "ctrlpanel@home" : {
+          "ctrlpanel@sphere" : {
             templateUrl: function ($stateParams){
               return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
             },
@@ -70,10 +72,10 @@ angular.module('sphericalApp', [
           }
         }
     })
-    .state('home.topic.story.ctrlpanel', {
+    .state('sphere.topic.story.ctrlpanel', {
         url: '/ctrlpanel/:destination',
         views: {
-          "ctrlpanel@home" : {
+          "ctrlpanel@sphere" : {
             templateUrl: function ($stateParams){
               return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
             },
@@ -90,7 +92,7 @@ angular.module('sphericalApp', [
         }
     })
     .state('signin', {
-        url: '^/signin/:token',
+        url: '/signin/:token',
         resolve: {
           sessionStore: function($window) {
               return $window.sessionStorage;
@@ -105,7 +107,7 @@ angular.module('sphericalApp', [
                   $state.go(signin_data.rtnstate.statename, signin_data.rtnstate.stateparams);
                 } else {
                   delete sessionStore.spheretoken;
-                  $state.go('home');
+                  $state.go('sphere');
                 }
             });
         }
@@ -113,7 +115,9 @@ angular.module('sphericalApp', [
 
 }])
 .run(['$templateCache', 'SPHR_HST', function($templateCache, SPHR_HST) {
-    $templateCache.put(SPHR_HST + "dashboard/home");
+    $templateCache.put(SPHR_HST + "dashboard/sphere");
     $templateCache.put(SPHR_HST + "dashboard/topic_swiper");
-    $templateCache.put(SPHR_HST + "dashboard/profile_pic");
+    $templateCache.put(SPHR_HST + "tpls/profile_pic.html");
+    $templateCache.put(SPHR_HST + "tpls/discussion_display.html");
+    $templateCache.put(SPHR_HST + "tpls/discussion_edit.html");
 }]);
