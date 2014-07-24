@@ -2,6 +2,23 @@
     @import "compass";
     @import "compass/reset";
     h1, h2, h3, h4, h5, h6 {text-transform: none;}
+    form textarea,
+    form select,
+    form input[type="date"],
+    form input[type="datetime"],
+    form input[type="datetime-local"],
+    form input[type="email"],
+    form input[type="month"],
+    form input[type="number"],
+    form input[type="password"],
+    form input[type="search"],
+    form input[type="tel"],
+    form input[type="text"],
+    form input[type="time"],
+    form input[type="url"],
+    form input[type="week"] {
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     display: none;
     position: absolute;
@@ -277,6 +294,7 @@
                 width: 50px;
                 background: #222;
                 margin: 1px 0;
+                cursor: pointer;
                 span {
                     position: absolute;
                     top: 3px;
@@ -296,6 +314,7 @@
                 width: 40px;
                 background: #222;
                 margin: 1px 0;
+                cursor: pointer;
                 .discussion {
                     position: absolute;
                     top: 3px;
@@ -317,6 +336,26 @@
             height: 499px;
             margin: 0 1px 0 2px;
             color: #222;
+            overflow: auto;
+            h3 {
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.1em;
+                margin: 10px;
+            }
+            p {
+                margin: 10px;
+                font-size: .95em;
+            }
+            strong {
+                font-weight: bold;
+            }
+            em {
+                font-style: italic;
+            }
+            .red {
+                color: #f00;
+            }
             .post_banner {
                 background: #073a70;
                 color: #fff;
@@ -326,6 +365,37 @@
                     padding: 5px 0 6px;
                     font-weight: normal;
                     font-size: .9em;
+                    margin: 0;
+                }
+            }
+            &.preview {
+                float: right;
+                width: 419px;
+                margin: 0;
+                a {
+                    color: #4183c4;
+                    &:link, &:visited {
+                        text-decoration: none;
+                    }
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+            #newpost {
+                .post_title {
+                    font-size: 1.1em;
+                    background: #fff;
+                    width: 95%;
+                    margin: 10px;
+                }
+                .post_text {
+                    font-size: .9em;
+                    background: #fff;
+                    width: 95%;
+                    margin: 10px;
+                    line-height: 1.3em;
+                    resize: none;
                 }
             }
         }
@@ -495,12 +565,15 @@
                     font-size: .95em;
                     text-transform: none;
                     margin: auto;
-                    color: #fff;
+                    color: #6e88aa;
                     text-shadow: 1px 1px 1px #000;
                     text-align: center;
                     font-weight: 200;
                     margin: 10px auto;
                     cursor: pointer;
+                    &.active {
+                        color: #fff;
+                    }
                 }
             }
             .item_display {

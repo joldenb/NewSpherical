@@ -1,0 +1,23 @@
+<div class="post">
+    <div class="post_banner">
+        <h3>New Post</h3>
+    </div>
+
+    <div id="newpost">
+        <form ng-submit="postSubmit()" novalidate>
+            <input type="hidden" value="{{currenttopic}}">
+            <fieldset>
+                <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="post_title" />
+                <textarea class="post_text" name="post_text" placeholder="Write a new post..." rows="15" ng-model="post_text"></textarea>
+            </fieldset>
+        </form>
+        
+    </div>
+</div>
+<div class="post preview">
+    <div class="post_banner">
+        <h3>Preview</h3>
+    </div>
+    <h3>{{post_title}}</h3>
+    <p btf-markdown="post_text"></p>
+</div>
