@@ -1,42 +1,47 @@
 'use strict';
 
 angular.module('sphericalApp.TopicSwiperDirectives', [])
-.directive('topicSwiper', ['SPHR_HST', function(SPHR_HST) {
+.directive('topicSwiper', ['SPHR_HST', 'ActivityVis', 'ChooserData', function(SPHR_HST, ActivityVis,ChooserData) {
     return {
         restrict: 'A',
         scope: {
             slidearray: '='
         },
-		controller: function ($scope) {
+		controller: function ($scope, $element) {
 			this.slideWasClicked = true;
             this.parentController = $scope.$parent;
+            $scope.swipe_enable = ActivityVis.swipe_enable;
+            ChooserData.tswiper = $element; // to communicate with dragTarget directive
 		},
         templateUrl: SPHR_HST + "dashboard/topic_swiper",
         replace: true
     }
 }])
-.directive('swiperReady', [function() {
+.directive('swiperReady', ['ActivityVis', 'ChooserData', function(ActivityVis, ChooserData) {
     return {
         restrict: 'A',
 		require: '^topicSwiper',
         link: function(scope, elm, attrs, topicSwiperCtrl) {
             if (scope.$last) {
                 var $container = elm.closest('.swiper-container');
-                topicSwiperCtrl.parentController.topicSwiper = $container.swiper({
-                    onTouchStart: function() {
-                        topicSwiperCtrl.slideWasClicked = true;
-                    },
-                    onTouchMove: function() {
-                        topicSwiperCtrl.slideWasClicked = false;
-                    },
-                    onTouchEnd: function(e) {
-                        //console.log(e.activeSlide);
+                if (ActivityVis.swipe_enable) {
+                    topicSwiperCtrl.parentController.topicSwiper = $container.swiper({
+                        onTouchStart: function() {
+                            topicSwiperCtrl.slideWasClicked = true;
+                        },
+                        onTouchMove: function() {
+                            topicSwiperCtrl.slideWasClicked = false;
+                        },
+                        onTouchEnd: function(e) {
+                            //console.log(e.activeSlide);
+                            ChooserData.active_slide = e.activeSlide; 
+                        }
+                    });
+                    topicSwiperCtrl.parentController.topicSwiper.swipeTo(ChooserData.active_slide,0,false);
+                    if (topicSwiperCtrl.parentController.openDash) {
+                        $('#spherical_dashboard_container').show('slow');
                     }
-                });
-                topicSwiperCtrl.parentController.topicSwiper.swipeTo(0,0,false);
-                if (topicSwiperCtrl.parentController.openDash) {
-                    $('#spherical_dashboard_container').show('slow');
-                }
+                } 
             }
         }
     }
@@ -61,51 +66,4 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
 			});
         }
 	}
-}])
-.directive('topicCntrlBtn', [function() {
-    return {
-        restrict: 'A',
-        scope: {
-            btntarget: '@'
-        },
-        link: function(scope, elm, attrs) {
-            var activityController = scope.$parent,
-            all = function() {
-                var topic_index = activityController.currentTopicIdx;
-                if (topic_index >= 0) {
-                    activityController.restore_topic_list();
-                }
-            },
-            previous = function() {
-                var topic_index = activityController.currentTopicIdx;
-                if (topic_index > 0) {
-                    previous_topic_index = topic_index - 1;
-                    activityController.adjacent_topic(previous_topic_index);
-                }
-            },
-            next = function() {
-                var topic_index = activityController.currentTopicIdx;
-                if (topic_index < activityController.spheredata.num_topics-1 && topic_index >= 0) {
-                    next_topic_index = topic_index + 1;
-                    activityController.adjacent_topic(next_topic_index);
-                }
-            },
-            btnAction = function(btntarget) {
-                switch(btntarget) {
-                    case 'all':
-                        all();
-                        break;
-                    case 'previous':
-                        previous();
-                        break;
-                    case 'next':
-                        next();
-                        break;
-                }
-            };
-            elm.on('click', function() {
-                btnAction(scope.btntarget);
-            });
-        }
-    }
 }]);

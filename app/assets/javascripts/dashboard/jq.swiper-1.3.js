@@ -157,23 +157,42 @@
     	}
     	
     	//Event Listeners
-    	$wrapper.get(0).addEventListener(touchEvents.touchStart, onTouchStart, false);
-    	
-    	//Mouse 'mousemove' and 'mouseup' events should be assigned to document
-    	var lestenEl = _this.isSupportTouch() ? $wrapper.get(0) : document;
-    	lestenEl.addEventListener(touchEvents.touchMove, onTouchMove, false);
-    	lestenEl.addEventListener(touchEvents.touchEnd, onTouchEnd, false);
-    	
-    	//Remove Events
-    	_this.destroy = function(removeResizeFix){
-    		removeResizeFix = removeResizeFix===false ? removeResizeFix : removeResizeFix || true;
-    		if (removeResizeFix) {
-    			window.removeEventListener('resize', swiperResizeFix, false);
-    		}
-    		$wrapper.get(0).removeEventListener(touchEvents.touchStart, onTouchStart, false);
-    		lestenEl.removeEventListener(touchEvents.touchMove, onTouchMove, false);
-    		lestenEl.removeEventListener(touchEvents.touchEnd, onTouchEnd, false);
-    	}
+    	//$wrapper.get(0).addEventListener(touchEvents.touchStart, onTouchStart, false);
+    	//
+    	////Mouse 'mousemove' and 'mouseup' events should be assigned to document
+    	//var lestenEl = _this.isSupportTouch() ? $wrapper.get(0) : document;
+    	//lestenEl.addEventListener(touchEvents.touchMove, onTouchMove, false);
+    	//lestenEl.addEventListener(touchEvents.touchEnd, onTouchEnd, false);
+    	//
+    	////Remove Events
+    	//_this.destroy = function(removeResizeFix){
+    	//	removeResizeFix = removeResizeFix===false ? removeResizeFix : removeResizeFix || true;
+    	//	if (removeResizeFix) {
+    	//		window.removeEventListener('resize', swiperResizeFix, false);
+    	//	}
+    	//	$wrapper.get(0).removeEventListener(touchEvents.touchStart, onTouchStart, false);
+    	//	lestenEl.removeEventListener(touchEvents.touchMove, onTouchMove, false);
+    	//	lestenEl.removeEventListener(touchEvents.touchEnd, onTouchEnd, false);
+    	//}
+
+        //Event Listeners
+        $wrapper.on(touchEvents.touchStart, onTouchStart);
+        
+        //Mouse 'mousemove' and 'mouseup' events should be assigned to document
+        var listenEl = _this.isSupportTouch() ? $wrapper : $(document);
+        listenEl.on(touchEvents.touchMove, onTouchMove);
+        listenEl.on(touchEvents.touchEnd, onTouchEnd);
+        
+        //Remove Events
+        _this.destroy = function(removeResizeFix){
+            removeResizeFix = removeResizeFix===false ? removeResizeFix : removeResizeFix || true;
+            if (removeResizeFix) {
+                window.removeEventListener('resize', swiperResizeFix, false);
+            }
+            $wrapper.off(touchEvents.touchStart);
+            listenEl.off(touchEvents.touchMove);
+            listenEl.off(touchEvents.touchEnd);
+        }
     	
     	//Event Handlers
     	function onTouchStart(event) {

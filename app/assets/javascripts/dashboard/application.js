@@ -17,3 +17,4 @@
 //= require showdown
 //= require markdown
 //= require angular-uuid4.min
+//= require draganddrop

@@ -23,50 +23,56 @@ angular.module('sphericalApp.DiscussionDirectives', [])
             discsn: '=',
             forumposts: '='
         },
-        controller: function($scope) {
-            $scope.forum = ForumData;
-        },
         templateUrl: SPHR_HST + "tpls/discussion_display.html"
     };
 }])
-.directive('discussionEdit', ['SPHR_HST', 'uuid4', function(SPHR_HST, uuid4) {
+.directive('discussionEdit', ['SPHR_HST', 'uuid4', 'ActivityVis', 'ChooserData', function(SPHR_HST, uuid4, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
         scope: {
-            currenttopic: '='
+            currenttopic: '=',
+            visible: '=',
+            chooserdata: '='
         },
         controller: function($scope) {
-            
+            //$scope.newpost_disabled = ChooserData.newpost_disabled;
+            //ActivityVis.show_drag_target = false;
+            //ChooserData.newpost_disabled = false;
         },
         templateUrl: SPHR_HST + "tpls/discussion_edit.html"
-    };
+    }
 }])
-.directive('cntrlbarBtn', ['ActivityVis', 'UserInfo', function(ActivityVis, UserInfo) {
+.directive('dragTarget', ['$compile', 'ActivityVis', 'ChooserData', function($compile, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
-        scope: {
-            btntarget: '@'
+        controller: function($scope) {
+            //$scope.show_drag_target = ActivityVis.show_drag_target;
+            //$scope.newpost_disabled = ChooserData.newpost_disabled;
+            $scope.handle_dragdrop = function(event, data) {
+                console.log(data);
+            };
         },
         link: function(scope, elm, attrs) {
-            var newDiscussion = function() {
-                console.log('start a new discussion!');
-                UserInfo.signedin().then(function(d) {
-                    if (d.signedin) {
-                        ActivityVis.stories = false;
-                        ActivityVis.discussions = false;
-                        ActivityVis.discussion_edit = true;
-                    }
-                })
-            },
-            btnAction = function(btntarget) {
-                switch(btntarget) {
-                    case 'new_discussion':
-                        newDiscussion();
-                        break;
-                }
-            };
+            var actvtyctrl = scope.$parent;
             elm.on('click', function() {
-                btnAction(scope.btntarget);
+                var tswidth = ChooserData.tswiper.children().width() + 'px',
+                tspos = ChooserData.tswiper.children().position().left + 'px';
+                if (ActivityVis.show_drag_target) {
+                    scope.$apply(function() {
+                        ActivityVis.show_drag_target = false;
+                        ActivityVis.swipe_enable = true;
+                        ChooserData.newpost_disabled = false;
+                        $compile(ChooserData.tswiper)(actvtyctrl);
+                    });
+                } else {
+                    scope.$apply(function(scope) {
+                        ActivityVis.show_drag_target = true;
+                        ActivityVis.swipe_enable = false;
+                        ChooserData.newpost_disabled = true;
+                        $compile(ChooserData.tswiper)(actvtyctrl);
+                    });
+                    ChooserData.tswiper.children().css({width: tswidth, marginLeft: tspos});
+                }
             });
         }
     }

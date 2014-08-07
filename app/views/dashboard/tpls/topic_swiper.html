@@ -1,7 +1,7 @@
-<div class="swiper-container" id="topic_swiper">
+<div class="swiper-container">
     <div class="swiper-wrapper">
         <div class="swiper-slide" ng-repeat="slide in slidearray" swiper-ready>
-            <div class="swiper-entity" id="{{slide.id}}" data-itemtype="{{slide.itemtype}}" slide-select>
+            <div class="swiper-entity" id="{{slide.id}}" data-itemtype="{{slide.itemtype}}" slide-select ui-draggable="{{!swipe_enable}}" drag-channel="chooser" drag="slide">
                 <img src="{{slide.pic}}" brkn-img />
                 <h3>{{slide.name}}</h3>
                 <h4>{{slide.description}}</h4>

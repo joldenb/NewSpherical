@@ -7,11 +7,13 @@
         <form ng-submit="postSubmit()" novalidate>
             <input type="hidden" value="{{currenttopic}}">
             <fieldset>
-                <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="post_title" />
-                <textarea class="post_text" name="post_text" placeholder="Write a new post..." rows="15" ng-model="post_text"></textarea>
+                <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="post_title" ng-disabled="chooserdata.newpost_disabled" />
+                <div class="cite_btn" ng-show="!visible.show_drag_target" drag-target>Cite an Article</div>
+                <div class="cite_btn target" ng-show="visible.show_drag_target" ui-on-drop="handle_dragdrop($event, $data)" drop-channel="chooser">Drag Article Here<span class="close" drag-target>&nbsp;</span></div>
+                <textarea class="post_text" name="post_text" placeholder="Write a new post..." rows="15" ng-model="post_text" ng-disabled="chooserdata.newpost_disabled"></textarea>
             </fieldset>
         </form>
-        
+        <p>{{currenttopic}}</p>
     </div>
 </div>
 <div class="post preview">

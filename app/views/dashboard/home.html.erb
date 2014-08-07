@@ -30,7 +30,7 @@
                 <div class="tooltip_above">Next Topic<div class="arrow">&nbsp;</div></div>
             </div>
             <div class="control_rt" cntrlbar-btn btntarget="new_discussion" tool-tip>
-                <span class="discussion" ng-class="{active: visible.signedin}">&nbsp;</span>
+                <span class="discussion" ng-class="{active: visible.show_new_discussion()}">&nbsp;</span>
                 <div class="tooltip_above twoln">Start a New Discussion<div class="arrow">&nbsp;</div></div>
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div class="item_display">
             <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
             <div class="discussions" ng-show="visible.discussions" ng-controller="MainForumCtrl" discussion-display forumposts="forum.posts"></div>
-            <div class="new_discussion" ng-show="visible.discussion_edit" discussion-edit currenttopic="currentTopic.id"></div>
+            <div class="new_discussion" ng-show="visible.discussion_edit" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
         </div>
     </div>
 </div>

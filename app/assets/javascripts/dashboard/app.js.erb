@@ -6,12 +6,25 @@ angular.module('sphericalApp', [
   'ui.router',
   'btford.markdown',
   'uuid4',
+  'ngDragDrop',
   'sphericalApp.filters',
   'sphericalApp.services',
   'sphericalApp.directives',
   'sphericalApp.controllers'
 ]).constant('SPHR_HST', "<%= ENV['FULLHOST'] %>")
 .constant('WEBSOCKETS_URL', "<%= ENV['WEBSOCKETS_URL'] %>")
+.config(function($provide) {
+    $provide.decorator("$exceptionHandler", function($delegate) {
+        return function(exception, cause) {
+            // suppress error logging from recompiling swiper
+            if (/swiper\-entity|swiper\-slide/.test(cause)) {
+              return;
+            } else {
+              $delegate(exception, cause);
+            }
+        };
+    });
+})
 .config(['$sceDelegateProvider', 'SPHR_HST',function($sceDelegateProvider, SPHR_HST) {
     $sceDelegateProvider.resourceUrlWhitelist([
        "self",

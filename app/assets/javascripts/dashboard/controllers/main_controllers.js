@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('sphericalApp.MainControllers', [])
-    .controller('MainCtrl', ['$scope', '$rootScope', '$state', 'SphereInfo', function($scope, $rootScope, $state, SphereInfo) {
+    .controller('MainCtrl', ['$scope', '$rootScope', '$state', 'SphereInfo', 'ActivityVis', function($scope, $rootScope, $state, SphereInfo, ActivityVis) {
         $scope.spheredata = {};
         SphereInfo.sphereData.then(function(d) {
             $scope.spheredata.dashlogo = d.data.dashlogo;
@@ -13,6 +13,7 @@ angular.module('sphericalApp.MainControllers', [])
         } else {
             $scope.openDash = false;
         }
+
     }])
     .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData) {
         $scope.state = $state;
@@ -43,7 +44,7 @@ angular.module('sphericalApp.MainControllers', [])
                     return;
                 }
             });
-        }
+        };
 
         if ($state.includes('**.ctrlpanel.**')) {
             set_expd_bg($state.params.destination);
@@ -55,12 +56,23 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.panelstate.classes = [];
         }
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', function($scope, $rootScope, $state, $timeout, SphereInfo, TopicItems, UserInfo, ActivityVis) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData) {
 
-        $scope.visible = ActivityVis;
+        $scope.ctrlname = 'ActivityCtrl';
+        $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
+        $scope.chooserdata = ChooserData;
+
         UserInfo.signedin().then(function(d) {
             ActivityVis.signedin = d.signedin;
         });
+
+        $scope.visible.show_new_discussion = function() {
+            if ($scope.visible.signedin && $state.includes('**.topic.**')) {
+                return true;
+            } else {
+                return false;
+            }
+        };
 
         $scope.spheredata = {};
         $scope.currentTopic = {};
@@ -71,6 +83,7 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.topicIndicatorVisible = false;
 
         $scope.state = $state;
+        
         //$scope.rootScope = $rootScope;
 
         $scope.activityShow = function(show) {
@@ -83,7 +96,7 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
             }
-        }
+        };
 
         //$rootScope.$on('$stateChangeStart', 
         //    function(event, toState, toParams, fromState, fromParams) { 
@@ -196,6 +209,12 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
+                
+                ActivityVis.show_drag_target = false;
+                ActivityVis.swipe_enable = true;
+                ChooserData.newpost_disabled = false;
+                ChooserData.active_slide = 0;
+                $compile(ChooserData.tswiper)($scope);
             });
             // $scope.topicSwiper is instantiated by the swiperReady directive
             $scope.topicSwiper.init();
@@ -204,14 +223,21 @@ angular.module('sphericalApp.MainControllers', [])
             );
         };
         $scope.adjacent_topic = function(adjacent_topic_index) {
-            switch_topics($scope.main_topics[adjacent_topic_index].id);
-            $scope.currentTopicIdx = adjacent_topic_index;
-            update_current_topic(adjacent_topic_index);
             $scope.$apply(function() {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
+
+                ActivityVis.show_drag_target = false;
+                ActivityVis.swipe_enable = true;
+                ChooserData.newpost_disabled = false;
+                ChooserData.active_slide = 0;
+                $compile(ChooserData.tswiper)($scope);
             });
+            switch_topics($scope.main_topics[adjacent_topic_index].id);
+            $scope.currentTopicIdx = adjacent_topic_index;
+            update_current_topic(adjacent_topic_index);
+
             // $scope.topicSwiper and $scope.itemSwiper are instantiated by the swiperReady
             // and itemSwiperReady directives
             $scope.topicSwiper.init();
@@ -229,6 +255,7 @@ angular.module('sphericalApp.MainControllers', [])
                             $timeout(function() {
                                 try{
                                     $scope.topicSwiper.swipeTo(idx - 1, 0, false);
+                                    ChooserData.active_slide = idx - 1;
                                 }
                                 catch(e){
                                     //suppress error if $scope.topicSwiper was null
@@ -239,7 +266,11 @@ angular.module('sphericalApp.MainControllers', [])
                 });
             } else {
                 $scope.itemSwiper.swipeTo(0, 0, false);
+                ChooserData.active_slide = 0;
             }
+        };
+        $scope.handle_dragdrop = function() {
+            console.log('dropped!');
         };
         
         
