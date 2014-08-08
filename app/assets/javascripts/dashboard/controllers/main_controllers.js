@@ -133,6 +133,7 @@ angular.module('sphericalApp.MainControllers', [])
                 item.id = value[0]['_id'];
                 item.pic = value[0]['image_src'];
                 item.description = value[0]['headline'];
+                item.article_uri = value[0]['article_uri'];
                 item.elevation = value[1];
                 item.itemtype = 'story';
                 formatted.push(item);

@@ -34,22 +34,29 @@ angular.module('sphericalApp.DiscussionDirectives', [])
             visible: '=',
             chooserdata: '='
         },
-        controller: function($scope) {
-            //$scope.newpost_disabled = ChooserData.newpost_disabled;
-            //ActivityVis.show_drag_target = false;
-            //ChooserData.newpost_disabled = false;
-        },
         templateUrl: SPHR_HST + "tpls/discussion_edit.html"
-    }
+    };
 }])
 .directive('dragTarget', ['$compile', 'ActivityVis', 'ChooserData', function($compile, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
-        controller: function($scope) {
-            //$scope.show_drag_target = ActivityVis.show_drag_target;
-            //$scope.newpost_disabled = ChooserData.newpost_disabled;
+        controller: function($scope, $element) {
             $scope.handle_dragdrop = function(event, data) {
-                console.log(data);
+                var dup = false,
+                actvtyctrl = $scope.$parent;
+                angular.forEach(ChooserData.citations, function(citation) {
+                    if (citation.id == data.id) {
+                        dup = true;
+                    }
+                });
+                if (!dup) {
+                    ChooserData.citations.push(data);
+                }
+                ActivityVis.show_drag_target = false;
+                ActivityVis.swipe_enable = true;
+                ChooserData.newpost_disabled = false;
+                $compile(ChooserData.tswiper)(actvtyctrl);
+                $element.parent().removeClass('on-drag-hover');
             };
         },
         link: function(scope, elm, attrs) {
@@ -75,7 +82,23 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                 }
             });
         }
-    }
+    };
+}])
+.directive('citeDelete', ['ChooserData', function(ChooserData) {
+    return {
+        restrict: 'A',
+        scope: {
+            idx: '='
+        },
+        link: function(scope, elm, attrs) {
+            elm.on('click', function() {
+                scope.$apply(function() {
+                    ChooserData.citations.splice(scope.idx, 1);
+                });
+                $('#preview_text').find('p').last().append(' '); // reflow text
+            });
+        }
+    };
 }])
 .directive('commentOc', ['ForumData', function(ForumData) {
     return {
@@ -115,4 +138,4 @@ angular.module('sphericalApp.DiscussionDirectives', [])
             }
         }
     };
-}])
+}]);

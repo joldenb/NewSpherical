@@ -8,12 +8,17 @@
             <input type="hidden" value="{{currenttopic}}">
             <fieldset>
                 <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="post_title" ng-disabled="chooserdata.newpost_disabled" />
+
                 <div class="cite_btn" ng-show="!visible.show_drag_target" drag-target>Cite an Article</div>
                 <div class="cite_btn target" ng-show="visible.show_drag_target" ui-on-drop="handle_dragdrop($event, $data)" drop-channel="chooser">Drag Article Here<span class="close" drag-target>&nbsp;</span></div>
+
+                <div class="citation_container" ng-repeat="cite in chooserdata.citations">
+                    <div class="description">{{cite.description}}<div class="del-btn" cite-delete idx="$index">&nbsp;</div></div>
+                </div>
+
                 <textarea class="post_text" name="post_text" placeholder="Write a new post..." rows="15" ng-model="post_text" ng-disabled="chooserdata.newpost_disabled"></textarea>
             </fieldset>
         </form>
-        <p>{{currenttopic}}</p>
     </div>
 </div>
 <div class="post preview">
@@ -21,5 +26,13 @@
         <h3>Preview</h3>
     </div>
     <h3>{{post_title}}</h3>
-    <p btf-markdown="post_text"></p>
+    <div class="citations">
+        <div class="cite" ng-repeat="cite in chooserdata.citations">
+            <div class="swiper-entity">
+                <img src="{{cite.pic}}" brkn-img />
+                <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description}}</h4></a>
+            </div>
+        </div>
+    </div>
+    <p btf-markdown="post_text" id="preview_text"></p>
 </div>

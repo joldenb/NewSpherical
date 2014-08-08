@@ -336,7 +336,8 @@
             height: 499px;
             margin: 0 1px 0 2px;
             color: #222;
-            overflow: auto;
+            overflow-x: hidden;
+            overflow-y: auto;
             h3 {
                 text-align: center;
                 font-weight: bold;
@@ -368,6 +369,37 @@
                     margin: 0;
                 }
             }
+            .swiper-entity {
+                margin: 0;
+                background: #000;
+                overflow: hidden;
+                width: 160px;
+                height: 92px;
+                cursor: pointer;
+                position: relative;
+                h4 {
+                    position: absolute;
+                    font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    text-transform: none;
+                    margin: auto;
+                    width: 150px;
+                    height: 79px;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    color: #fff;
+                    text-shadow: 1px 1px 1px #000;
+                    text-align: center;
+                    font-weight: 200;
+                }
+                img {
+                    max-width: 100%;
+                    min-height: 100%;
+                    border: none;
+                    opacity: 0.7;
+                }
+            }
             &.preview {
                 float: right;
                 width: 419px;
@@ -380,6 +412,15 @@
                     &:hover {
                         text-decoration: underline;
                     }
+                }
+            }
+            .citations {
+                float: left;
+                width: 190px;
+                .cite {
+                    height: 92px;
+                    margin: 10px 10px 10px 20px;
+                    overflow: hidden;
                 }
             }
             #newpost {
@@ -409,6 +450,35 @@
                             @include border-radius(2px);
                             padding: 0 5px;
                             line-height: 14px;
+                        }
+                    }
+                    &.on-drag-enter {
+                        border: 1px solid #073a70;
+                    }
+                    &.on-drag-hover {
+                        background: #073a70;
+                        color: #fff;
+                    }
+                }
+                .citation_container {
+                    position: relative;
+                    .description {
+                        position: relative;
+                        font-size: .85em;
+                        width: 330px;
+                        overflow: hidden;
+                        height: 1.3em;
+                        margin: 0 0 5px 20px;
+                        padding: 0 20px 0 25px;
+                        border: solid 1px #d4d4d4;
+                        background: #f7f7f7 image-url('small-link.png') no-repeat 2px 2px;
+                        .del-btn {
+                            position: absolute;
+                            top: 0px;
+                            right: 0px;
+                            width: 16px;
+                            background: #f7f7f7 image-url('small-trash.png') no-repeat 1px 1px;
+                            cursor: pointer;
                         }
                     }
                 }

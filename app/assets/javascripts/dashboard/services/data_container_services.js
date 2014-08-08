@@ -13,5 +13,8 @@ angular.module('sphericalApp.DataContainerServices', [])
         return {};
     }])
     .service('ChooserData', [function() {
-        return {active_slide: 0};
+        return {
+            active_slide: 0,
+            citations: []
+        };
     }]);
