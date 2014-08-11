@@ -33,6 +33,13 @@ class ForumPersistenceController < ApplicationController
       end
     end
 
+    def save_conversation_post
+      title = params[:title]
+      content = params[:content]
+      citations = params[:citations]
+      render(:json => {"title" => title, "content" => content, "citations" => citations}) and return
+    end
+
 
     #
     private

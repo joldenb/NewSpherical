@@ -358,6 +358,7 @@
                 color: #f00;
             }
             .post_banner {
+                position: relative;
                 background: #073a70;
                 color: #fff;
                 width: 421px;
@@ -367,6 +368,27 @@
                     font-weight: normal;
                     font-size: .9em;
                     margin: 0;
+                }
+                .save_btn {
+                    position: absolute;
+                    font-size: .8em;
+                    font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    height: 18px;
+                    width: 35px;
+                    border: 1px solid #bbb;
+                    background: transparent image-url('save-wt.png') no-repeat 5px 1px;
+                    @include border-radius(6px);
+                    top: 3px;
+                    left: 15px;
+                    padding: 0 3px 0 25px;
+                    cursor: pointer;
+                    opacity: 0.4;
+                    &.active {
+                        opacity: 1;
+                        &.highlight {
+                            background-color: #0c63bf;
+                        }
+                    }
                 }
             }
             .swiper-entity {
@@ -423,7 +445,7 @@
                     overflow: hidden;
                 }
             }
-            #newpost {
+            #thispost {
                 .post_title {
                     font-size: 1.1em;
                     background: #fff;

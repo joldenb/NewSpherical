@@ -213,7 +213,7 @@ angular.module('sphericalApp.MainControllers', [])
                 
                 ActivityVis.show_drag_target = false;
                 ActivityVis.swipe_enable = true;
-                ChooserData.newpost_disabled = false;
+                ChooserData.thispost_disabled = false;
                 ChooserData.active_slide = 0;
                 $compile(ChooserData.tswiper)($scope);
             });
@@ -231,7 +231,7 @@ angular.module('sphericalApp.MainControllers', [])
 
                 ActivityVis.show_drag_target = false;
                 ActivityVis.swipe_enable = true;
-                ChooserData.newpost_disabled = false;
+                ChooserData.thispost_disabled = false;
                 ChooserData.active_slide = 0;
                 $compile(ChooserData.tswiper)($scope);
             });

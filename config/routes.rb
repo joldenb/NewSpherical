@@ -17,6 +17,7 @@ Topical::Application.routes.draw do
   get "/sphere/signed_in" => 'sphere#signed_in'
 
   post "/forum_persistence/save_forum_post" => 'forum_persistence#save_forum_post'
+  post "/forum_persistence/save_conversation_post" => 'forum_persistence#save_conversation_post'
   
   
   match "dashboard(/:action(/:id)(.:format))" => 'dashboard', :as => "dashboard", :via => [:get, :options]

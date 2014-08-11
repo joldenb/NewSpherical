@@ -54,7 +54,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                 }
                 ActivityVis.show_drag_target = false;
                 ActivityVis.swipe_enable = true;
-                ChooserData.newpost_disabled = false;
+                ChooserData.thispost_disabled = false;
                 $compile(ChooserData.tswiper)(actvtyctrl);
                 $element.parent().removeClass('on-drag-hover');
             };
@@ -68,14 +68,14 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                     scope.$apply(function() {
                         ActivityVis.show_drag_target = false;
                         ActivityVis.swipe_enable = true;
-                        ChooserData.newpost_disabled = false;
+                        ChooserData.thispost_disabled = false;
                         $compile(ChooserData.tswiper)(actvtyctrl);
                     });
                 } else {
                     scope.$apply(function(scope) {
                         ActivityVis.show_drag_target = true;
                         ActivityVis.swipe_enable = false;
-                        ChooserData.newpost_disabled = true;
+                        ChooserData.thispost_disabled = true;
                         $compile(ChooserData.tswiper)(actvtyctrl);
                     });
                     ChooserData.tswiper.children().css({width: tswidth, marginLeft: tspos});
@@ -96,6 +96,36 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                     ChooserData.citations.splice(scope.idx, 1);
                 });
                 $('#preview_text').find('p').last().append(' '); // reflow text
+            });
+        }
+    };
+}])
+.directive('saveThispost', ['$http', 'uuid4', 'SPHR_HST', 'ChooserData', function($http, uuid4,  SPHR_HST, ChooserData) {
+    return {
+        restrict: 'A',
+        link: function(scope, elm, attrs) {
+            var data = {};
+            elm.on('click', function() {
+                if (/[\w]+/.test(scope.post_title) && /[\w]+/.test(scope.post_text)) {
+                    data.title = scope.post_title;
+                    data.content = angular.element('#preview_text').html();
+                    data.citations = ChooserData.citations.map(function(cite) {
+                        return cite.id;
+                    });
+                    data.uid = uuid4.generate();
+                    console.log('data: ' + angular.toJson(data));
+                    $http.post(SPHR_HST + "forum_persistence/save_conversation_post", angular.toJson(data))
+                    .success(
+                        function(resp) {
+                            console.log(resp);
+                        }
+                    )
+                    .error(
+                        function(resp, status) {
+                            console.log(resp + status);
+                        }
+                    );
+                }
             });
         }
     };

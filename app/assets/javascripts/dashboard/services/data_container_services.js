@@ -6,7 +6,7 @@ angular.module('sphericalApp.DataContainerServices', [])
             discussion_edit: false,
             show_drag_target: false,
             swipe_enable: true,
-            newpost_disabled: false
+            thispost_disabled: false
         };
     }])
     .service('ForumData', [function() {
