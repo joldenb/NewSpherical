@@ -44,4 +44,17 @@ angular.module('sphericalApp.UtilityDirectives', [])
             });
         }
     };
+}])
+.directive('hoverHighlight', [function() {
+    return {
+        restrict: 'A',
+        link: function(scope, elm, attrs) {
+            elm.on('mouseenter', function() {
+                elm.addClass('highlight');
+            })
+            .on('mouseleave', function() {
+                elm.removeClass('highlight');
+            });
+        }
+    };
 }]);
