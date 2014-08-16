@@ -19,7 +19,7 @@
         <div class="topic_controls">
             <div class="control" topic-cntrl-btn btntarget="all" tool-tip>
                 <span ng-class="{active:currentTopicIdx >= 0}">&nbsp;</span>
-                <div class="tooltip_above">All Topics<div class="arrow">&nbsp;</div></div>   
+                <div class="tooltip_above">All Topics<div class="arrow">&nbsp;</div></div>
             </div>
             <div class="control" topic-cntrl-btn btntarget="previous" tool-tip>
                 <span ng-class="{active:currentTopicIdx > 0}" style="background-position:-21px 0;">&nbsp;</span>
@@ -40,11 +40,11 @@
         <div class="topic_indicator" id="{{currentTopic.id}}">
             <h3 ng-show="topicIndicatorVisible">{{currentTopic.name}}</h3>
             <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories}">Stories</h4>
-            <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}">Discussions</h4>
+            <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**')">Discussions</h4>
         </div>
         <div class="item_display">
             <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
-            <div class="discussions" ng-show="visible.discussions" ng-controller="MainForumCtrl" discussion-display forumposts="forum.posts"></div>
+            <div class="discussions" ng-show="visible.discussions" discussion-display></div>
             <div class="new_discussion" ng-show="visible.discussion_edit" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
         </div>
     </div>

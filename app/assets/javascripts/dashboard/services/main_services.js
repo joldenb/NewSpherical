@@ -20,6 +20,15 @@ angular.module('sphericalApp.MainServices', [])
           });
         };
     }])
+    .service('DiscussionItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+        this.get = function(topic, page) {
+          return $http.get(SPHR_HST + 'dashboard/discussion_items/' + topic, {
+            params: {page: page}
+          }).then(function(response) {
+            return response.data;
+          });
+        };
+    }])
     .service('SigninVerify', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.get = function(token) {
           return $http.get(SPHR_HST + 'sphere/signin_verify/' + token)

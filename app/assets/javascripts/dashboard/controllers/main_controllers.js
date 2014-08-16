@@ -23,9 +23,9 @@ angular.module('sphericalApp.MainControllers', [])
         ControlPanelData.get().then(function(d) {
             $scope.controlPanels = d.panels;
         });
-        
-        $rootScope.$on('$stateChangeSuccess', 
-            function(event, toState, toParams, fromState, fromParams) { 
+
+        $rootScope.$on('$stateChangeSuccess',
+            function(event, toState, toParams, fromState, fromParams) {
                 if (!/ctrlpanel/.test(toState.name)) {
                     $scope.panelstate.classes.push('windowshade');
                     $timeout(function() {
@@ -56,55 +56,9 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.panelstate.classes = [];
         }
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems) {
 
-        $scope.ctrlname = 'ActivityCtrl';
-        $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
-        $scope.chooserdata = ChooserData;
-
-        UserInfo.signedin().then(function(d) {
-            ActivityVis.signedin = d.signedin;
-        });
-
-        $scope.visible.show_new_discussion = function() {
-            if ($scope.visible.signedin && $state.includes('**.topic.**')) {
-                return true;
-            } else {
-                return false;
-            }
-        };
-
-        $scope.spheredata = {};
-        $scope.currentTopic = {};
-        $scope.currentTopicIdx = -1;
-        $scope.main_topics = [];
-        $scope.topics = {};
-        $scope.topicItems = {};
-        $scope.topicIndicatorVisible = false;
-
-        $scope.state = $state;
-        
-        //$scope.rootScope = $rootScope;
-
-        $scope.activityShow = function(show) {
-            if (show == 'discussions') {
-                ActivityVis.stories = false;
-                ActivityVis.discussions = true;
-                ActivityVis.discussion_edit = false;
-            } else {
-                ActivityVis.stories = true;
-                ActivityVis.discussions = false;
-                ActivityVis.discussion_edit = false;
-            }
-        };
-
-        //$rootScope.$on('$stateChangeStart', 
-        //    function(event, toState, toParams, fromState, fromParams) { 
-        //        console.log(toParams);
-        //        console.log(fromParams);
-        //    }
-        //);
-
+        // these run when page loads
         SphereInfo.sphereData.then(function(d) {
             $scope.spheredata.topics = d.data.topics;
             $scope.spheredata.num_topics = d.data.topics.length;
@@ -126,65 +80,65 @@ angular.module('sphericalApp.MainControllers', [])
             });
         });
 
-        var format_topic_items_simple = function(items) {
-            var formatted = [];
-            angular.forEach(items, function(value) {
-                var item = {};
-                item.id = value[0]['_id'];
-                item.pic = value[0]['image_src'];
-                item.description = value[0]['headline'];
-                item.article_uri = value[0]['article_uri'];
-                item.elevation = value[1];
-                item.itemtype = 'story';
-                formatted.push(item);
-            });
-            return formatted;
-        },
-        get_topic_items = function(topic) {
-            return TopicItems.get(topic).then(function(d) {
-                $scope.topics[topic] = d.items;
-            }).then(function() {
-                return $scope.topics[topic];
-            });
-        },
-        switch_topics = function(topic_ctx) {
-            // have to do this, else swiper.js thinks the length keeps growing
-            $scope.spheredata.topics.length = 0;
-            get_topic_items(topic_ctx).then(function(items) {
-                $scope.spheredata.topics = format_topic_items_simple(items);
-            });
-        },
-        set_current_topic = function(idx, set_index) {
-            $scope.topicItems.length = 0;
-            $scope.currentTopic = $scope.spheredata.topics[idx];
-            if (set_index) {
-                $scope.currentTopicIdx = idx;
-            }
-            get_topic_items($scope.spheredata.topics[idx].id).then(function() {
-                $scope.topicItems = $scope.topics[$scope.currentTopic.id];
-            });
-        },
-        update_current_topic = function(idx) {
-            $scope.topicItems.length = 0;
-            $scope.currentTopic = $scope.main_topics[idx];
-            get_topic_items($scope.main_topics[idx].id).then(function() {
-                $scope.topicItems = $scope.topics[$scope.main_topics[idx].id];
-            });
-        },
-        restore_topic_list = function() {
-            $scope.$apply(function() {
-                $scope.spheredata.topics.length = 0;
-                angular.forEach($scope.main_topics, function(topic) {
-                    $scope.spheredata.topics.push(topic);
-                });
-                $scope.topicItems.length = 0;
-                $scope.currentTopic = $scope.spheredata.topics[0];
-                $scope.currentTopicIdx = -1;
-                get_topic_items($scope.spheredata.topics[0].id).then(function() {
-                    $scope.topicItems = $scope.topics[$scope.currentTopic.id];
-                });
-            });
+        if ($state.includes('**.story')) {
+          $scope.currentStory = $state.params.story;
+        }
 
+        UserInfo.signedin().then(function(d) {
+            ActivityVis.signedin = d.signedin;
+        });
+
+        // runs on state change
+        $rootScope.$on('$stateChangeStart',
+           function(event, toState, toParams, fromState, fromParams) {
+               if (toParams.story) {
+                 $scope.currentStory = toParams.story;
+               }
+           }
+        );
+
+        // $scope vars
+        $scope.ctrlname = 'ActivityCtrl';
+        $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
+        $scope.chooserdata = ChooserData;
+        $scope.spheredata = {};
+        $scope.currentTopic = {};
+        $scope.currentTopicIdx = -1;
+        $scope.main_topics = [];
+        $scope.topics = {};
+        $scope.topic_discussions = {};
+        $scope.topicItems = {};
+        $scope.topicIndicatorVisible = false;
+        $scope.state = $state;
+
+        // $scope functions
+        $scope.activityShow = function(show) {
+            if (show == 'discussions') {
+                ActivityVis.stories = false;
+                ActivityVis.discussions = true;
+                ActivityVis.discussion_edit = false;
+                $state.go('sphere.topic.discussion', {discussion: 1});
+            } else if (show == 'stories') {
+                ActivityVis.stories = true;
+                ActivityVis.discussions = false;
+                ActivityVis.discussion_edit = false;
+                if ($scope.currentStory) {
+                    $state.go(
+                        'sphere.topic.story', {topic: $scope.currentTopic.name, story: $scope.currentStory}
+                    );
+                } else if ($state.includes('**.topic.**')) {
+                   $state.go(
+                       'sphere.topic', {topic: $scope.currentTopic.name}
+                   );
+                }
+            }
+        };
+        $scope.visible.show_new_discussion = function() {
+            if ($scope.visible.signedin && $state.includes('**.topic.**')) {
+                return true;
+            } else {
+                return false;
+            }
         };
 
         $scope.slide_select = function(slide_index, slide_id, current_story_id) {
@@ -194,13 +148,14 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.topicIndicatorVisible = true;
             });
             if (current_story_id) {
+                $scope.current_story_id = current_story_id;
                 $state.go(
                     'sphere.topic.story', {topic: $scope.currentTopic.name, story: current_story_id}
                 );
             } else {
                $state.go(
                    'sphere.topic', {topic: $scope.currentTopic.name}
-               ); 
+               );
             }
         };
         $scope.restore_topic_list = function() {
@@ -210,7 +165,7 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
-                
+
                 ActivityVis.show_drag_target = false;
                 ActivityVis.swipe_enable = true;
                 ChooserData.thispost_disabled = false;
@@ -270,13 +225,77 @@ angular.module('sphericalApp.MainControllers', [])
                 ChooserData.active_slide = 0;
             }
         };
-        $scope.handle_dragdrop = function() {
-            console.log('dropped!');
-        };
-        
-        
-        
-        
 
+
+        // private functions
+        var format_topic_items_simple = function(items) {
+            var formatted = [];
+            angular.forEach(items, function(value) {
+                var item = {};
+                item.id = value[0]['_id'];
+                item.pic = value[0]['image_src'];
+                item.description = value[0]['headline'];
+                item.article_uri = value[0]['article_uri'];
+                item.elevation = value[1];
+                item.itemtype = 'story';
+                formatted.push(item);
+            });
+            return formatted;
+        },
+        get_topic_items = function(topic) {
+            return TopicItems.get(topic).then(function(d) {
+                $scope.topics[topic] = d.items;
+            }).then(function() {
+                return $scope.topics[topic];
+            });
+        },
+        get_discussion_items = function(topic) {
+            return DiscussionItems.get(topic).then(function(d) {
+                $scope.topic_discussions[topic] = d.items;
+            }).then(function() {
+                return $scope.topic_discussions[topic];
+            });
+        },
+        switch_topics = function(topic_ctx) {
+            // have to do this, else swiper.js thinks the length keeps growing
+            $scope.spheredata.topics.length = 0;
+            get_topic_items(topic_ctx).then(function(items) {
+                $scope.spheredata.topics = format_topic_items_simple(items);
+            });
+        },
+        set_current_topic = function(idx, set_index) {
+            $scope.topicItems.length = 0;
+            $scope.currentTopic = $scope.spheredata.topics[idx];
+            if (set_index) {
+                $scope.currentTopicIdx = idx;
+            }
+            get_topic_items($scope.spheredata.topics[idx].id).then(function() {
+                $scope.topicItems = $scope.topics[$scope.currentTopic.id];
+            });
+        },
+        update_current_topic = function(idx) {
+            $scope.topicItems.length = 0;
+            $scope.currentTopic = $scope.main_topics[idx];
+            get_topic_items($scope.main_topics[idx].id).then(function() {
+                $scope.topicItems = $scope.topics[$scope.main_topics[idx].id];
+                $scope.currentStory = null;
+            });
+        },
+        restore_topic_list = function() {
+            $scope.$apply(function() {
+                $scope.spheredata.topics.length = 0;
+                angular.forEach($scope.main_topics, function(topic) {
+                    $scope.spheredata.topics.push(topic);
+                });
+                $scope.topicItems.length = 0;
+                $scope.currentTopic = $scope.spheredata.topics[0];
+                $scope.currentTopicIdx = -1;
+                get_topic_items($scope.spheredata.topics[0].id).then(function() {
+                    $scope.topicItems = $scope.topics[$scope.currentTopic.id];
+                    $scope.currentStory = null;
+                });
+            });
+
+        };
 
     }]);

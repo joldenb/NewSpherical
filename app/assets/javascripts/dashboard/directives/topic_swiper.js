@@ -1,3 +1,5 @@
+/*jshint jquery: true, browser: true, devel: true, globalstrict: true, sub: true */
+/* global angular */
 'use strict';
 
 angular.module('sphericalApp.TopicSwiperDirectives', [])
@@ -7,15 +9,15 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
         scope: {
             slidearray: '='
         },
-		controller: function ($scope, $element) {
-			this.slideWasClicked = true;
-            this.parentController = $scope.$parent;
-            $scope.swipe_enable = ActivityVis.swipe_enable;
-            ChooserData.tswiper = $element; // to communicate with dragTarget directive
-		},
+    		controller: function ($scope, $element) {
+    			this.slideWasClicked = true;
+          this.parentController = $scope.$parent;
+          $scope.swipe_enable = ActivityVis.swipe_enable;
+          ChooserData.tswiper = $element; // to communicate with dragTarget directive
+    		},
         templateUrl: SPHR_HST + "dashboard/topic_swiper",
         replace: true
-    }
+    };
 }])
 .directive('swiperReady', ['ActivityVis', 'ChooserData', function(ActivityVis, ChooserData) {
     return {
@@ -34,36 +36,36 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                         },
                         onTouchEnd: function(e) {
                             //console.log(e.activeSlide);
-                            ChooserData.active_slide = e.activeSlide; 
+                            ChooserData.active_slide = e.activeSlide;
                         }
                     });
                     topicSwiperCtrl.parentController.topicSwiper.swipeTo(ChooserData.active_slide,0,false);
                     if (topicSwiperCtrl.parentController.openDash) {
                         $('#spherical_dashboard_container').show('slow');
                     }
-                } 
+                }
             }
         }
-    }
+    };
 }])
 .directive('slideSelect', [function() {
 	return {
 		restrict: 'A',
 		require: '^topicSwiper',
         link: function(scope, elm, attrs, topicSwiperCtrl) {
-			elm.on('click', function() {
-                var this_index = parseInt(scope.$index);
-                if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'topic') {
-                    topicSwiperCtrl.parentController.slide_select(this_index, attrs.id);
-                } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'story') {
-                    // itemSwiper is defined in the itemSwiperReady directive,
-                    // on the parent controller of its and this controller, i.e. MainCtrl
-                    topicSwiperCtrl.parentController.itemSwiper.swipeTo(this_index,500,false);
-                    topicSwiperCtrl.parentController.state.go(
-                        'sphere.topic.story', {story: attrs.id}
-                    );
-                }
-			});
-        }
-	}
+    			elm.on('click', function() {
+            var this_index = parseInt(scope.$index);
+            if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'topic') {
+                topicSwiperCtrl.parentController.slide_select(this_index, attrs.id);
+            } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'story') {
+                // itemSwiper is defined in the itemSwiperReady directive,
+                // on the parent controller of its and this controller, i.e. MainCtrl
+                topicSwiperCtrl.parentController.itemSwiper.swipeTo(this_index,500,false);
+                topicSwiperCtrl.parentController.state.go(
+                    'sphere.topic.story', {story: attrs.id}
+                );
+            }
+    			});
+      }
+  };
 }]);

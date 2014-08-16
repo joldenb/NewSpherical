@@ -58,6 +58,16 @@ class DashboardController < ApplicationController
       end
     end
 
+    def discussion_items
+      if params[:id] =~ RMongoIdRegex
+        context = Context.find(params[:id])
+        @items = ItemAgent.get_items(context, :types => ['discussion'])
+        render :topic_items
+      else
+        render :nothing => true, :status => 404
+      end
+    end
+
     ##
     private
     
