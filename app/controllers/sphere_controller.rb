@@ -158,8 +158,14 @@ class SphereController < ApplicationController
     end
 
     def signout_submit
+        if session[:user_id].present?
+            $redis.keys("sess:*").each do |k| 
+                u = $redis.hget(k, "user_id")
+                $redis.del(k) if u == session[:user_id]
+            end
+        end
         reset_session
-        render :signin
+        redirect_to(root_url)
     end
 
     def dashboard_signout
