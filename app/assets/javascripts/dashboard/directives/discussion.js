@@ -19,10 +19,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
 .directive('discussionDisplay', ['SPHR_HST', 'ForumData', function(SPHR_HST, ForumData) {
     return {
         restrict: 'A',
-        scope: {
-            discsn: '=',
-            forumposts: '='
-        },
+        controller: "MainForumCtrl",
         templateUrl: SPHR_HST + "tpls/discussion_display.html"
     };
 }])
@@ -100,29 +97,36 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         }
     };
 }])
-.directive('saveThispost', ['$http', 'uuid4', 'SPHR_HST', 'ChooserData', function($http, uuid4,  SPHR_HST, ChooserData) {
+.directive('saveThispost', ['$http', 'uuid4', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, uuid4,  SPHR_HST, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {
             var data = {};
             elm.on('click', function() {
-                if (/[\w]+/.test(scope.post_title) && /[\w]+/.test(scope.post_text)) {
+                if (/[\w]+/.test(scope.post_title) && /[\w]+/.test(scope.post_text) && !scope.deactivate) {
+                    scope.deactivate = true;
                     data.title = scope.post_title;
                     data.content = angular.element('#preview_text').html();
                     data.citations = ChooserData.citations.map(function(cite) {
                         return cite.id;
                     });
+                    data.topic = scope.currenttopic;
                     data.uid = uuid4.generate();
                     console.log('data: ' + angular.toJson(data));
                     $http.post(SPHR_HST + "forum_persistence/save_conversation_post", angular.toJson(data))
                     .success(
                         function(resp) {
                             console.log(resp);
+                            scope.post_title = '';
+                            scope.post_text = '';
+                            ChooserData.citations = [];
+                            scope.deactivate = false;
                         }
                     )
                     .error(
                         function(resp, status) {
-                            console.log(resp + status);
+                            console.log('error: ' + status);
+                            scope.deactivate = false;
                         }
                     );
                 }

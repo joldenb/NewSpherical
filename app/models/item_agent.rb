@@ -1,6 +1,7 @@
 class ItemAgent
     class ContextError < StandardError; end
     class ParamsError < StandardError; end
+    class ItemError < StandardError; end
 
     def initialize(context, params={})
         if context.kind_of?(String)
@@ -195,8 +196,10 @@ class ItemAgent
             limit = options[:limit] || CarouselPerPage * CarouselInitialPages
             skipto = (page - 1) * CarouselPerPage
 
+            item_types = options[:types] || StoryTypes
+
             raise ContextError, "Not a valid context." unless context.kind_of?(Context)
-            items = context.item_contexts.order_by(:context_id => "asc", :elevation => "desc", :sort_order => "desc").
+            items = context.item_contexts.where(:item_type.in => item_types).order_by(:context_id => "asc", :elevation => "desc", :sort_order => "desc").
             skip(skipto).limit(limit)
             items.map do |s|
                 if itm = Item.find(s.item_id)
@@ -326,6 +329,8 @@ class ItemAgent
 
     private
     def add_or_update_item_context(item, context, sort_order=nil)
+        raise ItemError unless item.kind_of?(Item)
+        raise ContextError unless context.kind_of?(Context)
         sort_order = TopicalUtils.microtime2int(Time.now) unless sort_order
         if item_ctx = ItemContext.where(:item_id => item.id, :context_id => context.id).first
             item_ctx.update_attributes(:sort_order => sort_order)

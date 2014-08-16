@@ -22,6 +22,7 @@ class Item
     field :timestamp, :type => Integer
     field :sort_order, :type => Integer
     field :submitter, :type => Moped::BSON::ObjectId
+    field :citations, :type => Array
 
     index({:name => 1})
     index({:oid => 1}, {:unique => true})

@@ -34,10 +34,17 @@ class ForumPersistenceController < ApplicationController
     end
 
     def save_conversation_post
-      title = params[:title]
-      content = params[:content]
-      citations = params[:citations]
-      render(:json => {"title" => title, "content" => content, "citations" => citations}) and return
+      if !current_dashboard_user
+        render(:json => {"error" => "signin required"}, :status => 401) and return
+      end
+      post = DiscussionPost.new.format_post(params)
+      context = params[:topic]
+      author = current_dashboard_user.id.to_s
+      post_hash = Hash[post.each_pair.to_a]
+      post_hash["submitter"] = author
+
+      item = ItemAgent.new(context, post_hash).create_or_update_feed_item("discussion")
+      render(:json => {:saved => item.id}) and return
     end
 
 
