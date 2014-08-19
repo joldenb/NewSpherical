@@ -120,10 +120,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories = false;
                 ActivityVis.discussions = true;
                 ActivityVis.discussion_edit = false;
-                $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
                 set_current_discussions($scope.currentTopic.id);
-                // $scope.currentDiscussion = format_discussion_item($scope.topic_discussions[$scope.currentTopic.id][0]);
-                // $scope.topicSwiper.swipeTo(0, 0, false);
+                $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
             } else if (show == 'stories') {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
@@ -201,6 +199,7 @@ angular.module('sphericalApp.MainControllers', [])
             switch_topics($scope.main_topics[adjacent_topic_index].id);
             $scope.currentTopicIdx = adjacent_topic_index;
             update_current_topic(adjacent_topic_index);
+            get_discussion_items(adjacent_topic_index);
 
             // $scope.topicSwiper and $scope.itemSwiper are instantiated by the swiperReady
             // and itemSwiperReady directives

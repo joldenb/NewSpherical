@@ -40,7 +40,7 @@
         <div class="topic_indicator" id="{{currentTopic.id}}">
             <h3 ng-show="topicIndicatorVisible">{{currentTopic.name}}</h3>
             <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories}">Stories</h4>
-            <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**')">Discussions</h4>
+            <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**') && currentTopicDiscussions.length > 0">Discussions</h4>
         </div>
         <div class="item_display">
             <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
