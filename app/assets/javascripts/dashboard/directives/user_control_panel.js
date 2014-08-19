@@ -71,7 +71,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
                             signout();
                             break;
                     }
-                };
+                }
 
             });
         }

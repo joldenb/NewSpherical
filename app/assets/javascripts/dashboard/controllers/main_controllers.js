@@ -74,6 +74,9 @@ angular.module('sphericalApp.MainControllers', [])
                 if (topic.name == $state.params.topic) {
                     set_current_topic(idx, true);
                     switch_topics(topic.id);
+                    get_discussion_items(topic.id).then(function() {
+                      $scope.currentTopicDiscussions = $scope.topic_discussions[topic.id];
+                    });
                     $scope.topicIndicatorVisible = true;
                     $scope.$parent.openDash = true;
                 }
@@ -117,11 +120,16 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories = false;
                 ActivityVis.discussions = true;
                 ActivityVis.discussion_edit = false;
-                $state.go('sphere.topic.discussion', {discussion: 1});
+                $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
+                set_current_discussions($scope.currentTopic.id);
+                // $scope.currentDiscussion = format_discussion_item($scope.topic_discussions[$scope.currentTopic.id][0]);
+                // $scope.topicSwiper.swipeTo(0, 0, false);
             } else if (show == 'stories') {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
+                switch_topics($scope.currentTopic.id);
+                $scope.topicSwiper.swipeTo(ChooserData.active_slide - 1, 0, false);
                 if ($scope.currentStory) {
                     $state.go(
                         'sphere.topic.story', {topic: $scope.currentTopic.name, story: $scope.currentStory}
@@ -220,11 +228,20 @@ angular.module('sphericalApp.MainControllers', [])
                         }
                     }
                 });
-            } else {
+            } else if($state.params.discussion) {
+              //todo
+            }  else {
                 $scope.itemSwiper.swipeTo(0, 0, false);
                 ChooserData.active_slide = 0;
             }
         };
+        $scope.refresh_conversations = function() {
+          get_discussion_items($scope.currentTopic.id).then(function() {
+            $scope.currentTopicDiscussions = $scope.topic_discussions[$scope.currentTopic.id];
+            set_current_discussions($scope.currentTopic.id);
+          });
+        };
+
 
 
         // private functions
@@ -241,6 +258,34 @@ angular.module('sphericalApp.MainControllers', [])
                 formatted.push(item);
             });
             return formatted;
+        },
+        format_discussion_items_simple = function(items) {
+            var formatted = [];
+            angular.forEach(items, function(value) {
+                var item = {};
+                item.id = value[0]['_id'];
+                item.description = value[0]['headline'];
+                item.pubdate = value[2]['pubdate'];
+                item.elevation = value[1];
+                item.itemtype = 'discussion';
+                item.author = value[2]['author_handle'];
+                item.thumbnail = value[2]['thumb'];
+                formatted.push(item);
+            });
+            return formatted;
+        },
+        format_discussion_item = function(item) {
+          var formatted = {};
+          formatted.id = item[0]['_id'];
+          formatted.description = item[0]['headline'];
+          formatted.text = item[0]['text'];
+          formatted.citations = item[3];
+          formatted.pubdate = item[2]['pubdate'];
+          formatted.elevation = item[1];
+          formatted.itemtype = 'discussion';
+          formatted.author = item[2]['author_handle'];
+          formatted.thumbnail = item[2]['thumb'];
+          return formatted;
         },
         get_topic_items = function(topic) {
             return TopicItems.get(topic).then(function(d) {
@@ -273,12 +318,23 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.topicItems = $scope.topics[$scope.currentTopic.id];
             });
         },
+        set_current_discussions = function(topic) {
+          $scope.spheredata.topics.length = 0;
+          get_discussion_items(topic).then(function(items) {
+              $scope.spheredata.topics = format_discussion_items_simple(items);
+              $scope.currentDiscussion = format_discussion_item(items[0]);
+              $scope.topicSwiper.swipeTo(0, 0, false);
+          });
+        },
         update_current_topic = function(idx) {
             $scope.topicItems.length = 0;
             $scope.currentTopic = $scope.main_topics[idx];
             get_topic_items($scope.main_topics[idx].id).then(function() {
                 $scope.topicItems = $scope.topics[$scope.main_topics[idx].id];
                 $scope.currentStory = null;
+            });
+            get_discussion_items($scope.main_topics[idx].id).then(function() {
+              $scope.currentTopicDiscussions = $scope.topic_discussions[$scope.main_topics[idx].id];
             });
         },
         restore_topic_list = function() {

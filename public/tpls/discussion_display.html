@@ -2,6 +2,16 @@
     <div class="post_banner">
         <h3>Post</h3>
     </div>
+    <h3>{{currentDiscussion.description}}</h3>
+    <div class="citations">
+        <div class="cite" ng-repeat="cite in currentDiscussion.citations">
+            <div class="swiper-entity">
+                <img src="{{cite.pic}}" brkn-img />
+                <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description}}</h4></a>
+            </div>
+        </div>
+    </div>
+    <p ng-bind-html="currentDiscussion.text"></p>
 </div>
 <div class="forum">
     <div class="forum_banner">

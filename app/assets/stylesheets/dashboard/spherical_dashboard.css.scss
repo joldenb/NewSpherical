@@ -129,7 +129,7 @@
                 }
             }
         }
-        
+
         .tooltip_above {
             display: none;
             position: absolute;
@@ -187,33 +187,33 @@
             -webkit-transition-duration:0s;
             -webkit-transform:translate3d(0px,0,0);
             -webkit-transition-timing-function:ease;
-            
+
             -moz-transition-property:-moz-transform;
             -moz-transition-duration:0s;
             -moz-transform:translate3d(0px,0,0);
             -moz-transition-timing-function:ease;
-            
+
             -o-transition-property:-o-transform;
             -o-transition-duration:0s;
             -o-transform:translate3d(0px,0,0);
             -o-transition-timing-function:ease;
-            
+
             -ms-transition-property:-ms-transform;
             -ms-transition-duration:0s;
             -ms-transform:translate3d(0px,0,0);
             -ms-transition-timing-function:ease;
-            
+
             transition-property:transform;
             transition-duration:0s;
             transform:translate3d(0px,0,0);
             transition-timing-function:ease;
-            
+
         }
         .swiper-slide {
             float:left;
             -webkit-transform:translate3d(0,0,0);
         }
-        
+
         /* Specify Swiper's Size: */
         .topic-swiper {
             height: 89px;
@@ -241,7 +241,7 @@
                 width: 162px;
                 height: 89px;
                 cursor: pointer;
-				position: relative;
+				        position: relative;
                 h3 {
                     position: absolute;
                     font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -279,6 +279,41 @@
                     border: none;
                     opacity: 0.7;
                 }
+                &.discussion_slide {
+                  background: #fff;
+                  color: #222;
+                  h4 {
+                    color: #222;
+                    text-shadow: none;
+                    font-weight: bold;
+                  }
+                  .author_data {
+                    position: absolute;
+                    bottom: 3px;
+                    left: 3px;
+                    .author {
+                        font-size: .8em;
+                        color: #222;
+                        position: absolute;
+                        top: 0;
+                        left: 35px;
+                        width: 120px;
+                    }
+                    .author_img {
+                        width: 30px;
+                        height: 30px;
+                        float: left;
+                        text-align: center;
+                        vertical-align: middle;
+                        border: 1px solid #d4d4d4;
+                        margin-right: 7px;
+                        img {
+                            max-width: 100%;
+                            opacity: 1;
+                        }
+                    }
+                  }
+                }
             }
         }
         .controls_bar {
@@ -300,7 +335,7 @@
                     top: 3px;
                     left: 2px;
                     opacity: 0.2;
-                    background: #222 image-url('topic_controls_thin_sprite.png') no-repeat 0 0;  
+                    background: #222 image-url('topic_controls_thin_sprite.png') no-repeat 0 0;
                     width: 20px;
                     height: 25px;
                     &.active {
@@ -320,7 +355,7 @@
                     top: 3px;
                     left: 2px;
                     opacity: 0.2;
-                    background: #222 image-url('discussion.png') no-repeat 0 0;  
+                    background: #222 image-url('discussion.png') no-repeat 0 0;
                     width: 20px;
                     height: 25px;
                     &.active {
@@ -356,6 +391,15 @@
             }
             .red {
                 color: #f00;
+            }
+            a {
+                color: #4183c4;
+                &:link, &:visited {
+                    text-decoration: none;
+                }
+                &:hover {
+                    text-decoration: underline;
+                }
             }
             .post_banner {
                 position: relative;
@@ -426,15 +470,6 @@
                 float: right;
                 width: 419px;
                 margin: 0;
-                a {
-                    color: #4183c4;
-                    &:link, &:visited {
-                        text-decoration: none;
-                    }
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
             }
             .citations {
                 float: left;

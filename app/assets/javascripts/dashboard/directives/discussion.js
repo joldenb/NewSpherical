@@ -97,11 +97,12 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         }
     };
 }])
-.directive('saveThispost', ['$http', 'uuid4', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, uuid4,  SPHR_HST, ActivityVis, ChooserData) {
+.directive('saveThispost', ['$http', '$timeout', 'uuid4', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, $timeout, uuid4,  SPHR_HST, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {
-            var data = {};
+            var data = {},
+            actvtyctrl = scope.$parent;
             elm.on('click', function() {
                 if (/[\w]+/.test(scope.post_title) && /[\w]+/.test(scope.post_text) && !scope.deactivate) {
                     scope.deactivate = true;
@@ -112,15 +113,17 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                     });
                     data.topic = scope.currenttopic;
                     data.uid = uuid4.generate();
-                    console.log('data: ' + angular.toJson(data));
                     $http.post(SPHR_HST + "forum_persistence/save_conversation_post", angular.toJson(data))
                     .success(
                         function(resp) {
-                            console.log(resp);
+                            actvtyctrl.refresh_conversations();
                             scope.post_title = '';
                             scope.post_text = '';
                             ChooserData.citations = [];
                             scope.deactivate = false;
+                            $timeout(function() {
+                              actvtyctrl.topicSwiper.swipeTo(0, 0, false);
+                            }, 100);
                         }
                     )
                     .error(

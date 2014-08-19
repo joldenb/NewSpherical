@@ -35,8 +35,11 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                             topicSwiperCtrl.slideWasClicked = false;
                         },
                         onTouchEnd: function(e) {
-                            //console.log(e.activeSlide);
-                            ChooserData.active_slide = e.activeSlide;
+                            if (ActivityVis.discussions) {
+                              ChooserData.active_discussion = e.activeSlide;
+                            } else {
+                              ChooserData.active_slide = e.activeSlide;
+                            }
                         }
                     });
                     topicSwiperCtrl.parentController.topicSwiper.swipeTo(ChooserData.active_slide,0,false);

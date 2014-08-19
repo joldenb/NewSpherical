@@ -62,6 +62,20 @@ class DashboardController < ApplicationController
       if params[:id] =~ RMongoIdRegex
         context = Context.find(params[:id])
         @items = ItemAgent.get_items(context, :types => ['discussion'])
+        @items.each do |item|
+          if author = Entity.find(item[0].submitter)
+            t = item[0].updated_at
+            author_info = {"author_handle" => author.handle, "thumb" => author.profile_image, "pubdate" => t.strftime("%B #{t.day.ordinalize}, %Y")}
+            item << author_info
+          end
+          citations_info = []
+          item[0].citations.each do |cite_id|
+            if cite = Item.find(cite_id)
+              citations_info << {"pic" => cite.image_src, "article_uri" => cite.article_uri, "description" => cite.headline}
+            end
+          end
+          item << citations_info
+        end
         render :topic_items
       else
         render :nothing => true, :status => 404
@@ -70,7 +84,7 @@ class DashboardController < ApplicationController
 
     ##
     private
-    
+
 
     def add_cors_headers
       response.headers["Access-Control-Allow-Origin"] = "*"

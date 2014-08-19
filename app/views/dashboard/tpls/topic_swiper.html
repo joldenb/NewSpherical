@@ -1,10 +1,14 @@
 <div class="swiper-container">
     <div class="swiper-wrapper">
         <div class="swiper-slide" ng-repeat="slide in slidearray" swiper-ready>
-            <div class="swiper-entity" id="{{slide.id}}" data-itemtype="{{slide.itemtype}}" slide-select ui-draggable="{{!swipe_enable}}" drag-channel="chooser" drag="slide">
+            <div class="swiper-entity" ng-class="{discussion_slide: slide.itemtype == 'discussion'}" id="{{slide.id}}" data-itemtype="{{slide.itemtype}}" slide-select ui-draggable="{{!swipe_enable}}" drag-channel="chooser" drag="slide">
                 <img src="{{slide.pic}}" brkn-img />
                 <h3>{{slide.name}}</h3>
                 <h4>{{slide.description}}</h4>
+                <div class="author_data" ng-if="slide.itemtype == 'discussion'">
+                  <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
+                  <p class="author">by {{slide.author}}<br />{{slide.pubdate}}</p>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 /*jshint jquery: true, browser: true, devel: true, globalstrict: true, sub: true */
-/* global angular */
+/* global angular, WebSocketRails */
 'use strict';
 
 angular.module('sphericalApp.ForumControllers', [])
@@ -14,7 +14,7 @@ angular.module('sphericalApp.ForumControllers', [])
         $scope.forum.is_present = function(user) {
             var filtered = $filter('filter')($scope.forum.presence, user, true);
             return filtered.length > 0;
-        }
+        };
 
         $scope.forum.forum_post_text = "";
         $scope.forum.show_fdbk = false;
@@ -53,11 +53,11 @@ angular.module('sphericalApp.ForumControllers', [])
                     }
                 );
             }
-        }
+        };
 
         $scope.forum.dispatcher = new WebSocketRails(WEBSOCKETS_URL);
         $scope.forum.dispatcher.on_open = function(data) {
-          // You can trigger new server events inside this callback if you wish. 
+          // You can trigger new server events inside this callback if you wish.
           $scope.forum.dispatcher.bind('welcome', function(data) {
               console.log(data.message);
           });
@@ -94,10 +94,10 @@ angular.module('sphericalApp.ForumControllers', [])
         };
 
         var message = {ctx_id: $scope.forum_ctx_id};
-        
-        $scope.forum.dispatcher.trigger('forum.recent_messages', message, success, failure); 
+
+        $scope.forum.dispatcher.trigger('forum.recent_messages', message, success, failure);
         $scope.forum.dispatcher.trigger('forum.count_clients', message);
 
 
-        
+
     }]);

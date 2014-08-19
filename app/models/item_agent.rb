@@ -21,12 +21,12 @@ class ItemAgent
         if item = Item.where(:oid => oid, :item_type => "r88r").first
             item.update_attributes(@params)
         else
-            item = Item.create(@params.merge(:oid => oid, :item_type => "r88r"))
+            item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
         end
 
-        if @context 
+        if @context
             if tpc = Context.find_by(:identifier => @context)
-                add_or_update_item_context(item, tpc)
+                add_or_update_item_context(item, tpc, item_type)
             else
                 item.destroy
                 raise ContextError, "Context #{@context} cannot be found."
@@ -34,7 +34,7 @@ class ItemAgent
         else
             @contexts.each do |context|
                 if tpc = Context.find_by(:identifier => context)
-                    add_or_update_item_context(item, tpc)
+                    add_or_update_item_context(item, tpc, item_type)
                 else
                     item.destroy
                     raise ContextError, "Context #{context} cannot be found."
@@ -52,12 +52,12 @@ class ItemAgent
         if item = Item.where(:oid => oid, :item_type => "linktv").first
             item.update_attributes(@params)
         else
-            item = Item.create(@params.merge(:oid => oid, :item_type => "linktv"))
+            item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
         end
 
-        if @context 
+        if @context
             if tpc = Context.find_by(:identifier => @context)
-                add_or_update_item_context(item, tpc)
+                add_or_update_item_context(item, tpc, item_type)
             else
                 item.destroy
                 raise ContextError, "Context #{@context} cannot be found."
@@ -65,7 +65,7 @@ class ItemAgent
         else
             @contexts.each do |context|
                 if tpc = Context.find_by(:identifier => context)
-                    add_or_update_item_context(item, tpc)
+                    add_or_update_item_context(item, tpc, item_type)
                 else
                     item.destroy
                     raise ContextError, "Context #{context} cannot be found."
@@ -90,11 +90,11 @@ class ItemAgent
             item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
         end
 
-        if @context 
+        if @context
             if tpc = Context.find(@context)
-                add_or_update_item_context(item, tpc)
+                add_or_update_item_context(item, tpc, item_type)
             elsif tpc = Context.find_by(:identifier => @context)
-                add_or_update_item_context(item, tpc)
+                add_or_update_item_context(item, tpc, item_type)
             else
                 item.destroy
                 raise ContextError, "Context #{@context} cannot be found."
@@ -102,7 +102,7 @@ class ItemAgent
         else
             @contexts.each do |context|
                 if tpc = Context.find_by(:identifier => context)
-                    add_or_update_item_context(item, tpc)
+                    add_or_update_item_context(item, tpc, item_type)
                 else
                     item.destroy
                     raise ContextError, "Context #{context} cannot be found."
@@ -120,12 +120,12 @@ class ItemAgent
         if item = Item.where(:oid => oid, :item_type => "topical").first
             item.update_attributes(@params)
         else
-            item = Item.create(@params.merge(:oid => oid, :item_type => "topical"))
+            item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
         end
 
-        if @context 
+        if @context
             if tpc = Context.find_by(:identifier => @context)
-                add_or_update_item_context(item, tpc)
+                add_or_update_item_context(item, tpc, item_type)
             else
                 item.destroy
                 raise ContextError, "Context #{@context} cannot be found."
@@ -133,7 +133,7 @@ class ItemAgent
         else
             @contexts.each do |context|
                 if tpc = Context.find_by(:identifier => context)
-                    add_or_update_item_context(item, tpc)
+                    add_or_update_item_context(item, tpc, item_type)
                 else
                     item.destroy
                     raise ContextError, "Context #{context} cannot be found."
@@ -150,7 +150,7 @@ class ItemAgent
         else
             return nil
         end
-        
+
         if @context == "*"
             item_ctxs = ItemContext.where(:item_id => item_id).to_ary
         elsif @context
@@ -173,12 +173,12 @@ class ItemAgent
         return nil if item_ctxs.empty?
         updated = 0
         item_ctxs.each do |ic|
-            unless ItemElevator.where(:item => item_id, 
-                                        :entity => entity_id, 
+            unless ItemElevator.where(:item => item_id,
+                                        :entity => entity_id,
                                         :context => ic.context_id).
                                         and(:created_at.gte => TopicalUtils.item_elevation_expiration.hours.ago).first
-                ItemElevator.create(:item => item_id, 
-                                    :entity => entity_id, 
+                ItemElevator.create(:item => item_id,
+                                    :entity => entity_id,
                                     :context => ic.context_id,
                                     :elevation => 1)
                 ic.inc(:elevation, 1)
@@ -236,7 +236,7 @@ class ItemAgent
             elsif chnl.kind_of?(String)
                 channel = Context.find_by(:identifier => chnl)
             else
-                raise ContextError, "Unknown input" 
+                raise ContextError, "Unknown input"
             end
 
             unless channel.context_types.include?("Channel") || channel.context_types.include?("My Channel")
@@ -249,7 +249,7 @@ class ItemAgent
             else
                 return []
             end
-                
+
             # opts
             page = opts[:page] ? opts[:page].to_i : 1
             is_initial = opts[:initial]
@@ -282,7 +282,7 @@ class ItemAgent
                         end
                     end
                 end
-                
+
                 # sort by elevation and then topic alpha, and add to top_stories_collection
                 top_stories_collection << top_stories.sort_by {|story| [-(story[0]), story[1]]}.map {|s| [s[2], s[0]]}
             end
@@ -328,14 +328,14 @@ class ItemAgent
     end
 
     private
-    def add_or_update_item_context(item, context, sort_order=nil)
+    def add_or_update_item_context(item, context, item_type, sort_order=nil)
         raise ItemError unless item.kind_of?(Item)
         raise ContextError unless context.kind_of?(Context)
         sort_order = TopicalUtils.microtime2int(Time.now) unless sort_order
         if item_ctx = ItemContext.where(:item_id => item.id, :context_id => context.id).first
             item_ctx.update_attributes(:sort_order => sort_order)
         else
-            item_ctx = ItemContext.create(:sort_order => sort_order)
+            item_ctx = ItemContext.create(:sort_order => sort_order, :item_type => item_type)
             context.item_contexts << item_ctx
             item.item_contexts << item_ctx
         end
