@@ -32,19 +32,19 @@
     	params.freeMode = params.freeMode || false;
     	params.freeModeFluid = params.freeModeFluid || false;
     	if (params.simulateTouch === false) {
-    	    params.simulateTouch = false
+    	    params.simulateTouch = false;
     	} else {
-    	    params.simulateTouch = true
+    	    params.simulateTouch = true;
     	}
     	if (params.followFinger === false) {
-    	    params.followFinger = false
+    	    params.followFinger = false;
     	} else {
-    	    params.followFinger = true
+    	    params.followFinger = true;
     	}
-    	
+
     	//AutoPlay
     	params.autoPlay = params.autoPlay || false;
-    	
+
     	//Only External Control
     	params.onlyExternal = params.onlyExternal || false;
     	//Pagination
@@ -53,23 +53,23 @@
         } else {
             params.createPagination = true;
         }
-    	
+
     	params.pagination = params.pagination || false;
     	//Default Element Classes
     	params.slideClass = params.slideClass || 'swiper-slide';
     	params.wrapperClass = params.wrapperClass || 'swiper-wrapper';
     	params.paginationClass = params.paginationClass || 'swiper-pagination-switch';
     	params.paginationActiveClass = params.paginationActiveClass || 'swiper-active-switch';
-    	
+
     	//Default Params and Vars
-    	var	$wrapper = $selector.find('.' + params.wrapperClass), 
+    	var	$wrapper = $selector.find('.' + params.wrapperClass),
     	isHorizontal,
-    	sliderSize, 
-    	numOfSlides, 
-    	wrapperSize, 
-    	direction, 
+    	sliderSize,
+    	numOfSlides,
+    	wrapperSize,
+    	direction,
     	isScrolling;
-    	
+
     	//Wrapper
         if (typeof $wrapper.get(0) === 'undefined') {
             return;
@@ -79,15 +79,15 @@
 
     	//Mode
     	isHorizontal = params.mode == 'horizontal';
-    		
+
     	//Define Touch Events
     	var touchEvents = {
     		touchStart : _this.isSupportTouch() || !params.simulateTouch  ? 'touchstart' : 'mousedown',
     		touchMove : _this.isSupportTouch() || !params.simulateTouch ? 'touchmove' : 'mousemove',
     		touchEnd : _this.isSupportTouch() || !params.simulateTouch ? 'touchend' : 'mouseup'
     	};
-    	
-    	
+
+
     	//Init Function
     	_this.init = function() {
     		var $slides = $selector.find('.' + params.slideClass),
@@ -113,49 +113,49 @@
     		else {
     			$wrapper.height(wrapperHeight);
     		}
-    	}
-    	_this.init()
-    	
+    	};
+    	_this.init();
+
     	//Pagination
     	if (params.pagination && params.createPagination) {
-    		var paginationHTML = ""
+    		var paginationHTML = "";
     		for (var i = 0; i < numOfSlides; i++) {
     			var addClass = "";
-    			if (i==0) addClass = ' ' + params.paginationActiveClass;
+    			if (i===0) addClass = ' ' + params.paginationActiveClass;
     			paginationHTML += '<span class="' + params.paginationClass + '' + addClass + '"></span>';
     		}
     		$(params.pagination).html(paginationHTML);
     	}
-    	
+
     	//Window Resize Re-init
     	window.addEventListener('resize', swiperResizeFix, false);
     	function swiperResizeFix() {
-    		_this.init()
+    		_this.init();
     		//To fix translate value
-    		_this.swipeTo(_this.activeSlide, 0, false)
+    		_this.swipeTo(_this.activeSlide, 0, false);
     	}
 
     	//Autoplay
-    	var autoPlay
+    	var autoPlay;
     	_this.startAutoPlay = function() {
     		if (params.autoPlay) {
     			autoPlay = setInterval(function() {
     				var newSlide = _this.activeSlide + 1;
     				if ( newSlide == numOfSlides) {
-                        newSlide = 0
+                        newSlide = 0;
                     }
     				_this.swipeTo(newSlide);
-    			}, params.autoPlay)
+    			}, params.autoPlay);
     		}
-    	}
+    	};
     	_this.stopAutoPlay = function() {
     		if (autoPlay)
-    			clearInterval(autoPlay)
-    	}
+    			clearInterval(autoPlay);
+    	};
     	if (params.autoPlay) {
-    		_this.startAutoPlay()
+    		_this.startAutoPlay();
     	}
-    	
+
     	//Event Listeners
     	//$wrapper.get(0).addEventListener(touchEvents.touchStart, onTouchStart, false);
     	//
@@ -177,12 +177,12 @@
 
         //Event Listeners
         $wrapper.on(touchEvents.touchStart, onTouchStart);
-        
+
         //Mouse 'mousemove' and 'mouseup' events should be assigned to document
         var listenEl = _this.isSupportTouch() ? $wrapper : $(document);
         listenEl.on(touchEvents.touchMove, onTouchMove);
         listenEl.on(touchEvents.touchEnd, onTouchEnd);
-        
+
         //Remove Events
         _this.destroy = function(removeResizeFix){
             removeResizeFix = removeResizeFix===false ? removeResizeFix : removeResizeFix || true;
@@ -192,8 +192,8 @@
             $wrapper.off(touchEvents.touchStart);
             listenEl.off(touchEvents.touchMove);
             listenEl.off(touchEvents.touchEnd);
-        }
-    	
+        };
+
     	//Event Handlers
     	function onTouchStart(event) {
     		//Exit if slider is already was touched
@@ -201,25 +201,25 @@
     			return false;
     		}
     		_this.isTouched = true;
-    		
+
     		if (!_this.isSupportTouch() || event.targetTouches.length == 1 ) {
-    			
+
     			if(!_this.isSupportTouch()) {
                     event.preventDefault();
                 }
-    			
+
     			//Start Touches to check the scrolling
     			_this.touches.startX = _this.touches.currentX = _this.isSupportTouch() ? event.targetTouches[0].pageX : event.pageX;
     			_this.touches.startY = _this.touches.currentY = _this.isSupportTouch() ? event.targetTouches[0].pageY : event.pageY;
-    			
+
     			_this.touches.start = _this.touches.current = isHorizontal ? _this.touches.startX : _this.touches.startY ;
-    			
+
     			//Set Transition Time to 0
     			_this.setTransition(0);
-    			
+
     			//Get Start Translate Position
     			_this.positions.start = _this.positions.current = isHorizontal ? _this.getTranslate('x') : _this.getTranslate('y');
-    			
+
     			//Set Transform
     			if (isHorizontal) {
     				_this.setTransform( _this.positions.start, 0, 0);
@@ -227,14 +227,14 @@
     			else {
     				_this.setTransform( 0, _this.positions.start, 0);
     			}
-    			
+
     			//TouchStartTime
     			var tst = new Date();
     			_this.times.start = tst.getTime();
-    			
+
     			//Unset Scrolling
     			isScrolling = undefined;
-    			
+
     			//CallBack
     			if (params.onTouchStart) {
                     params.onTouchStart(_this);
@@ -260,51 +260,51 @@
                     return;
                 }
     		}
-    		
+
     		//Stop AutoPlay if exist
     		if (params.autoPlay) {
     			_this.stopAutoPlay();
     		}
-    		
+
     		if (!_this.isSupportTouch() || event.touches.length == 1) {
-    						
-    			event.preventDefault()
-    			
-    			if (params.onTouchMove) params.onTouchMove(_this)
-    			
+
+    			event.preventDefault();
+
+    			if (params.onTouchMove) params.onTouchMove(_this);
+
     			_this.touches.current = isHorizontal ? (_this.isSupportTouch() ? event.targetTouches[0].pageX : event.pageX) : (_this.isSupportTouch() ? event.targetTouches[0].pageY : event.pageY) ;
-    			
-    			
-    			_this.positions.current = (_this.touches.current - _this.touches.start)*params.ratio + _this.positions.start			
-    			
+
+
+    			_this.positions.current = (_this.touches.current - _this.touches.start)*params.ratio + _this.positions.start;
+
     			//Resistance for Negative-Back sliding
     			if(_this.positions.current > 0 && !(params.freeMode&&!params.freeModeFluid)) {
     				var resistance = (sliderSize*2-_this.positions.current)/sliderSize/2;
-    				if (resistance < 0.5) 
-    					_this.positions.current = (sliderSize/2)
-    				else 
-    					_this.positions.current = _this.positions.current * resistance
-    				
+    				if (resistance < 0.5)
+    					_this.positions.current = (sliderSize/2);
+    				else
+    					_this.positions.current = _this.positions.current * resistance;
+
     			}
     			//Resistance for After-End Sliding
     			if ( Math.abs(_this.positions.current) > (wrapperSize-sliderSize) && !(params.freeMode&&!params.freeModeFluid)) {
 
     				var resistance = ((wrapperSize-sliderSize)+_this.positions.current)/(wrapperSize-sliderSize)/2;
-    				var newPos = _this.positions.current - sliderSize* resistance*(numOfSlides-1)
-    				var stopPos = -(wrapperSize-sliderSize/2)
+    				var newPos = _this.positions.current - sliderSize* resistance*(numOfSlides-1);
+    				var stopPos = -(wrapperSize-sliderSize/2);
     				if (newPos < stopPos)
-    					_this.positions.current = stopPos
-    				else 
-    					_this.positions.current = newPos
+    					_this.positions.current = stopPos;
+    				else
+    					_this.positions.current = newPos;
     			}
-    			
+
     			//Move Slides
-    			if (!params.followFinger) return
+    			if (!params.followFinger) return;
     			if (isHorizontal) _this.setTransform( _this.positions.current, 0, 0)
     			else _this.setTransform( 0, _this.positions.current, 0)
-    			
+
     			if (params.freeMode) {
-    				_this.updateActiveSlide(_this.positions.current)
+    				_this.updateActiveSlide(_this.positions.current);
     			}
     		}
     	}
@@ -312,28 +312,28 @@
     		// If slider is not touched exit
     		if ( params.onlyExternal || !_this.isTouched ) return
     		_this.isTouched = false
-    		
+
     		//Check for Current Position
     		if (!_this.positions.current) {
-    			_this.positions.current = _this.positions.start	
+    			_this.positions.current = _this.positions.start
     		}
-    		
+
     		//For case if slider touched but not moved
     		if (isHorizontal) _this.setTransform( _this.positions.current, 0, 0)
     		else _this.setTransform( 0, _this.positions.current, 0)
     		//--
-    		
+
     		// TouchEndTime
     		var tet = new Date()
     		_this.times.end = tet.getTime();
-    		
+
     		//Difference
-    		_this.touches.diff = _this.touches.current - _this.touches.start		
+    		_this.touches.diff = _this.touches.current - _this.touches.start
     		_this.touches.abs = Math.abs(_this.touches.diff)
-    		
+
     		_this.positions.diff = _this.positions.current - _this.positions.start
     		_this.positions.abs = Math.abs(_this.positions.diff)
-    		
+
     		var diff = _this.positions.diff ;
     		var diffAbs =_this.positions.abs ;
 
@@ -341,8 +341,8 @@
     			_this.swipeReset()
     		}
     		var maxPosition = wrapperSize - sliderSize
-    		
-    		
+
+
     		//Prevent Negative Back Sliding
     		if (_this.positions.current > 0) {
     			_this.swipeReset()
@@ -355,7 +355,7 @@
     			if (params.onTouchEnd) params.onTouchEnd(_this)
     			return
     		}
-    		
+
     		//Free Mode
     		if (params.freeMode) {
     			if ( (_this.times.end - _this.times.start) < 300 && params.freeModeFluid ) {
@@ -364,9 +364,9 @@
     				if (newPosition > 0) newPosition = 0;
     				if (isHorizontal)
     					_this.setTransform( newPosition, 0, 0)
-    				else 
+    				else
     					_this.setTransform( 0, newPosition, 0)
-    					
+
     				_this.setTransition( (_this.times.end - _this.times.start)*2 )
     				_this.updateActiveSlide(newPosition)
     			}
@@ -374,22 +374,22 @@
     			if (params.onTouchEnd) params.onTouchEnd(_this)
     			return
     		}
-    		
+
     		//Direction
     		direction = diff < 0 ? "toNext" : "toPrev"
-    		
+
     		//Short Touches
     		if (direction=="toNext" && ( _this.times.end - _this.times.start <= 300 ) ) {
     			if (diffAbs < 30) _this.swipeReset()
     			else _this.swipeNext();
     		}
-    		
+
     		if (direction=="toPrev" && ( _this.times.end - _this.times.start <= 300 ) ) {
-    		
+
     			if (diffAbs < 30) _this.swipeReset()
     			else _this.swipePrev();
     		}
-    		
+
     		//Long Touches
     		if (direction=="toNext" && ( _this.times.end - _this.times.start > 300 ) ) {
     			if (diffAbs >= sliderSize*0.5) {
@@ -409,10 +409,10 @@
     		}
     		if (params.onTouchEnd) params.onTouchEnd(_this)
     	}
-    	
+
     	/* ---- Swipe Functions ----*/
     	_this.swipeNext = function() {
-    		
+
     		/* For external SwipeNext Function */
     		if (!_this.positions.current) _this.positions.current = -sliderSize;
     		//--
@@ -424,24 +424,24 @@
     		else {
     			_this.setTransform(0,-newPosition,0)
     		}
-    		
+
     		_this.setTransition( params.speed)
-    		
+
     		/* For external swipeNext Function */
     		_this.touches.start = _this.touches.current
     		_this.positions.current-=sliderSize
     		//--
-    		
+
     		//Update Active Slide
     		_this.updateActiveSlide(-newPosition)
-    		
+
     		//Run Callbacks
     		slideChangeCallbacks()
-    		
+
     	}
-    	
+
     	_this.swipePrev = function() {
-    		
+
     		var getTranslate = isHorizontal ? _this.getTranslate('x') : _this.getTranslate('y')
     		if(getTranslate == 0) return false
     		var newPosition = (Math.ceil(-_this.positions.current/sliderSize)-1)*sliderSize
@@ -451,23 +451,23 @@
     			newPosition = newPosition-sliderSize
     			_this.positions.current = -newPosition
     		}
-    		
+
     		if (isHorizontal) {
     			_this.setTransform(-newPosition,0,0)
     		}
     		else  {
     			_this.setTransform(0,-newPosition,0)
-    		}		
-    		
+    		}
+
     		_this.setTransition( params.speed)
     		//Update Active Slide
     		_this.updateActiveSlide(-newPosition)
-    		
+
     		//Run Callbacks
     		slideChangeCallbacks()
-    		
+
     	}
-    	
+
     	_this.swipeReset = function(prevention) {
 
     		var newPosition = _this.positions.current<0 ? Math.round(_this.positions.current/sliderSize)*sliderSize : 0
@@ -478,45 +478,45 @@
     		else {
     			_this.setTransform(0,newPosition,0)
     		}
-    		
+
     		_this.setTransition( params.speed)
-    		
+
     		//Update Active Slide
     		_this.updateActiveSlide(newPosition)
-    		
+
     		//Reset Callback
     		if (params.onSlideReset) {
     			params.onSlideReset(_this)
     		}
     	}
-    	
+
     	_this.swipeTo = function (index, speed, runCallbacks) {
     		if (index<0 || index > (numOfSlides-1)) return false
     		runCallbacks = runCallbacks===false ? false : runCallbacks || true
     		var speed = speed===0 ? speed : speed || params.speed
     		var newPosition =  -index*sliderSize ;
     		_this.setTransform(newPosition,0,0)
-    		_this.setTransition( speed )	
+    		_this.setTransition( speed )
     		_this.updateActiveSlide(newPosition)
     		_this.positions.current = newPosition;
     		//Run Callbacks
-    		if (runCallbacks) 
+    		if (runCallbacks)
     			slideChangeCallbacks()
             return true
     	}
-    	
+
     	function slideChangeCallbacks() {
     		//Transition Start Callback
     		if (params.onSlideChangeStart) {
     			params.onSlideChangeStart(_this)
     		}
-    		
+
     		//Transition End Callback
     		if (params.onSlideChangeEnd) {
     			_this.transitionEnd(params.onSlideChangeEnd)
     		}
     	}
-    	
+
     	_this.updateActiveSlide = function(position) {
             _this.previousSlide = _this.activeSlide
     		_this.activeSlide = Math.round(-position/sliderSize)
@@ -528,7 +528,7 @@
     			_this.updatePagination()
     		}
     	}
-    	
+
     	_this.updatePagination = function() {
     		//var activeSwitch = dQ(params.pagination+' .'+params.paginationActiveClass).item(0)
     		var $activeSwitch = $(params.pagination).find('.' + params.paginationActiveClass);
@@ -537,7 +537,7 @@
     		} else {
     			$activeSwitch.removeClass('active');
     		}
-    		
+
     		$(params.pagination).find('.' + params.paginationClass).eq(_this.activeSlide).addClass(params.paginationActiveClass);
     	}
     }
@@ -563,39 +563,39 @@
     			}
     		}
     	},
-    	
+
     	//Touch Support
     	isSupportTouch : function() {
     		return ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
     	},
-    		
-    	// 3D Transforms Test 
+
+    	// 3D Transforms Test
     	isSupport3D : function() {
     		var div = document.createElement('div');
     		div.id = 'test3d';
-    			
-    		var s3d=false;	
+
+    		var s3d=false;
     		if("webkitPerspective" in div.style) s3d=true;
     		if("MozPerspective" in div.style) s3d=true;
     		if("OPerspective" in div.style) s3d=true;
     		if("MsPerspective" in div.style) s3d=true;
     		if("perspective" in div.style) s3d=true;
 
-    		/* Test with Media query for Webkit to prevent FALSE positive*/	
+    		/* Test with Media query for Webkit to prevent FALSE positive*/
     		if(s3d && ("webkitPerspective" in div.style) ) {
-    			
+
     			var st = document.createElement('style');
     			st.textContent = '@media (-webkit-transform-3d), (transform-3d), (-moz-transform-3d), (-o-transform-3d), (-ms-transform-3d) {#test3d{height:5px}}'
     			document.getElementsByTagName('head')[0].appendChild(st);
     			document.body.appendChild(div);
-    			
+
     			s3d = div.offsetHeight === 5;;
     			st.parentNode.removeChild(st);
     			div.parentNode.removeChild(div);
     		}
     		return s3d;
     	},
-    		
+
     	//GetTranslate
     	getTranslate : function(axis){
     		var el = this.wrapper
@@ -608,14 +608,14 @@
     		if (axis=='x') {
     			var curTransform = parseInt( transformMatrix.toString().split(',')[4], 10 )
     		}
-    		
+
     		if (axis=='y') {
     			var curTransform = parseInt( transformMatrix.toString().split(',')[5], 10 )
     		}
-    		
+
     		return curTransform;
     	},
-    	
+
     	//Set Transform
     	setTransform : function(x,y,z) {
     		var es = this.wrapper.style
@@ -629,13 +629,13 @@
     			es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate('+x+'px, '+y+'px)'
     		}
     	},
-    	
+
     	//Set Transition
     	setTransition : function(duration) {
     		var es = this.wrapper.style
     		es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = duration/1000+'s'
     	}
-    	
+
     }
 
 
