@@ -67,6 +67,10 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                 topicSwiperCtrl.parentController.state.go(
                     'sphere.topic.story', {story: attrs.id}
                 );
+            } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'discussion') {
+              scope.$apply(function() {
+                topicSwiperCtrl.parentController.load_current_discussion(this_index);
+              });
             }
     			});
       }

@@ -72,8 +72,11 @@ angular.module('sphericalApp.ControlBarDirectives', [])
 
                         ActivityVis.show_drag_target = false;
                         ActivityVis.swipe_enable = true;
-                        ChooserData.thispost_disabled = false;
-                        $compile(ChooserData.tswiper)(actvtyctrl);
+                        if (ChooserData.thispost_disabled) {
+                          ChooserData.thispost_disabled = false;
+                          $compile(ChooserData.tswiper)(actvtyctrl);
+                        }
+
                     }
                 });
             },

@@ -120,10 +120,8 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                             scope.post_title = '';
                             scope.post_text = '';
                             ChooserData.citations = [];
+                            ChooserData.active_discussion = 0;
                             scope.deactivate = false;
-                            $timeout(function() {
-                              actvtyctrl.topicSwiper.swipeTo(0, 0, false);
-                            }, 100);
                         }
                     )
                     .error(

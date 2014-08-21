@@ -122,12 +122,12 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.discussion_edit = false;
                 set_current_discussions($scope.currentTopic.id);
                 $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
+
             } else if (show == 'stories') {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
                 switch_topics($scope.currentTopic.id);
-                $scope.topicSwiper.swipeTo(ChooserData.active_slide - 1, 0, false);
                 if ($scope.currentStory) {
                     $state.go(
                         'sphere.topic.story', {topic: $scope.currentTopic.name, story: $scope.currentStory}
@@ -240,6 +240,10 @@ angular.module('sphericalApp.MainControllers', [])
             set_current_discussions($scope.currentTopic.id);
           });
         };
+        $scope.load_current_discussion = function(idx) {
+          $scope.currentDiscussion = format_discussion_item($scope.topic_discussions[$scope.currentTopic.id][idx]);
+          ChooserData.active_discussion = idx;
+        };
 
 
 
@@ -293,13 +297,6 @@ angular.module('sphericalApp.MainControllers', [])
                 return $scope.topics[topic];
             });
         },
-        get_discussion_items = function(topic) {
-            return DiscussionItems.get(topic).then(function(d) {
-                $scope.topic_discussions[topic] = d.items;
-            }).then(function() {
-                return $scope.topic_discussions[topic];
-            });
-        },
         switch_topics = function(topic_ctx) {
             // have to do this, else swiper.js thinks the length keeps growing
             $scope.spheredata.topics.length = 0;
@@ -316,14 +313,6 @@ angular.module('sphericalApp.MainControllers', [])
             get_topic_items($scope.spheredata.topics[idx].id).then(function() {
                 $scope.topicItems = $scope.topics[$scope.currentTopic.id];
             });
-        },
-        set_current_discussions = function(topic) {
-          $scope.spheredata.topics.length = 0;
-          get_discussion_items(topic).then(function(items) {
-              $scope.spheredata.topics = format_discussion_items_simple(items);
-              $scope.currentDiscussion = format_discussion_item(items[0]);
-              $scope.topicSwiper.swipeTo(0, 0, false);
-          });
         },
         update_current_topic = function(idx) {
             $scope.topicItems.length = 0;
@@ -351,6 +340,24 @@ angular.module('sphericalApp.MainControllers', [])
                 });
             });
 
+        },
+        get_discussion_items = function(topic) {
+            return DiscussionItems.get(topic).then(function(d) {
+                $scope.topic_discussions[topic] = d.items;
+            }).then(function() {
+                return $scope.topic_discussions[topic];
+            });
+        },
+        set_current_discussions = function(topic) {
+          $scope.spheredata.topics.length = 0;
+          get_discussion_items(topic).then(function(items) {
+              $scope.spheredata.topics = format_discussion_items_simple(items);
+              $scope.currentDiscussion = format_discussion_item(items[ChooserData.active_discussion]);
+              // $timeout lets the swiper get reloaded before reswiping
+              $timeout(function() {
+                $scope.topicSwiper.swipeTo(ChooserData.active_discussion, 0, false);
+              }, 0);
+          });
         };
 
     }]);
