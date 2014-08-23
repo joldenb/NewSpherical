@@ -18,8 +18,8 @@
         <h3>Discussion</h3>
         <div class="forum_posting">
             <div class="presence_indicator">Now present: <span class="present">{{forum.presence_counter}}</span>
-            <div class="comment_oc" comment-oc highlight-button>Comment</div></div>
-            <div class="forum_posting_form" ng-show="forum.form_visible">
+            <div class="comment_oc" comment-oc highlight-button>{{form_visible ? 'Close' : 'Comment'}}</div></div>
+            <div class="forum_posting_form" ng-show="form_visible">
                 <form novalidate>
                     <fieldset>
                         <textarea class="forum_post_text" name="forum_post_text" placeholder="Write a comment..." rows="4" ng-model="forum.forum_post_text"></textarea>

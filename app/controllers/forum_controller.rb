@@ -23,19 +23,19 @@ class ForumController < WebsocketRails::BaseController
     end
 
     def count_clients
-        ctx_id = message[:ctx_id]
+        post_id = message[:post_id]
         #value set to Time.now so stale hkeys can be swept
-        $redis.hset("prsnc#{ctx_id}", current_user.handle, Time.now.to_i)
+        $redis.hset("prsnc#{post_id}", current_user.handle, Time.now.to_i)
         #broadcast the new presence array to users on this channel
-        WebsocketRails[ctx_id].trigger(:forum_presence_message, {:msg => $redis.hkeys("prsnc#{ctx_id}")}.to_json)
+        WebsocketRails[post_id].trigger(:forum_presence_message, {:msg => $redis.hkeys("prsnc#{post_id}")}.to_json)
         #send connected users array to user joining this channel
-        new_message = {:message => $redis.hkeys("prsnc#{ctx_id}")}.to_json
+        new_message = {:message => $redis.hkeys("prsnc#{post_id}")}.to_json
         send_message :client_count, new_message
     end
 
     def recent_messages
-        ctx_id = message[:ctx_id] =~ RMongoIdRegex ? message[:ctx_id] : nil
-        ctx = Context.find(ctx_id)
+        post_id = message[:post_id] =~ RMongoIdRegex ? message[:post_id] : nil
+        ctx = Item.find(post_id)
         message_collection = []
         ctx.forum_messages.order_by(:created_at => :desc).limit(10).each do |msg|
             message = {}
@@ -46,11 +46,11 @@ class ForumController < WebsocketRails::BaseController
             message[:thumb] = author.profile_image
             message_collection << message
         end
-         
+
         if ctx
             trigger_success({:message => message_collection.to_json})
         else
-            trigger_failure({:message => "--#{ctx.identifier}"})
+            trigger_failure({:message => "--#{ctx.id}"})
         end
     end
 

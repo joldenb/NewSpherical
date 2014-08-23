@@ -6,8 +6,9 @@ class ForumMessage
     field :message, :type => String
 
     belongs_to :context
+    belongs_to :item
 
-    index({:context_id =>  1, :author_id => 1})
+    index({:item_id =>  1, :author_id => 1})
     index({:c_at => -1})
 
 end

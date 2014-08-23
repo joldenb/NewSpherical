@@ -56,7 +56,7 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.panelstate.classes = [];
         }
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData) {
 
         // these run when page loads
         SphereInfo.sphereData.then(function(d) {
@@ -121,6 +121,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.discussions = true;
                 ActivityVis.discussion_edit = false;
                 set_current_discussions($scope.currentTopic.id);
+                var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
+                ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
                 $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
 
             } else if (show == 'stories') {
@@ -199,8 +201,7 @@ angular.module('sphericalApp.MainControllers', [])
             switch_topics($scope.main_topics[adjacent_topic_index].id);
             $scope.currentTopicIdx = adjacent_topic_index;
             update_current_topic(adjacent_topic_index);
-            get_discussion_items(adjacent_topic_index);
-
+            get_discussion_items($scope.main_topics[adjacent_topic_index].id);
             // $scope.topicSwiper and $scope.itemSwiper are instantiated by the swiperReady
             // and itemSwiperReady directives
             $scope.topicSwiper.init();
@@ -238,11 +239,15 @@ angular.module('sphericalApp.MainControllers', [])
           get_discussion_items($scope.currentTopic.id).then(function() {
             $scope.currentTopicDiscussions = $scope.topic_discussions[$scope.currentTopic.id];
             set_current_discussions($scope.currentTopic.id);
+            var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
+            ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
           });
         };
         $scope.load_current_discussion = function(idx) {
-          $scope.currentDiscussion = format_discussion_item($scope.topic_discussions[$scope.currentTopic.id][idx]);
+          var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][idx];
+          $scope.currentDiscussion = format_discussion_item(current_discussion);
           ChooserData.active_discussion = idx;
+          ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
         };
 
 
@@ -351,11 +356,15 @@ angular.module('sphericalApp.MainControllers', [])
         set_current_discussions = function(topic) {
           $scope.spheredata.topics.length = 0;
           get_discussion_items(topic).then(function(items) {
-              $scope.spheredata.topics = format_discussion_items_simple(items);
-              $scope.currentDiscussion = format_discussion_item(items[ChooserData.active_discussion]);
+              if ($scope.topic_discussions[topic]) {
+                $scope.spheredata.topics = format_discussion_items_simple(items);
+                ChooserData.active_discussion = 0;
+                $scope.currentDiscussion = format_discussion_item(items[0]);
+                ForumData.change_context(topic, $scope.currentDiscussion.id);
+              }
               // $timeout lets the swiper get reloaded before reswiping
               $timeout(function() {
-                $scope.topicSwiper.swipeTo(ChooserData.active_discussion, 0, false);
+                $scope.topicSwiper.swipeTo(0, 0, false);
               }, 0);
           });
         };

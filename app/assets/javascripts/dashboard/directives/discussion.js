@@ -138,18 +138,19 @@ angular.module('sphericalApp.DiscussionDirectives', [])
 .directive('commentOc', ['ForumData', function(ForumData) {
     return {
         restrict: 'A',
+        controller: function ($scope) {
+          $scope.form_visible = ForumData.form_visible;
+        },
         link: function(scope, elm, attrs, ctrl) {
             elm.on('click', function() {
-                if (!ForumData.form_visible) {
+                if (!scope.form_visible) {
                     scope.$apply(function() {
-                        ForumData.form_visible = true;
+                        scope.form_visible = true;
                     });
-                    elm.html('Close');
                 } else {
                     scope.$apply(function() {
-                        ForumData.form_visible = false;
+                        scope.form_visible = false;
                     });
-                    elm.html('Comment');
                 }
             });
         }

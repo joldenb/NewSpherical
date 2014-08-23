@@ -10,7 +10,10 @@ angular.module('sphericalApp.DataContainerServices', [])
         };
     }])
     .service('ForumData', [function() {
-        return {};
+        return {
+          forum_ctx_id: '',
+          form_visible: false
+        };
     }])
     .service('ChooserData', [function() {
         return {

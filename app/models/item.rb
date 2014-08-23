@@ -4,9 +4,10 @@ class Item
 
     has_many :item_contexts
     has_many :item_elevators
+    has_many :forum_messages
 
     embeds_many :comments
-    
+
     field :item_type, :type => String
     field :oid, :type => String
     field :headline, :type => String
@@ -27,7 +28,7 @@ class Item
     index({:name => 1})
     index({:oid => 1}, {:unique => true})
     index({:sort_order => -1})
-    
+
     validates_uniqueness_of :oid
     validates_inclusion_of :item_type, in: ItemTypes
 
