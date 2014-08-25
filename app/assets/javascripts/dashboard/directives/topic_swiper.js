@@ -71,6 +71,9 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
               scope.$apply(function() {
                 topicSwiperCtrl.parentController.load_current_discussion(this_index);
               });
+              topicSwiperCtrl.parentController.state.go(
+                  'sphere.topic.discussion', {discussion: attrs.id}
+              );
             }
     			});
       }
