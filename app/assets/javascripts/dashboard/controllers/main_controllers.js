@@ -73,19 +73,34 @@ angular.module('sphericalApp.MainControllers', [])
             angular.forEach(topics, function(topic, idx) {
                 if (topic.name == $state.params.topic) {
                     set_current_topic(idx, true);
-                    switch_topics(topic.id);
-                    get_discussion_items(topic.id).then(function() {
-                      $scope.currentTopicDiscussions = $scope.topic_discussions[topic.id];
+                    get_discussion_items(topic.id).then(function(items) {
+                      if (items.length > 0) {
+                        $scope.currentTopicDiscussions = $scope.topic_discussions[topic.id];
+                      }
+                      if ($state.includes('**.discussion.**')) {
+                        $scope.spheredata.topics = format_discussion_items_simple(items);
+                        var discussion_index = get_discussion_index(items, $state.params.discussion);
+                        ChooserData.active_discussion = discussion_index;
+                        $scope.currentDiscussion = format_discussion_item(items[discussion_index]);
+                        var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][discussion_index];
+                        ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
+                        ActivityVis.stories = false;
+                        ActivityVis.discussions = true;
+                        $timeout(function () {
+                          $scope.topicSwiper.swipeTo(discussion_index - 1, 0, false);
+                        },0);
+                    } else {
+                        switch_topics(topic.id);
+                        if ($state.includes('**.story')) {
+                          $scope.currentStory = $state.params.story;
+                        }
+                      }
                     });
                     $scope.topicIndicatorVisible = true;
                     $scope.$parent.openDash = true;
                 }
             });
         });
-
-        if ($state.includes('**.story')) {
-          $scope.currentStory = $state.params.story;
-        }
 
         UserInfo.signedin().then(function(d) {
             ActivityVis.signedin = d.signedin;
@@ -152,6 +167,11 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.slide_select = function(slide_index, slide_id, current_story_id) {
             set_current_topic(slide_index, true);
             switch_topics(slide_id);
+            get_discussion_items(slide_id).then(function(items) {
+              if (items.length > 0) {
+                $scope.currentTopicDiscussions = $scope.topic_discussions[slide_id];
+              }
+            });
             $scope.$apply(function() {
                 $scope.topicIndicatorVisible = true;
             });
@@ -249,8 +269,6 @@ angular.module('sphericalApp.MainControllers', [])
           ChooserData.active_discussion = idx;
           ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
         };
-
-
 
         // private functions
         var format_topic_items_simple = function(items) {
@@ -367,6 +385,20 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.topicSwiper.swipeTo(0, 0, false);
               }, 0);
           });
+        },
+        get_discussion_index = function (items, item_id) {
+          var item_index = 0;
+          angular.forEach(items, function (item, idx) {
+            if (item_id == item[0]['_id']) {
+              item_index = idx;
+              return;
+            } else {
+              // TODO: ask server to lookup item and add it to the front of the chooser
+              //       in case it's in a downrange page.
+              //       Need to do something similar for stories.
+            }
+          });
+          return item_index;
         };
 
     }]);
