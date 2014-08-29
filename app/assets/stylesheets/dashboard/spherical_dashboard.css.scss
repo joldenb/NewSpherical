@@ -434,6 +434,24 @@
                         }
                     }
                 }
+                .edit_btn {
+                    position: absolute;
+                    font-size: .8em;
+                    font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    height: 18px;
+                    width: 35px;
+                    border: 1px solid #bbb;
+                    background: transparent image-url('pen-small.png') no-repeat 4px 1px;
+                    @include border-radius(6px);
+                    top: 3px;
+                    right: 15px;
+                    padding: 0 3px 0 25px;
+                    cursor: pointer;
+                    opacity: 1;
+                    &.highlight {
+                        background-color: #0c63bf;
+                    }
+                }
             }
             .swiper-entity {
                 margin: 0;
