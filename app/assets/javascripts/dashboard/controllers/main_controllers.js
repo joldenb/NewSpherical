@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('sphericalApp.MainControllers', [])
-    .controller('MainCtrl', ['$scope', '$rootScope', '$state', 'SphereInfo', 'ActivityVis', function($scope, $rootScope, $state, SphereInfo, ActivityVis) {
+    .controller('MainCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$http', 'SPHR_HST', 'SphereInfo', 'UserInfo', 'ActivityVis', function($scope, $rootScope, $state, $timeout, $http, SPHR_HST, SphereInfo, UserInfo, ActivityVis) {
         $scope.spheredata = {};
         SphereInfo.sphereData.then(function(d) {
             $scope.spheredata.dashlogo = d.data.dashlogo;
@@ -14,6 +14,11 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.openDash = false;
         }
 
+        $scope.check_signin = function(callback) {
+          UserInfo.signedin().then(function(d) {
+              callback(d.signedin);
+          });
+        };
     }])
     .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData) {
         $scope.state = $state;
@@ -102,8 +107,8 @@ angular.module('sphericalApp.MainControllers', [])
             });
         });
 
-        UserInfo.signedin().then(function(d) {
-            ActivityVis.signedin = d.signedin;
+        $scope.check_signin(function(signedin) {
+          ActivityVis.signedin = signedin;
         });
 
         // runs on state change
@@ -310,6 +315,7 @@ angular.module('sphericalApp.MainControllers', [])
           formatted.elevation = item[1];
           formatted.itemtype = 'discussion';
           formatted.author = item[2]['author_handle'];
+          formatted.author_id = item[0]['submitter'];
           formatted.thumbnail = item[2]['thumb'];
           return formatted;
         },
