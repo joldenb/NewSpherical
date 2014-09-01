@@ -4,6 +4,8 @@ angular.module('sphericalApp.DataContainerServices', [])
             stories: true,
             discussions: false,
             discussion_edit: false,
+            discussions_active: false,
+            stories_active: true,
             show_drag_target: false,
             swipe_enable: true,
             thispost_disabled: false
@@ -19,6 +21,8 @@ angular.module('sphericalApp.DataContainerServices', [])
         return {
             active_slide: 0,
             active_discussion: 0,
-            citations: []
+            thispostdata: {
+              citations: []
+            }
         };
     }]);

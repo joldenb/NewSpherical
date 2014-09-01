@@ -506,13 +506,14 @@
                     margin: 10px;
                 }
                 .cite_btn {
+                    display: inline-block;
                     font-size: .95em;
                     background: #e8e8e8;
                     width: 95%;
                     margin: 10px 10px 5px;
                     padding: 7px 10px;
                     color: #555;
-                    width: 380px;
+                    width: 180px;
                     @include border-radius(8px);
                     border: 1px solid #d4d4d4;
                     cursor: pointer;
@@ -534,6 +535,14 @@
                         background: #073a70;
                         color: #fff;
                     }
+                }
+                .chooserstate {
+                  display: inline-block;
+                  font-size: .85em;
+                  width: 180px;
+                  input {
+                    margin: 0 2px 0 10px;
+                  }
                 }
                 .citation_container {
                     position: relative;

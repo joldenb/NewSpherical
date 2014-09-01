@@ -1,39 +1,45 @@
 <div class="post">
     <div class="post_banner">
-        <h3>{{post_title || 'New Post'}}</h3>
+        <h3>{{chooserdata.thispostdata.description || 'New Post'}}</h3>
     </div>
 
     <div id="thispost">
-        <form ng-submit="postSubmit()" novalidate>
-            <input type="hidden" value="{{currenttopic}}">
+        <form novalidate>
             <fieldset>
-                <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="post_title" ng-disabled="chooserdata.thispost_disabled" />
+                <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="chooserdata.thispostdata.description" ng-disabled="chooserdata.thispost_disabled" />
 
-                <div class="cite_btn" ng-show="!visible.show_drag_target" drag-target>Cite an Article</div>
+                <div ng-show="!visible.show_drag_target">
+                  <div class="cite_btn" drag-target>Cite an Article</div>
+                  <div class="chooserstate">
+                    <input type="radio" name="chooserstate" ng-checked="visible.stories_active" value="stories" chsr-state> Stories
+                    <input type="radio" name="chooserstate" ng-checked="visible.discussions_active" value="discussions" chsr-state> Discussions
+
+                  </div>
+                </div>
                 <div class="cite_btn target" ng-show="visible.show_drag_target" ui-on-drop="handle_dragdrop($event, $data)" drop-channel="chooser">Drag Article Here<span class="close" drag-target>&nbsp;</span></div>
 
-                <div class="citation_container" ng-repeat="cite in chooserdata.citations">
+                <div class="citation_container" ng-repeat="cite in chooserdata.thispostdata.citations">
                     <div class="description">{{cite.description}}<div class="del-btn" cite-delete idx="$index">&nbsp;</div></div>
                 </div>
 
-                <textarea class="post_text" name="post_text" placeholder="Write a new post..." rows="15" ng-model="post_text" ng-disabled="chooserdata.thispost_disabled"></textarea>
+                <textarea class="post_text" name="post_text" placeholder="Write a new post..." rows="15" ng-model="chooserdata.thispostdata.text" ng-disabled="chooserdata.thispost_disabled"></textarea>
             </fieldset>
         </form>
     </div>
 </div>
 <div class="post preview">
     <div class="post_banner">
-        <div class="save_btn" save-thispost hover-highlight ng-class="{active: post_title && post_text}">Save</div>
+        <div class="save_btn" save-thispost hover-highlight ng-class="{active: chooserdata.thispostdata.description && chooserdata.thispostdata.text}">Save</div>
         <h3>Preview</h3>
     </div>
-    <h3>{{post_title}}</h3>
+    <h3>{{chooserdata.thispostdata.description}}</h3>
     <div class="citations">
-        <div class="cite" ng-repeat="cite in chooserdata.citations">
+        <div class="cite" ng-repeat="cite in chooserdata.thispostdata.citations">
             <div class="swiper-entity">
                 <img src="{{cite.pic}}" brkn-img />
                 <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description}}</h4></a>
             </div>
         </div>
     </div>
-    <p btf-markdown="post_text" id="preview_text"></p>
+    <p btf-markdown="chooserdata.thispostdata.text" id="preview_text"></p>
 </div>

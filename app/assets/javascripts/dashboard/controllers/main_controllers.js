@@ -91,6 +91,8 @@ angular.module('sphericalApp.MainControllers', [])
                         ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
                         ActivityVis.stories = false;
                         ActivityVis.discussions = true;
+                        ActivityVis.discussions_active = true;
+                        ActivityVis.stories_active = false;
                         $timeout(function () {
                           $scope.topicSwiper.swipeTo(discussion_index - 1, 0, false);
                         },0);
@@ -98,6 +100,8 @@ angular.module('sphericalApp.MainControllers', [])
                         switch_topics(topic.id);
                         if ($state.includes('**.story')) {
                           $scope.currentStory = $state.params.story;
+                          ActivityVis.discussions_active = false;
+                          ActivityVis.stories_active = true;
                         }
                       }
                     });
@@ -140,6 +144,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories = false;
                 ActivityVis.discussions = true;
                 ActivityVis.discussion_edit = false;
+                ActivityVis.discussions_active = true;
+                ActivityVis.stories_active = false;
                 set_current_discussions($scope.currentTopic.id);
                 var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
                 ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
@@ -149,6 +155,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
+                ActivityVis.discussions_active = false;
+                ActivityVis.stories_active = true;
                 switch_topics($scope.currentTopic.id);
                 if ($scope.currentStory) {
                     $state.go(
@@ -168,7 +176,19 @@ angular.module('sphericalApp.MainControllers', [])
                 return false;
             }
         };
-
+        $scope.switch_chooser = function(chooser_state) {
+          if (chooser_state == 'discussions') {
+            set_current_discussions($scope.currentTopic.id);
+            $scope.topicSwiper.swipeTo(ChooserData.active_discussion, 0, false);
+            ActivityVis.discussions_active = true;
+            ActivityVis.stories_active = false;
+          } else if (chooser_state == 'stories') {
+            switch_topics($scope.currentTopic.id);
+            $scope.topicSwiper.swipeTo(ChooserData.active_slide, 0, false);
+            ActivityVis.discussions_active = false;
+            ActivityVis.stories_active = true;
+          }
+        };
         $scope.slide_select = function(slide_index, slide_id, current_story_id) {
             set_current_topic(slide_index, true);
             switch_topics(slide_id);
@@ -310,6 +330,7 @@ angular.module('sphericalApp.MainControllers', [])
           formatted.id = item[0]['_id'];
           formatted.description = item[0]['headline'];
           formatted.text = item[0]['text'];
+          formatted.oid = item[0]['oid'];
           formatted.citations = item[3];
           formatted.pubdate = item[2]['pubdate'];
           formatted.elevation = item[1];

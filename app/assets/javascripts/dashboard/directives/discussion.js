@@ -1,5 +1,6 @@
 /*jshint jquery: true, browser: true, devel: true, globalstrict: true, sub: true */
 /* global angular */
+/* global toMarkdown */
 'use strict';
 
 angular.module('sphericalApp.DiscussionDirectives', [])
@@ -41,13 +42,13 @@ angular.module('sphericalApp.DiscussionDirectives', [])
             $scope.handle_dragdrop = function(event, data) {
                 var dup = false,
                 actvtyctrl = $scope.$parent;
-                angular.forEach(ChooserData.citations, function(citation) {
+                angular.forEach(ChooserData.thispostdata.citations, function(citation) {
                     if (citation.id == data.id) {
                         dup = true;
                     }
                 });
                 if (!dup) {
-                    ChooserData.citations.push(data);
+                    ChooserData.thispostdata.citations.push(data);
                 }
                 ActivityVis.show_drag_target = false;
                 ActivityVis.swipe_enable = true;
@@ -90,7 +91,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         link: function(scope, elm, attrs) {
             elm.on('click', function() {
                 scope.$apply(function() {
-                    ChooserData.citations.splice(scope.idx, 1);
+                    ChooserData.thispostdata.citations.splice(scope.idx, 1);
                 });
                 $('#preview_text').find('p').last().append(' '); // reflow text
             });
@@ -104,24 +105,26 @@ angular.module('sphericalApp.DiscussionDirectives', [])
             var data = {},
             actvtyctrl = scope.$parent;
             elm.on('click', function() {
-                if (/[\w]+/.test(scope.post_title) && /[\w]+/.test(scope.post_text) && !scope.deactivate) {
+                if (/[\w]+/.test(ChooserData.thispostdata.description) && /[\w]+/.test(ChooserData.thispostdata.text) && !scope.deactivate) {
                     scope.deactivate = true;
-                    data.title = scope.post_title;
+                    data.title = ChooserData.thispostdata.description;
                     data.content = angular.element('#preview_text').html();
-                    data.citations = ChooserData.citations.map(function(cite) {
+                    data.citations = ChooserData.thispostdata.citations.map(function(cite) {
                         return cite.id;
                     });
                     data.topic = scope.currenttopic;
-                    data.uid = uuid4.generate();
+                    data.oid = ChooserData.thispostdata.oid || uuid4.generate();
+                    data.post_id = ChooserData.thispostdata.id;
                     $http.post(SPHR_HST + "forum_persistence/save_conversation_post", angular.toJson(data))
                     .success(
                         function(resp) {
                             actvtyctrl.refresh_conversations();
-                            scope.post_title = '';
-                            scope.post_text = '';
-                            ChooserData.citations = [];
+                            ChooserData.thispostdata = {citations:[]};
                             ChooserData.active_discussion = 0;
                             scope.deactivate = false;
+                            ActivityVis.stories = false;
+                            ActivityVis.discussions = true;
+                            ActivityVis.discussion_edit = false;
                         }
                     )
                     .error(
@@ -133,6 +136,45 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                 }
             });
         }
+    };
+}])
+.directive('editPost', ['$http', '$timeout', 'uuid4', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, $timeout, uuid4,  SPHR_HST, ActivityVis, ChooserData) {
+  return {
+    restrict: 'A',
+    link: function (scope, elm, attrs) {
+      elm.on('click', function () {
+        scope.visible.stories_active = false;
+        scope.visible.discussions_active = true;
+
+        scope.check_signin(function(signedin) {
+          if (signedin && signedin.id == scope.currentDiscussion.author_id) {
+            var formatted_post_data = {};
+            angular.forEach(scope.currentDiscussion, function(value, key) {
+              if (key == 'text') {
+                formatted_post_data[key] = toMarkdown(value);
+              } else {
+                formatted_post_data[key] = value;
+              }
+            });
+            ChooserData.thispostdata = formatted_post_data;
+            ActivityVis.stories = false;
+            ActivityVis.discussions = false;
+            ActivityVis.discussion_edit = true;
+          }
+        });
+      });
+    }
+  };
+}])
+.directive('chsrState', [function() {
+  return {
+      restrict: 'A',
+      link: function(scope, elm, attrs) {
+        var actvtyctrl = scope.$parent;
+        elm.on('click', function() {
+          actvtyctrl.switch_chooser(attrs.value);
+        });
+      }
     };
 }])
 .directive('commentOc', ['ForumData', function(ForumData) {

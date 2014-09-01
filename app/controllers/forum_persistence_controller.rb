@@ -40,11 +40,14 @@ class ForumPersistenceController < ApplicationController
       if !current_dashboard_user
         render(:json => {"error" => "signin required"}, :status => 401) and return
       end
-      post = DiscussionPost.new.format_post(params)
       context = params[:topic]
       author = current_dashboard_user.id.to_s
+      post = DiscussionPost.new.format_post(params)
       post_hash = Hash[post.each_pair.to_a]
-      post_hash["submitter"] = author
+      if !params[:post_id] || !Item.where(:id => params[:post_id].to_s, :submitter => author)
+      # therefore a new post, not an edit
+        post_hash["submitter"] = author
+      end
 
       item = ItemAgent.new(context, post_hash).create_or_update_feed_item("discussion")
       render(:json => {:saved => item.id}) and return

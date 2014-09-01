@@ -69,9 +69,10 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                         ActivityVis.stories = false;
                         ActivityVis.discussions = false;
                         ActivityVis.discussion_edit = true;
-
+                      
                         ActivityVis.show_drag_target = false;
                         ActivityVis.swipe_enable = true;
+                        ChooserData.thispostdata = {citations:[]};
                         if (ChooserData.thispost_disabled) {
                           ChooserData.thispost_disabled = false;
                           $compile(ChooserData.tswiper)(actvtyctrl);

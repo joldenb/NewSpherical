@@ -71,7 +71,7 @@ class DashboardController < ApplicationController
           citations_info = []
           item[0].citations.each do |cite_id|
             if cite = Item.find(cite_id)
-              citations_info << {"pic" => cite.image_src, "article_uri" => cite.article_uri, "description" => cite.headline}
+              citations_info << {"id" => cite_id, "pic" => cite.image_src, "article_uri" => cite.article_uri, "description" => cite.headline}
             end
           end
           item << citations_info
