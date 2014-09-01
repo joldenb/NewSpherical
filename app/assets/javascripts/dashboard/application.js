@@ -18,3 +18,5 @@
 //= require markdown
 //= require angular-uuid4.min
 //= require draganddrop
+//= require he
+//= require to-markdown
