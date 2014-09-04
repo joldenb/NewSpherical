@@ -20,46 +20,49 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
     }])
-    .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData) {
+    .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', 'UserInfo', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData, UserInfo) {
         $scope.state = $state;
-        $scope.panelstate = {};
-        $scope.panelstate.visible = false;
-        $scope.panelstate.classes = [];
-        ControlPanelData.get().then(function(d) {
-            $scope.controlPanels = d.panels;
+        UserInfo.signedin().then(function(d) {
+            $scope.signedin = d.signedin;
         });
+        // $scope.panelstate = {};
+        // $scope.panelstate.visible = false;
+        // $scope.panelstate.classes = [];
+        // ControlPanelData.get().then(function(d) {
+        //     $scope.controlPanels = d.panels;
+        // });
 
-        $rootScope.$on('$stateChangeSuccess',
-            function(event, toState, toParams, fromState, fromParams) {
-                if (!/ctrlpanel/.test(toState.name)) {
-                    $scope.panelstate.classes.push('windowshade');
-                    $timeout(function() {
-                        $scope.panelstate.classes = [];
-                        $scope.panelstate.visible = false;
-                    }, 1000);
-                }
-            }
-        );
-
-        var expbg = '',
-        set_expd_bg = function(destn) {
-            angular.forEach($scope.controlPanels, function(panel) {
-                if (panel.destination && panel.destination == destn) {
-                    expbg = panel.expanded_bg;
-                    return;
-                }
-            });
-        };
-
-        if ($state.includes('**.ctrlpanel.**')) {
-            set_expd_bg($state.params.destination);
-            $scope.panelstate.visible = true;
-            $scope.panelstate.classes = ['expanded', expbg];
-            $scope.$parent.openDash = true;
-        } else {
-            $scope.panelstate.visible = false;
-            $scope.panelstate.classes = [];
-        }
+        // $rootScope.$on('$stateChangeSuccess',
+        //     function(event, toState, toParams, fromState, fromParams) {
+        //         if (!/ctrlpanel/.test(toState.name)) {
+        //             $scope.panelstate.classes.push('windowshade');
+        //             $timeout(function() {
+        //                 $scope.panelstate.classes = [];
+        //                 $scope.panelstate.visible = false;
+        //             }, 1000);
+        //         }
+        //     }
+        // );
+        //
+        // var expbg = '',
+        // set_expd_bg = function(destn) {
+        //     angular.forEach($scope.controlPanels, function(panel) {
+        //         if (panel.destination && panel.destination == destn) {
+        //             expbg = panel.expanded_bg;
+        //             return;
+        //         }
+        //     });
+        // };
+        //
+        // if ($state.includes('**.ctrlpanel.**')) {
+        //     set_expd_bg($state.params.destination);
+        //     $scope.panelstate.visible = true;
+        //     $scope.panelstate.classes = ['expanded', expbg];
+        //     $scope.$parent.openDash = true;
+        // } else {
+        //     $scope.panelstate.visible = false;
+        //     $scope.panelstate.classes = [];
+        // }
     }])
     .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData) {
 

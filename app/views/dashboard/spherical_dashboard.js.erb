@@ -12,7 +12,7 @@ var Spherical = (function(window, undefined) {
         'sphericalJs': '<%= ENV['FULLHOST'] %>assets/dashboard/application.js'
       },
       complete: function () {
-        
+
         var getDashboardParams = function() {
             var params = {uri: '<%= ENV['FULLHOST'] %>dashboard/', config: {}};
             params.page = 'init';
@@ -32,7 +32,7 @@ var Spherical = (function(window, undefined) {
                     $('#dashboard_content').html(response);
                     $('#spherical_open').css({color:'#fff'}).on('click', function(e) {
                         e.preventDefault();
-                        $('#spherical_dashboard_container').show('slow');
+                        $('#spherical_dashboard_container').show('blind', 1000);
                         if (!/sphere/.test(window.location.href)) {
                             window.location.href = '/#/sphere';
                         }
@@ -40,11 +40,11 @@ var Spherical = (function(window, undefined) {
                     angular.bootstrap(document, ['sphericalApp']);
                 }
             });
-        }; 
+        };
         getDashboardData(params, function() {
             drawDashboard(params);
         });
       }
     });
-    return Spherical; 
+    return Spherical;
 })(window);

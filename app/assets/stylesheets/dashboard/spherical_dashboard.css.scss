@@ -31,9 +31,9 @@
     #dashboard_content {
         position: relative;
         z-index: 1001;
-        width: 1008px;
+        max-width: 1008px;
         height: 750px;
-        margin: 60px auto 0;
+        margin: 0px auto 0;
         background: #000;
         color: #fff;
         #dashlogo {
@@ -41,11 +41,61 @@
             top: 0;
             left: 0;
         }
+        #usermenu {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 180px;
+          width: 132px;
+          background: #222;
+          .menu_item {
+            height: 18px;
+            font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+            cursor: pointer;
+            padding: 10px 40px 5px 0;
+            text-align: right;
+            line-height: 1.1em;
+            &.closedash {
+              background: transparent image-url('dash-close.png') no-repeat 104px 6px;
+            }
+            &.signin {
+              background: transparent image-url('signin-icon.png') no-repeat 104px 6px;
+            }
+            &.signout {
+              background: transparent image-url('signout-icon.png') no-repeat 104px 6px;
+            }
+            &.highlight {
+              background-color: #073a70;
+            }
+          }
+        }
         #user_area {
             position: relative;
-            height: 249px;
-            margin-left: 337px;
-            .control_panels {
+            height: 180px;
+            margin-left: 301px;
+            width: 70.04%;
+            background: #222;
+            .userspheres {
+              height: 180px;
+              width: 81%;
+              .usphere {
+                position: absolute;
+                height: 100px;
+                width: 100px;
+                background: #555;
+                @include border-radius(50px);
+                cursor: pointer;
+                p {
+                  position: absolute;
+                  top: 40px;
+                  text-align: center;
+                  font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                  color: #fff;
+                  width: 100px;
+                }
+              }
+            }
+            /* .control_panels {
                 float: left;
                 margin: 1px 1px 0 0;
                 width: 24.85%;
@@ -127,7 +177,7 @@
                         }
                     }
                 }
-            }
+            } */
         }
 
         .tooltip_above {
@@ -173,7 +223,6 @@
         .activity_ctrl {
             margin: 0;
             padding: 0;
-            height: 500px;
         }
         .swiper-container {
             margin:0 auto;
@@ -719,7 +768,7 @@
         }
         .activity_window {
             position: relative;
-            height: 500px;
+            height: 448px;
             margin: 1px 0;
             background: #000;
             .topic_indicator {
@@ -758,22 +807,22 @@
             }
             .item_display {
                 margin: 0 1px 0 164px;
-                height: 500px;
+                height: 448px;
                 overflow: hidden;
                 .item-swiper {
-                    height: 500px;
+                    height: 448px;
                     margin: 0;
                     .swiper-container {
                         width: 100%;
                         margin: 0 0 0 -20px;
                         padding-left: 23px;
                         padding-right: 9px;
-                        height: 500px;
+                        height: 448px;
                         background: #222;
                     }
                     .swiper-slide {
                         width: 680px;
-                        height: 500px;
+                        height: 448px;
                     }
                     .swiper-entity {
                         float: left;
@@ -781,12 +830,12 @@
                         background: #444;
                         overflow: hidden;
                         width: 656px;
-                        height: 500px;
+                        height: 448px;
                         cursor: pointer;
                         position: relative;
                         padding: 0 20px 0 0;
                         .item_content {
-                            height: 500px;
+                            height: 448px;
                             overflow: hidden;
                         }
                         h3 {

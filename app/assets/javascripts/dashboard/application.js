@@ -1,8 +1,8 @@
+//= require dashboard/jq.swiper-1.3
 //= require angular-1.2.16/angular.min
 //= require angular-1.2.16/angular-sanitize.min
 //= require angular-1.2.16/angular-animate.min
 //= require angular-1.2.16/angular-ui-router
-//= require dashboard/jq.swiper-1.3
 //= require dashboard/websocket/websocket_rails
 //= require dashboard/websocket/channel
 //= require dashboard/websocket/event
@@ -20,3 +20,4 @@
 //= require draganddrop
 //= require he
 //= require to-markdown
+//= require jquery-ui.min

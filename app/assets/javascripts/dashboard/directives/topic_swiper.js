@@ -44,7 +44,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                     });
                     topicSwiperCtrl.parentController.topicSwiper.swipeTo(ChooserData.active_slide,0,false);
                     if (topicSwiperCtrl.parentController.openDash) {
-                        $('#spherical_dashboard_container').show('slow');
+                        $('#spherical_dashboard_container').show('blind', 1500);
                     }
                 }
             }
