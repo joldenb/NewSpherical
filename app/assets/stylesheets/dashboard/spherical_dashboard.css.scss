@@ -31,6 +31,7 @@
     #dashboard_content {
         position: relative;
         z-index: 1001;
+        width: 100%;
         max-width: 1008px;
         height: 750px;
         margin: 0px auto 0;
@@ -84,6 +85,8 @@
                 width: 100px;
                 background: #555;
                 @include border-radius(50px);
+                @include box-shadow(1px 1px 50px 1px #222);
+                @include background-image(radial-gradient(center center, #888, #555));
                 cursor: pointer;
                 p {
                   position: absolute;
