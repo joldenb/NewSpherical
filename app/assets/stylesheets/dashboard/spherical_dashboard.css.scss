@@ -90,11 +90,17 @@
                 cursor: pointer;
                 p {
                   position: absolute;
-                  top: 40px;
+                  top: 33px;
                   text-align: center;
                   font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
                   color: #fff;
                   width: 100px;
+                }
+                &.userpic {
+                  width: 58px;
+                  height: 58px;
+                  @include border-radius(29px);
+                  overflow: hidden;
                 }
               }
             }

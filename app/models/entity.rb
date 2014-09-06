@@ -5,7 +5,7 @@ class Entity
   has_secure_password
 
   mount_uploader :profile_pic, ProfilePicUploader
-  
+
   field :email, :type => String
   field :screen_name, :type => String, :default => ""
   field :handle, :type => String
@@ -23,24 +23,24 @@ class Entity
   validates_format_of :handle, :with => RHandleRegex, :message => " may only contain letters/numbers/dashes.", :allow_blank => true
   validates_uniqueness_of :handle
   validates_inclusion_of :entity_type, in: ["Individual", "Institutional"]
-  
+
   embeds_many :idps
   embeds_many :roles
   embeds_one :settings_list
   has_many :entity_contexts
   has_many :item_elevators
-  
+
   index({:email => 1}, {:unique => true})
   index({:handle => 1}, {:unique => true, :sparse => true})
   index({:remember_me_token => 1}, {:unique => true, :sparse => true})
   index({:screen_name => 1})
   index({"idp.uid" => 1, "idp.provider" => 1})
   index({"role.context" => 1})
-  
+
 
   def profile_image
     if !self.profile_pic.thumb.url.nil?
-      self.profile_pic.thumb.url
+      ENV['FULLHOST'] + self.profile_pic.thumb.url
     else
       return nil if self.idps.empty? && self.settings_list.nil?
       if img_src = get_setting_for(:primary_image_src)

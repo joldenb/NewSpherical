@@ -14,10 +14,10 @@ class SphereController < ApplicationController
         else
             render(:nothing => true, :status => 401) and return
         end
-        
+
     end
 
-    def signin 
+    def signin
         token = params[:token]
         signin_token_value = $redis.lrange("sntoken:#{token}", 0, -1)
         if signin_token_value.present?
@@ -30,14 +30,14 @@ class SphereController < ApplicationController
                     $redis.expire("sess:#{session[:sess]}", 3600)
                     jwt = JWT.encode(session[:sess], ENV['JWT_HKEY'])
                     return_uri = make_signin_token(session[:sess], session[:signin_return], session[:rtnstate], jwt)
-                    redirect_to(return_uri) and return  
+                    redirect_to(return_uri) and return
                 else
                     session_key = SecureRandom.urlsafe_base64(20)
                     $redis.hset("sess:#{session_key}", "user_id", current_user.id.to_s)
                     $redis.expire("sess:#{session_key}", 3600)
                     jwt = JWT.encode(session_key, ENV['JWT_HKEY'])
                     return_uri = make_signin_token(session_key, session[:signin_return], session[:rtnstate], jwt)
-                    redirect_to(return_uri) and return  
+                    redirect_to(return_uri) and return
                 end
             end
         end
@@ -50,7 +50,7 @@ class SphereController < ApplicationController
         elsif credential =~ REmailRegex
             user_query = Entity.where(:email => credential)
         end
-        
+
         if user = valid_signin(params[:user][:password].to_s, user_query)
             signin_return, rtnstate = signin_user(user.id.to_s)
             if signin_return
@@ -61,7 +61,7 @@ class SphereController < ApplicationController
                 # enter the session_key into a JWT for the client to save
                 jwt = JWT.encode(session_key, ENV['JWT_HKEY'])
                 return_uri = make_signin_token(session_key, signin_return, rtnstate, jwt)
-                redirect_to(return_uri) and return  
+                redirect_to(return_uri) and return
             else
                 redirect_to(root_url) and return
             end
@@ -69,7 +69,7 @@ class SphereController < ApplicationController
             flash[:msg] = "User or Password invalid."
             flash[:cred] = credential if credential
             redirect_to(signin_url) and return
-        end                       
+        end
     end
 
     def signin_verify
@@ -80,86 +80,87 @@ class SphereController < ApplicationController
             render :json => {"jwt" => jwt, "rtnstate" => JSON.parse(rtnstate)} and return
         else
             render(:nothing => true, :status => 401) and return
-        end    
+        end
     end
 
     def signed_in
         if current_dashboard_user
             render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
-                                            "id" => current_dashboard_user.id.to_s}}
+                                            "id" => current_dashboard_user.id.to_s,
+                                            "pic" => current_dashboard_user.profile_image}}
         else
             render :json => {"signedin" => false}
         end
     end
 
-    def user_ctlpanel_data
-        panels = []
-        if current_dashboard_user
-            panels << {:bg => {'background-color' => '#0080c9'},
-            :text => 'My Profile',
-            :highlight =>  true}
-            panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
-             :highlight =>  true,
-             :text =>  'Invite',
-             :action =>  'expand',
-             :expanded_bg =>  'drkblue',
-             :destination =>  'invite_form'}
-            panels << {:bg => {'background' => "#0080c9 url(#{ENV['FULLHOST']}assets/login-icon.png) no-repeat 50% 60px"},
-             :highlight =>  true,
-             :text =>  "Sign Out",
-             :action =>  'signout',
-             :current_user => current_dashboard_user.handle}
-            panels << {:bg => {'background' => "#073a70 url(#{ENV['FULLHOST']}assets/close_dashboard.png) no-repeat 50% 60px"},
-             :highlight =>  true,
-             :text =>  'Close Dashboard',
-             :action =>  'close'}
-            panels << {:bg => {'background-color' => '#2672EC'},
-                :text => 'My Channel',
-            :highlight =>  true}
-            panels << {:bg => {'background-color' => '#2E8DEF'},
-                :text => 'Tools',
-            :highlight =>  true}
-            panels << {:bg => {'background-color' => '#557C30'},
-                :text => 'Settings',
-            :highlight =>  true}
-            panels << {:bg => {'background-color' => '#88BCE2'},
-                :text => 'Forum',
-            :highlight =>  true,
-            :action =>  'forum',
-            :expanded_bg =>  'drkblue',
-            :destination =>  'forum'}
-        else
-            panels << {:bg => {'background-color' => '#0080c9'},
-                :text => 'My Profile'}
-            panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
-             :highlight =>  true,
-             :text =>  'Sign Up for New Account',
-             :action =>  'expand',
-             :expanded_bg =>  'drkblue',
-             :destination =>  'signup_form'}
-            panels << {:bg => {'background' => "#0080c9 url(#{ENV['FULLHOST']}assets/login-icon.png) no-repeat 50% 60px"},
-             :highlight =>  true,
-             :text =>  'Sign In',
-             :action =>  'signin'}
-            panels << {:bg => {'background' => "#073a70 url(#{ENV['FULLHOST']}assets/close_dashboard.png) no-repeat 50% 60px"},
-             :highlight =>  true,
-             :text =>  'Close Dashboard',
-             :action =>  'close'}
-            panels << {:bg => {'background-color' => '#2672EC'},
-                :text => 'My Channel'}
-            panels << {:bg => {'background-color' => '#2E8DEF'},
-                :text => 'Tools'}
-            panels << {:bg => {'background-color' => '#557C30'},
-                :text => 'Settings'}
-            panels << {:bg => {'background-color' => '#88BCE2'},
-                :text => 'Forum'}
-        end
-        render(:json => {:panels => panels})
-    end
+    # def user_ctlpanel_data
+    #     panels = []
+    #     if current_dashboard_user
+    #         panels << {:bg => {'background-color' => '#0080c9'},
+    #         :text => 'My Profile',
+    #         :highlight =>  true}
+    #         panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
+    #          :highlight =>  true,
+    #          :text =>  'Invite',
+    #          :action =>  'expand',
+    #          :expanded_bg =>  'drkblue',
+    #          :destination =>  'invite_form'}
+    #         panels << {:bg => {'background' => "#0080c9 url(#{ENV['FULLHOST']}assets/login-icon.png) no-repeat 50% 60px"},
+    #          :highlight =>  true,
+    #          :text =>  "Sign Out",
+    #          :action =>  'signout',
+    #          :current_user => current_dashboard_user.handle}
+    #         panels << {:bg => {'background' => "#073a70 url(#{ENV['FULLHOST']}assets/close_dashboard.png) no-repeat 50% 60px"},
+    #          :highlight =>  true,
+    #          :text =>  'Close Dashboard',
+    #          :action =>  'close'}
+    #         panels << {:bg => {'background-color' => '#2672EC'},
+    #             :text => 'My Channel',
+    #         :highlight =>  true}
+    #         panels << {:bg => {'background-color' => '#2E8DEF'},
+    #             :text => 'Tools',
+    #         :highlight =>  true}
+    #         panels << {:bg => {'background-color' => '#557C30'},
+    #             :text => 'Settings',
+    #         :highlight =>  true}
+    #         panels << {:bg => {'background-color' => '#88BCE2'},
+    #             :text => 'Forum',
+    #         :highlight =>  true,
+    #         :action =>  'forum',
+    #         :expanded_bg =>  'drkblue',
+    #         :destination =>  'forum'}
+    #     else
+    #         panels << {:bg => {'background-color' => '#0080c9'},
+    #             :text => 'My Profile'}
+    #         panels << {:bg => {'background' => "#88BCE2 url(#{ENV['FULLHOST']}assets/adduser.png) no-repeat 50% 60px"},
+    #          :highlight =>  true,
+    #          :text =>  'Sign Up for New Account',
+    #          :action =>  'expand',
+    #          :expanded_bg =>  'drkblue',
+    #          :destination =>  'signup_form'}
+    #         panels << {:bg => {'background' => "#0080c9 url(#{ENV['FULLHOST']}assets/login-icon.png) no-repeat 50% 60px"},
+    #          :highlight =>  true,
+    #          :text =>  'Sign In',
+    #          :action =>  'signin'}
+    #         panels << {:bg => {'background' => "#073a70 url(#{ENV['FULLHOST']}assets/close_dashboard.png) no-repeat 50% 60px"},
+    #          :highlight =>  true,
+    #          :text =>  'Close Dashboard',
+    #          :action =>  'close'}
+    #         panels << {:bg => {'background-color' => '#2672EC'},
+    #             :text => 'My Channel'}
+    #         panels << {:bg => {'background-color' => '#2E8DEF'},
+    #             :text => 'Tools'}
+    #         panels << {:bg => {'background-color' => '#557C30'},
+    #             :text => 'Settings'}
+    #         panels << {:bg => {'background-color' => '#88BCE2'},
+    #             :text => 'Forum'}
+    #     end
+    #     render(:json => {:panels => panels})
+    # end
 
     def signout_submit
         if session[:user_id].present?
-            $redis.keys("sess:*").each do |k| 
+            $redis.keys("sess:*").each do |k|
                 u = $redis.hget(k, "user_id")
                 $redis.del(k) if u == session[:user_id]
             end
@@ -208,7 +209,7 @@ class SphereController < ApplicationController
 
     def make_signin_token(session_key, signin_return, rtnstate, jwt)
         session[:sess] = session_key
-        # make a temporary token for the client to retrieve 
+        # make a temporary token for the client to retrieve
         # the jwt and the return state
         signin_jwt_token = SecureRandom.urlsafe_base64(20)
         $redis.rpush("jtoken:#{signin_jwt_token}", jwt)
@@ -217,7 +218,7 @@ class SphereController < ApplicationController
         # return the temp token to the client's signin state uri
         signin_return + signin_jwt_token
     end
-    
+
 
     def add_cors_headers
       response.headers["Access-Control-Allow-Origin"] = "*"
@@ -225,5 +226,5 @@ class SphereController < ApplicationController
       response.headers["Access-Control-Allow-Credentials"] = "true"
       response.headers["Access-Control-Allow-Headers"] = "x-csrf-token, authorization, accept, content-type"
     end
-    
+
 end
