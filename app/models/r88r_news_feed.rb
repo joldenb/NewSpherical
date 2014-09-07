@@ -3,7 +3,7 @@ class R88rNewsFeed
     class JSONFailure < StandardError; end
     Article = Struct.new(:oid, :headline, :text, :image_src, :image_width, :image_height,
                          :article_uri, :source_uri, :source_name, :timestamp)
-    
+
     def initialize
         @conn = Faraday.new(:url => R88R[:base]) do |faraday|
           faraday.adapter :net_http
@@ -14,7 +14,7 @@ class R88rNewsFeed
 
     def get_headlines(topic, page=0)
         response = @conn.get do |req|
-          req.url R88R[:topics][topic] + page.to_s
+          req.url R88R[:topics][topic]
           req.headers['Accept'] = 'application/json'
         end
         raise(ResponseNotOK, response.status.to_s) unless response.status == 200
@@ -23,7 +23,7 @@ class R88rNewsFeed
         rescue => e
           raise JSONFailure, e.message
         end
-        result["headlines"].map{|article| Article.new(@s.sanitize(article["oid"]),
+        result["data"]["headlines"].map{|article| Article.new(@s.sanitize(article["oid"]),
                                                       @s.sanitize(article["headline"].encode("utf-8")),
                                                       @f.sanitize(article["abstract"].encode("utf-8")),
                                                       @s.sanitize(article["img"]["src"]),
@@ -34,5 +34,5 @@ class R88rNewsFeed
                                                       @s.sanitize(article["source"]["name"]),
                                                       article["ts"].to_i)}.reverse
     end
-    
+
 end

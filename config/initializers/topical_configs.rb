@@ -1,20 +1,20 @@
 R88R = {
-  :base => 'http://pct.api.r88r.net/',
+  :base => 'http://v3.api.r88r.net',
   :topics => {
-    :climate => 'headlines/v1/json/PCT.mod.environment.climate/',
-    :biodiversity => 'headlines/v1/json/PCT.mod.environment.biodiversity/',
-    :clean_tech => 'headlines/v1/json/PCT.mod.tech.cleantech/',
-    :oceans => '/headlines/v1/json/PCT.mod.environment.oceans/',
-    :biomimicry => '/headlines/v1/json/PCT.mod.design.biomimicry/',
-    :social_enterprise => '/headlines/v1/json/PCT.mod.business.socialenterprise/',
-    :social_change => '/headlines/v1/json/PCT.mod.society.socialchange/',
-    :consumption => '/headlines/v1/json/PCT.mod.living.consumption/',
-    :electric_vehicles => '/headlines/v1/json/PCT.mod.cities.ev/',
-    :resilience => '/headlines/v1/json/PCT.mod.environment.resilience/',
-    :energy => '/headlines/v1/json/PCT.mod.environment.energy/',
-    :nature => '/headlines/v1/json/PCT.mod.environment.nature/',
-    :agriculture => '/headlines/v1/json/PCT.mod.environment.agriculture/',
-    :hundred_pct_top_stories => '/headlines/v1/json/PCT.mod.top_stories/'
+    :climate => '/v3/headlines?cname=PCT.V3.mod.environment.climate',
+    :biodiversity => '/v3/headlines?cname=PCT.V3.mod.environment.biodiversity',
+    :clean_tech => '/v3/headlines?cname=PCT.V3.mod.tech.cleantech',
+    :oceans => '/v3/headlines?cname=PCT.V3.mod.environment.oceans',
+    :biomimicry => '/v3/headlines?cname=PCT.V3.mod.design.biomimicry',
+    :social_enterprise => '/v3/headlines?cname=PCT.V3.mod.business.socialenterprise',
+    #:social_change => '/v3/headlines?cname=PCT.V3.mod.society.socialchange',
+    :consumption => '/v3/headlines?cname=PCT.V3.mod.living.consumption',
+    :electric_vehicles => '/v3/headlines?cname=PCT.V3.mod.cities.ev',
+    :resilience => '/v3/headlines?cname=PCT.V3.mod.environment.resilience',
+    :energy => '/v3/headlines?cname=PCT.V3.mod.environment.energy',
+    :nature => '/v3/headlines?cname=PCT.V3.mod.environment.nature',
+    :agriculture => '/v3/headlines?cname=PCT.V3.mod.environment.agriculture'#,
+    #:hundred_pct_top_stories => '/v3/headlines?cname=PCT.V3.mod.top_stories'
   }
 }
 

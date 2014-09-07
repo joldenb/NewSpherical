@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-# load rvm ruby
-source ~/.rvm/environments/default
+# load rbenv
+export HOME=/home/victor
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
-cd /var/www/pwtopical/current
+cd /var/www/spherical/current
 rails r -e production 'script/fetch_r88r'
 
 exit 0
