@@ -6,6 +6,6 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 cd /var/www/spherical/current
-rails r -e production 'script/fetch_r88r'
+bundle exec rails r -e production 'script/fetch_r88r'
 
 exit 0
