@@ -104,89 +104,6 @@
                 }
               }
             }
-            /* .control_panels {
-                float: left;
-                margin: 1px 1px 0 0;
-                width: 24.85%;
-                .panel {
-                    position: relative;
-                    height: 99px;
-                    opacity: 0.4;
-                    padding: 25px 0 0;
-                    cursor: pointer;
-                    h3 {
-                        text-align: center;
-                        font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
-                        width: 70%;
-                        margin: 0 auto;
-                    }
-                    &.highlight {
-                        opacity: 1.0;
-                    }
-                    &.tmphighlight {
-                        opacity: 1.0;
-                    }
-                }
-            }
-            .expand {
-                @include transition-property(all);
-                @include transition-duration(700ms);
-                @include transition-timing-function(ease-in-out);
-                position: absolute;
-                height: 82px;
-                width: 84px;
-                &.expanded {
-                    left: 0 !important;
-                    top: 1px !important;
-                    width: 670px !important;
-                    height: 249px;
-                    overflow: hidden;
-                }
-                &.drkblue {
-                    background-color: #073a70;
-                }
-                &.windowshade {
-                    height: 50px !important;
-                    opacity: 0 !important;
-                }
-                .closebox {
-                    position: absolute;
-                    top: 5px;
-                    left: 5px;
-                    width: 20px;
-                    height: 20px;
-                    opacity: 0.5;
-                    cursor: pointer;
-                    background: transparent image-url('close-icon-drkbl.png') no-repeat 0 0;
-                }
-            }
-            .userform {
-                h3 {
-                    text-align: center;
-                    font-size: 1.1em;
-                    margin: 15px auto 0;
-                }
-                fieldset {
-                    text-align: center;
-                    margin-top: 30px;
-                    input {
-                        font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
-                        margin: 10px 0;
-                        padding: 0.3em;
-                        background: #f9f9f9;
-                        border: 1px solid #aaa;
-                        @include border-radius(4px);
-                        @include box-shadow(0 1px 4px rgba(0,0,0,0.2) inset);
-                        width: 13em;
-                    }
-                    &.compressed {
-                        margin-top: 15px;
-                        input {
-                            margin: 7px 0;
-                        }
-                    }
-                }
-            } */
         }
 
         .tooltip_above {
@@ -302,7 +219,7 @@
 				        position: relative;
                 h3 {
                     position: absolute;
-                    font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    font: .95em 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
                     text-transform: uppercase;
                     margin: auto;
                     height: 30px;
@@ -317,7 +234,10 @@
                 }
                 h4 {
                     position: absolute;
-                    font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    /* font: .95em 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+                    -webkit-font-smoothing: antialiased; */
+                    font-size: .95em;
+                    font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     text-transform: none;
                     margin: auto;
                     width: 150px;
@@ -329,7 +249,7 @@
                     color: #fff;
                     text-shadow: 1px 1px 1px #000;
                     text-align: center;
-                    font-weight: 200;
+                    /* font-weight: bold; */
                 }
                 img {
                     max-width: 100%;
@@ -792,6 +712,7 @@
                 padding-right: 5px;
                 h3 {
                     font-size: .95em;
+                    font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     text-transform: uppercase;
                     color: #fff;
                     text-shadow: 1px 1px 1px #000;
@@ -801,16 +722,17 @@
                 }
                 h4 {
                     font-size: .95em;
+                    font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     text-transform: none;
                     margin: auto;
-                    color: #6e88aa;
+                    color: #fff;
                     text-shadow: 1px 1px 1px #000;
                     text-align: center;
                     font-weight: 200;
                     margin: 10px auto;
                     cursor: pointer;
                     &.active {
-                        color: #fff;
+                        color: #6e88aa;
                     }
                 }
             }
@@ -838,24 +760,36 @@
                         margin: 0 0 0 3px;
                         background: #444;
                         overflow: hidden;
-                        width: 656px;
+                        width: 676px;
                         height: 448px;
                         cursor: pointer;
                         position: relative;
-                        padding: 0 20px 0 0;
+                        padding: 0;
                         .item_content {
                             height: 448px;
-                            overflow: hidden;
+                            overflow: auto;
+                            padding-right: 20px;
+                            &::-webkit-scrollbar {
+                              width: 10px;  /* for vertical scrollbars */
+                              //height: 12px; /* for horizontal scrollbars */
+                            }
+                            &::-webkit-scrollbar-track {
+                              background: #444;
+                            }
+                            &::-webkit-scrollbar-thumb {
+                              background: rgba(0, 0, 0, 0.5);
+                            }
                         }
                         h3 {
-                            font: 1.2em/1em "Helvetica Neue",Helvetica,Arial,sans-serif;
+                            font: 1.2em/1em 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                            /* -webkit-font-smoothing: antialiased; */
                             text-transform: none;
                             margin: 5px auto 0;
                             text-align: center;
                             color: #fff;
                             text-shadow: 1px 1px 1px #000;
                             text-align: center;
-                            font-weight: 200;
+                            /* font-weight: 200; */
                             padding-left: 20px
                         }
                         .item_img {
@@ -870,8 +804,10 @@
                         }
                         p {
                             padding: 0 0 5px 20px;
-                            font: 1em/1.3em "Helvetica Neue",Helvetica,Arial,sans-serif;
-                            font-weight: 200;
+                            font: .95em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                            line-height: 1.6em;
+                            /*-webkit-font-smoothing: antialiased; */
+                            /* font-weight: 200; */
                             &.item_date {
                                 padding: 20px 0 0 20px;
                                 font-size: .9em;
