@@ -1,3 +1,5 @@
+//= require jquery-ui.min
+//= require jquery.ui.touch-punch.min
 //= require dashboard/jq.swiper-1.3
 //= require angular-1.2.16/angular.min
 //= require angular-1.2.16/angular-sanitize.min
@@ -20,4 +22,3 @@
 //= require draganddrop
 //= require he
 //= require to-markdown
-//= require jquery-ui.min
