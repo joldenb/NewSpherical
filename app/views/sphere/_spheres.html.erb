@@ -1,0 +1,20 @@
+<div ng-controller="UserCtrl">
+    <% if current_user %>
+    <div class="userspheres">
+      <div class="usphere one" user-sphere><p></p></div>
+      <div class="usphere two" user-sphere><p></p></div>
+      <% unless action_name == "signin" %>
+        <div class="usphere signout" user-sphere>
+          <a href="/sphere/signin"></a>
+        </div>
+      <% end %>
+      <div class="usphere userpic" user-sphere>
+        <a href="/personal_settings/profile">
+          <img ng-src="{{signedin.pic}}" brkn-img />
+        </a>
+      </div>
+      <div class="usphere three" user-sphere><p></p></div>
+      <div class="usphere four" user-sphere><p></p></div>
+    </div>
+    <% end %>
+</div>

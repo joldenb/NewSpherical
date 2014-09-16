@@ -68,4 +68,22 @@ angular.module('sphericalIoApp.UtilityDirectives', [])
             elm.focus();
         }
     };
+}])
+.directive('isFocussed', [function() {
+  var FOCUS_CLASS = "isfocussed";
+  return {
+    restrict: 'A',
+    controller: function($scope) {
+      $scope._focussed = false;
+    },
+    link: function(scope, element, attrs) {
+      element.on('focus', function(evt) {
+        element.addClass(FOCUS_CLASS);
+        scope.$apply(function() {scope._focussed = true;});
+      }).on('blur', function(evt) {
+        element.removeClass(FOCUS_CLASS);
+        scope.$apply(function() {scope._focussed = false;});
+      });
+    }
+  };
 }]);

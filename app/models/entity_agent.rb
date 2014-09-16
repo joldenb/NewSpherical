@@ -87,7 +87,7 @@ class EntityAgent
             rescue Exception => e
                 raise ParamsError, "Oauth data incorrect."
             end
-            
+
         end
 
         if entity.valid?
@@ -246,13 +246,38 @@ class EntityAgent
 
         def filtered_oauth_data(data)
             unless data.kind_of?(Hash) && data[:uid].present? && data[:provider].present?
-                raise ParamsError, "Missing oauth params" 
+                raise ParamsError, "Missing oauth params"
             end
-            {:uid => data[:uid], 
-             :provider => data[:provider], 
-             :nym => data[:nym], 
-             :name => data[:name], 
+            {:uid => data[:uid],
+             :provider => data[:provider],
+             :nym => data[:nym],
+             :name => data[:name],
              :image => data[:image]}
+        end
+
+        def unique_screen_name(entity_id, screenname)
+          unless entity_id.to_s =~ RMongoIdRegex
+              raise ParamsError, "Bad entity id"
+          end
+          if entity = Entity.find(entity_id)
+              Context.find_by(:identifier => entity.id)
+          else
+              raise ParamsError, "Cannot find entity"
+          end
+
+          if sn = Entity.find_by(:screen_name => screenname)
+            if sn.id != entity.id
+              return false
+            end
+          end
+          if hnd = Entity.find_by(:handle => screenname)
+            if hnd.id != entity.id
+              return false
+            end
+          end
+
+          ## returned false if screen name or handle is already in use, otherwise:
+          true
         end
     end
 end

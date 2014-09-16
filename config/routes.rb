@@ -18,10 +18,10 @@ Topical::Application.routes.draw do
 
   post "/forum_persistence/save_forum_post" => 'forum_persistence#save_forum_post'
   post "/forum_persistence/save_conversation_post" => 'forum_persistence#save_conversation_post'
-  
-  
+
+
   match "dashboard(/:action(/:id)(.:format))" => 'dashboard', :as => "dashboard", :via => [:get, :options]
-  
+
   get "/invite/invitations_form/:group_id" => 'invite#invitations_form'
   get "/invite/invite_with_article_form/:group_id/:article_id" => 'invite#invite_with_article_form'
   get "/invite/accept(/:token)" => 'invite#accept'
@@ -52,6 +52,9 @@ Topical::Application.routes.draw do
   get "/personal_settings/search_topics" => 'personal_settings#search_topics'
   get "/personal_settings/personal_profile" => 'personal_settings#personal_profile'
   post "/personal_settings/upload_profile_pic" => 'personal_settings#upload_profile_pic'
+  get "personal_settings/profile" => 'personal_settings#profile'
+  get "personal_settings/edit_profile" => 'personal_settings#edit_profile'
+  post "personal_settings/change_password" => 'personal_settings#change_password'
 
   get "/nda" => 'nda#index'
 

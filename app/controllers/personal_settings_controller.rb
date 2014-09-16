@@ -1,12 +1,12 @@
 class PersonalSettingsController < ApplicationController
     layout false
-    
+
     def settings
         render(:nothing => true, :status => 401) and return unless current_user
-        
+
         mychannel_topics, topic_results = my_channel_data
-        render :partial => "settings", 
-                            :locals => {:mychannel_topics => mychannel_topics, 
+        render :partial => "settings",
+                            :locals => {:mychannel_topics => mychannel_topics,
                             :topic_results => topic_results} and return
     end
 
@@ -16,9 +16,9 @@ class PersonalSettingsController < ApplicationController
         ContextAgent.new(:entity_id => current_user.id, :relations => params[:relations]).add_mychannel_relations
         mychannel_topics, topic_results = my_channel_data
         render :partial => "my_channel_settings",
-                            :locals => {:mychannel_topics => mychannel_topics, 
+                            :locals => {:mychannel_topics => mychannel_topics,
                             :topic_results => topic_results} and return
-        
+
     end
 
     def remove_topics_from_my_channel
@@ -27,7 +27,7 @@ class PersonalSettingsController < ApplicationController
         ContextAgent.new(:entity_id => current_user.id, :relations => params[:relations]).remove_mychannel_relations
         mychannel_topics, topic_results = my_channel_data
         render :partial => "my_channel_settings",
-                            :locals => {:mychannel_topics => mychannel_topics, 
+                            :locals => {:mychannel_topics => mychannel_topics,
                             :topic_results => topic_results} and return
     end
 
@@ -50,6 +50,24 @@ class PersonalSettingsController < ApplicationController
     def personal_profile
         render(:nothing => true, :status => 401) and return unless current_user
         render :partial => "personal_profile"
+    end
+
+    def profile
+      unless current_user
+        session[:return_to] = "/personal_settings/profile"
+        redirect_to("/sphere/signin") and return
+      end
+      render :layout => 'application'
+    end
+
+    def edit_profile
+      render(:nothing => true, :status => 401) and return unless current_user
+      screen_name = current_user.screen_name.present? ? current_user.screen_name : current_user.handle
+      render :json => {:email => current_user.email, :screen_name => screen_name}
+    end
+
+    def change_password
+
     end
 
     def upload_profile_pic
@@ -75,5 +93,5 @@ class PersonalSettingsController < ApplicationController
         [mychannel_topics, topic_results]
     end
 
-    
+
 end

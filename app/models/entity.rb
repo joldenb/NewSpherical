@@ -7,7 +7,7 @@ class Entity
   mount_uploader :profile_pic, ProfilePicUploader
 
   field :email, :type => String
-  field :screen_name, :type => String, :default => ""
+  field :screen_name, :type => String
   field :handle, :type => String
   field :password_digest, :type => String, :default => ""
   field :local_login, :type => Boolean, :default => true
@@ -33,7 +33,7 @@ class Entity
   index({:email => 1}, {:unique => true})
   index({:handle => 1}, {:unique => true, :sparse => true})
   index({:remember_me_token => 1}, {:unique => true, :sparse => true})
-  index({:screen_name => 1})
+  index({:screen_name => 1}, {:unique => true, :sparse => true})
   index({"idp.uid" => 1, "idp.provider" => 1})
   index({"role.context" => 1})
 

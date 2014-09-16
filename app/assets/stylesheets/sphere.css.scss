@@ -1,6 +1,6 @@
 body {
     background: #000 image-url('stratocu640.jpg') no-repeat center top;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 }
 @media screen and (min-width: 481px) {
     body {
@@ -10,6 +10,69 @@ body {
 @media screen and (min-width: 1280px) {
     body {
         background: #000 image-url('stratocu2000.jpg') no-repeat center top;
+    }
+}
+
+.userspheres {
+  .usphere {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background: #555;
+    @include border-radius(50px);
+    @include box-shadow(1px 1px 50px 1px #222);
+    @include background-image(radial-gradient(center center, #888, #555));
+    cursor: pointer;
+      p {
+        position: absolute;
+        top: 33px;
+        text-align: center;
+        font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+        color: #fff;
+        width: 100px;
+      }
+      &.userpic {
+        width: 58px;
+        height: 58px;
+        @include border-radius(29px);
+        overflow: hidden;
+        top: 15px;
+        left: 48%;
+      }
+      &.signout {
+        width: 58px;
+        height: 58px;
+        @include border-radius(29px);
+        overflow: hidden;
+        top: 15px;
+        left: 51.5%;
+        @include background-image(radial-gradient(center center, #444, #333));
+        a {
+          background: transparent image-url('signout-icon.png') no-repeat 15px 15px;
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          width: 58px;
+          height: 58px;
+          display: block;
+        }
+      }
+      &.one {
+        top: 20px;
+        left: 30%;
+      }
+      &.two {
+        top: 10px;
+        left: 37%;
+      }
+      &.three {
+        top: 10px;
+        right: 37%;
+      }
+      &.four {
+        top: 20px;
+        right: 30%;
+      }
     }
 }
 
@@ -26,27 +89,170 @@ fieldset {
     }
 }
 
-.signin_container {
-    position: relative;
-    margin: 100px auto 0;
-    width: 300px;
-    height: 250px;
-    border: 2px solid #464646;
-    @include border-radius(8px);
-    background: #222;
-    padding-top: 30px;
+.form_containers {
+  position: relative;
+  margin: 100px auto 0;
+  border: 2px solid #464646;
+  @include border-radius(8px);
+  background: #222;
+  padding-top: 30px;
+  h1 {
+    color: #fff;
     text-align: center;
-    .submit_notice {
-        color: #d00;
-        margin: 10px 0 0;
+    margin: -15px 0 25px;
+  }
+  .signedin_notice {
+      color: #fff;
+      margin: 10px 0 0;
+      font-weight: 200;
+      em {
+          color: #0080c9;
+          font-weight: 400;
+      }
+  }
+  &.signin_container {
+      width: 300px;
+      height: 250px;
+      text-align: center;
+      .submit_notice {
+          color: #d00;
+          margin: 10px 0 0;
+      }
+  }
+  &.profile_container {
+    width: 340px;
+    height: 450px;
+    padding: 30px;
+    p {
+      position: relative;
+      color: #fff;
+      font-size: .9em;
+      margin: 0 0 15px 0;
+      clear: left;
+      em {
+          color: #0080c9;
+          font-weight: 400;
+      }
     }
-    .signedin_notice {
-        color: #fff;
-        margin: 10px 0 0;
+    .label {
+      float: left;
+      width: 105px;
+      text-align: right;
+      padding-right: 10px;
+      font-family: 'open_sanslight';
+      font-size: .85em;
+      margin-top: 2px;
+      &.fld {
+        margin-top: 7px;
+      }
+    }
+    .error {
+      position: absolute;
+      top: 5px;
+      right: -10px;
+      font-family: 'open_sanslight_italic';
+      color: #d00;
+      font-size: .85em;
+    }
+    .ok {
+      position: absolute;
+      top: 2px;
+      right: 16px;
+      width: 20px;
+      height: 20px;
+      background: transparent image-url('okcheck.png') no-repeat 0 1px;
+    }
+    fieldset {
+      margin-bottom: 20px;
+      input {
+        margin: 0;
+        width: 14em;
+      }
+    }
+    .form_btn {
+      text-align: right;
+      padding-right: 42px;
+    }
+    .pprofile-dropzone {
+        height: 100px;
+        width: 100px;
+        padding: 5px;
+        background: #eee;
+        font-size: .75em;
+        color: #777;
+        text-shadow: none;
         font-weight: 200;
-        em {
-            color: #0080c9;
-            font-weight: 400;
+    }
+    .dz-error {
+        .dz-error-message {
+            height: 100px;
+            overflow: hidden;
+            opacity: 1;
+            margin: 160px 0 0 8px;
+            text-align: center;
+            color: #d00;
+            background: transparent;
         }
     }
+    .dz-preview {
+        margin: -25px 0 0 20px;
+    }
+  }
+  fieldset {
+    input[type="button"] {
+      height: 27px;
+      font: .8em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+      cursor: pointer;
+      padding: 5px 35px 8px 0;
+      color: #fff;
+      text-align: center;
+      width: 94px;
+      border: 1px solid #555;
+      @include border-radius(16px);
+      background: transparent;
+      &.uprof_submit {
+        background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+      }
+      &.chpass_submit {
+        background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+      }
+      &.highlight {
+        background-color: #111;
+      }
+    }
+  }
+}
+.menu_item {
+  height: 18px;
+  font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+  cursor: pointer;
+  padding: 10px 35px 8px 0;
+  line-height: 1.1em;
+  color: #fff;
+  text-align: center;
+  width: 100px;
+  margin: 10px auto;
+  border: 1px solid #555;
+  @include border-radius(16px);
+  &.signin {
+    background: transparent image-url('signin-icon.png') no-repeat 93px 7px;
+  }
+  &.signout {
+    background: transparent image-url('signout-icon.png') no-repeat 93px 7px;
+  }
+  &.savepic {
+    position: absolute;
+    bottom: 0;
+    left: 120px;
+    background: transparent url(/assets/save-icon.png) no-repeat 62px 1px;
+    width: 60px;
+    height: 25px;
+    font-size: .8em;
+    line-height: 1.9em;
+    padding: 0 35px 0 0;
+    margin: 0;
+  }
+  &.highlight {
+    background-color: #111;
+  }
 }

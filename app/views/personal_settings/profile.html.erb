@@ -1,0 +1,51 @@
+<div class="form_containers profile_container" ng-controller="ProfileCtrl">
+  <h1>Edit Profile</h1>
+
+  <form name="userprofileform" ng-submit="userprofileSubmit()" novalidate>
+
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+    <p><span class="label">Signin Name</span><em><%= current_user.handle %></em></p>
+
+    <fieldset>
+      <p>
+        <span class="fld label">Screen Name</span>
+        <input type="text" placeholder="Optional" name="screenname" ng-model="userprofile.screen_name" value="{{userprofile.screen_name || signedin.handle}}" is-focussed />
+        <span class="ok" ng-show="userprofileform.screenname.$dirty"></span>
+      </p>
+      <p>
+        <span class="fld label">Email</span>
+        <input type="email" placeholder="Required" name="email" ng-model="userprofile.email" value="{{userprofile.email}}" required is-focussed />
+        <span class="ok" ng-show="userprofileform.email.$dirty && userprofileform.email.$valid && !_focussed"></span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.required && !_focussed">required</span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.email && !_focussed">invalid</span>
+      </p>
+
+      <p class="form_btn"><input type="button" class="uprof_submit" name="uprof_submit" value="Save" hover-highlight></p>
+    </fieldset>
+
+  </form>
+
+  <%= form_tag("/personal_settings/change_password") do %>
+    <fieldset>
+      <p>
+        <span class="fld label">Change Password</span>
+        <input type="password" placeholder="New Password" name="password" />
+      </p>
+      <p>
+        <span class="fld label">Confirm Password</span>
+        <input type="password" placeholder="Password Again" name="pwd_confirm" />
+      </p>
+
+      <p class="form_btn"><input type="button" class="chpass_submit" name="chpass_submit" value="Change" hover-highlight></p>
+    </fieldset>
+  <% end %>
+
+  <form class="pprofile-dropzone dropzone">
+        <div class="dz-message">To upload your picture,<br />drop file here (or click)</div>
+       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  </form>
+  <div style="position:relative">
+    <div class="menu_item savepic" hover-highlight>Save</div>
+  </div>
+
+</div>
