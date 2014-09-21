@@ -4,8 +4,6 @@ class Entity
   include ActiveModel::SecurePassword
   has_secure_password
 
-  mount_uploader :profile_pic, ProfilePicUploader
-
   field :email, :type => String
   field :screen_name, :type => String
   field :handle, :type => String
@@ -29,6 +27,7 @@ class Entity
   embeds_one :settings_list
   has_many :entity_contexts
   has_many :item_elevators
+  has_one :profile_pic
 
   index({:email => 1}, {:unique => true})
   index({:handle => 1}, {:unique => true, :sparse => true})
@@ -39,8 +38,8 @@ class Entity
 
 
   def profile_image
-    if !self.profile_pic.thumb.url.nil?
-      ENV['FULLHOST'] + self.profile_pic.thumb.url
+    if self.profile_pic && !self.profile_pic.pic.thumb.url.nil?
+      ENV['FULLHOST'] + self.profile_pic.pic.thumb.url
     else
       return nil if self.idps.empty? && self.settings_list.nil?
       if img_src = get_setting_for(:primary_image_src)

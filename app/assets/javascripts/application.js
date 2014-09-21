@@ -10,3 +10,4 @@
 //= require_directory ./directives
 //= require_directory ./services
 //= require websocket_rails/main
+//= require dropzone.min

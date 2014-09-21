@@ -141,7 +141,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
-    mini_magick (3.7.0)
+    mini_magick (3.8.1)
       subexec (~> 0.2.1)
     minitest (4.7.5)
     minitest-capybara (0.1.0)

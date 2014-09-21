@@ -121,7 +121,7 @@ fieldset {
   }
   &.profile_container {
     width: 340px;
-    height: 450px;
+    height: 480px;
     padding: 30px;
     p {
       position: relative;
@@ -174,8 +174,8 @@ fieldset {
       padding-right: 42px;
     }
     .pprofile-dropzone {
-        height: 100px;
-        width: 100px;
+        height: 136px;
+        width: 114px;
         padding: 5px;
         background: #eee;
         font-size: .75em;
@@ -185,17 +185,26 @@ fieldset {
     }
     .dz-error {
         .dz-error-message {
-            height: 100px;
             overflow: hidden;
             opacity: 1;
-            margin: 160px 0 0 8px;
-            text-align: center;
+            text-align: left;
             color: #d00;
             background: transparent;
+            position: absolute;
+            top: 0;
+            left: 120px;
+            width: 200px;
         }
     }
     .dz-preview {
-        margin: -25px 0 0 20px;
+        margin: -62px 0 0 -6px;
+        .dz-size {
+          font-size: .8em;
+        }
+    }
+    .dz-message {
+      text-align: center;
+      padding-top: 20px;
     }
   }
   fieldset {
@@ -215,9 +224,16 @@ fieldset {
       }
       &.chpass_submit {
         background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+        opacity: 0.2;
       }
       &.highlight {
-        background-color: #111;
+        background-color: transparent;
+      }
+      &.active {
+        opacity: 1;
+        &.highlight {
+          background-color: #111;
+        }
       }
     }
   }
@@ -240,17 +256,35 @@ fieldset {
   &.signout {
     background: transparent image-url('signout-icon.png') no-repeat 93px 7px;
   }
+  &.savepic, &.cancelpic {
+    width: 60px;
+    height: 25px;
+    font-size: .75em;
+    line-height: 1.9em;
+    padding: 2px 35px 0 0;
+    margin: 0;
+    opacity: 0.2;
+    &.highlight {
+      background-color: transparent;
+    }
+    &.active {
+      opacity: 1;
+      &.highlight {
+        background-color: #111;
+      }
+    }
+  }
   &.savepic {
     position: absolute;
     bottom: 0;
-    left: 120px;
+    left: 130px;
     background: transparent url(/assets/save-icon.png) no-repeat 62px 1px;
-    width: 60px;
-    height: 25px;
-    font-size: .8em;
-    line-height: 1.9em;
-    padding: 0 35px 0 0;
-    margin: 0;
+  }
+  &.cancelpic {
+    position: absolute;
+    bottom: 0;
+    left: 250px;
+    background: transparent url(/assets/cancel.png) no-repeat 65px 2px;
   }
   &.highlight {
     background-color: #111;

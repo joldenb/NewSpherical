@@ -74,10 +74,17 @@ class PersonalSettingsController < ApplicationController
         render(:nothing => true, :status => 401) and return unless current_user
         render(:nothing => true, :status => 403) and return unless params[:ppic].is_a?(ActionDispatch::Http::UploadedFile)
 
-        if current_user.update_attributes(:profile_pic => params[:ppic])
-          render :json => {"success" => true}
+        if !current_user.profile_pic
+          pp = ProfilePic.new
+          pp.pic = params[:ppic]
+          current_user.profile_pic = pp
+          render :json => {"success" => true} and return
         else
-          render :json =>  {"success" => false, "msg" => current_user.errors.to_json}
+          if current_user.profile_pic.update_attributes(:pic => params[:ppic])
+            render :json => {"success" => true}
+          else
+            render :json =>  {"success" => false, "msg" => current_user.errors.to_json}
+          end
         end
     end
 

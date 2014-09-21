@@ -15,9 +15,9 @@
       <p>
         <span class="fld label">Email</span>
         <input type="email" placeholder="Required" name="email" ng-model="userprofile.email" value="{{userprofile.email}}" required is-focussed />
-        <span class="ok" ng-show="userprofileform.email.$dirty && userprofileform.email.$valid && !_focussed"></span>
-        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.required && !_focussed">required</span>
-        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.email && !_focussed">invalid</span>
+        <span class="ok" ng-show="userprofileform.email.$dirty && userprofileform.email.$valid && !_focussed.email"></span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.required && !_focussed.email">required</span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.email && !_focussed.email">invalid</span>
       </p>
 
       <p class="form_btn"><input type="button" class="uprof_submit" name="uprof_submit" value="Save" hover-highlight></p>
@@ -25,27 +25,34 @@
 
   </form>
 
-  <%= form_tag("/personal_settings/change_password") do %>
+  <form name="changepwdform" ng-submit="changepwdSubmit()" novalidate>
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
     <fieldset>
       <p>
         <span class="fld label">Change Password</span>
-        <input type="password" placeholder="New Password" name="password" />
+        <input type="password" placeholder="New Password" name="password" value="" ng-model="password" required is-focussed />
+        <span class="ok" ng-show="changepwdform.password.$dirty && changepwdform.password.$valid && !_focussed.password"></span>
+        <span class="error" ng-show="changepwdform.password.$dirty && changepwdform.password.$error.required && !_focussed.password">required</span>
       </p>
       <p>
         <span class="fld label">Confirm Password</span>
-        <input type="password" placeholder="Password Again" name="pwd_confirm" />
+        <input type="password" placeholder="Password Again" name="pwd_confirm" value="" ng-model="pwd_confirm" required is-focussed pwd-match />
+        <span class="ok" ng-show="changepwdform.pwd_confirm.$dirty && changepwdform.password.$valid && changepwdform.pwd_confirm.$valid && !_focussed.pwd_confirm"></span>
+        <span class="error" ng-show="changepwdform.pwd_confirm.$dirty && changepwdform.pwd_confirm.$error.required && !_focussed.pwd_confirm">required</span>
+        <span class="error" style="top:0;" ng-show="changepwdform.pwd_confirm.$dirty && !changepwdform.pwd_confirm.$error.required && changepwdform.pwd_confirm.$error.match && !_focussed.pwd_confirm">doesn't<br />match</span>
       </p>
 
-      <p class="form_btn"><input type="button" class="chpass_submit" name="chpass_submit" value="Change" hover-highlight></p>
+      <p class="form_btn"><input type="button" class="chpass_submit" ng-class="{active: changepwdform.$dirty && changepwdform.$valid}" name="chpass_submit" value="Change" hover-highlight></p>
     </fieldset>
-  <% end %>
+  </form>
 
-  <form class="pprofile-dropzone dropzone">
-        <div class="dz-message">To upload your picture,<br />drop file here (or click)</div>
+  <form class="pprofile-dropzone dropzone" dzone>
+        <div class="dz-message">To upload picture<br />drop file here<br />(or click)</div>
        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
   </form>
   <div style="position:relative">
-    <div class="menu_item savepic" hover-highlight>Save</div>
+    <div class="menu_item savepic" ng-class="{active: picture_present && !picture_error}" hover-highlight save-pic>Save</div>
+    <div class="menu_item cancelpic" ng-class="{active: picture_present}" hover-highlight cancel-pic>Cancel</div>
   </div>
 
 </div>

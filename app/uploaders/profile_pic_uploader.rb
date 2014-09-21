@@ -50,14 +50,14 @@ class ProfilePicUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    t = Time.now.to_i
+    md5 = Digest::MD5.hexdigest(original_filename)
     /\.([\w]+)\z/ =~ original_filename
     extn = $1
 
     if extn && %w(jpg jpeg gif png).include?(extn)
-      "#{t}.#{extn}" 
+      "profile_#{md5}.#{extn}"
     else
-      "#{t}.jpg" 
+      "profile_#{md5}.jpg"
     end
   end
 
