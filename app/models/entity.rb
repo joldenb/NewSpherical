@@ -37,11 +37,10 @@ class Entity
   index({"role.context" => 1})
 
 
-  def profile_image
+  def profile_image(alt=false)
     if self.profile_pic && !self.profile_pic.pic.thumb.url.nil?
-      ENV['FULLHOST'] + self.profile_pic.pic.thumb.url
-    else
-      return nil if self.idps.empty? && self.settings_list.nil?
+      ENV['FULLHOST_NO_SLSH'] + self.profile_pic.pic.thumb.url
+    elsif !self.idps.empty? && !self.settings_list.nil?
       if img_src = get_setting_for(:primary_image_src)
         provider_list = [img_src]
       else
@@ -53,7 +52,9 @@ class Entity
           return pvdr.image if pvdr.image.present?
         end
       end
-      nil
+      ENV['FULLHOST'] + (alt ? 'assets/nopicdrk.png' : 'assets/nopic.png')
+    else
+      ENV['FULLHOST'] + (alt ? 'assets/nopicdrk.png' : 'assets/nopic.png')
     end
   end
 
