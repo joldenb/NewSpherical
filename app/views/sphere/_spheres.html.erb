@@ -1,8 +1,8 @@
 <div ng-controller="UserCtrl">
     <% if current_user %>
     <div class="userspheres">
-      <div class="usphere one" user-sphere><p></p></div>
       <div class="usphere two" user-sphere><p></p></div>
+      <div class="usphere one" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag('bucky-colors.png') %></a></div>
       <% unless action_name == "signin" %>
         <div class="usphere signout" user-sphere>
           <a href="/sphere/signin"></a>

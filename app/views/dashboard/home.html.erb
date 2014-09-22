@@ -1,10 +1,10 @@
 <div ng-controller="UserCtrl"><div id="user_area">
 
     <div class="userspheres">
-      <div class="usphere" style="top:30px;left:30%;" user-sphere><p>About Spherical</p></div>
+      <div class="usphere" style="top:30px;left:30%;" user-sphere><p class="singleline">Spherical</p></div>
       <div class="usphere" style="top:45px;left:55%;" user-sphere ng-show="!signedin"><p>New Account Signup</p></div>
       <div class="usphere" style="top:45px;left:42%;" user-sphere ng-show="signedin"><p>My<br />Channel</p></div>
-      <div class="usphere userpic" style="top:20px;left:60%;" user-sphere ng-show="signedin"><img ng-src="{{signedin.pic}}" brkn-img /></div>
+      <div class="usphere userpic" style="top:20px;left:60%;" user-sphere ng-show="signedin"><a href="<%= ENV['FULLHOST'] %>personal_settings/profile"><img ng-src="{{signedin.pic}}" brkn-img /></a></div>
     </div>
 </div>
 

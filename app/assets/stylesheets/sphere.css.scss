@@ -23,6 +23,7 @@ body {
     @include box-shadow(1px 1px 50px 1px #222);
     @include background-image(radial-gradient(center center, #888, #555));
     cursor: pointer;
+    overflow: hidden;
       p {
         position: absolute;
         top: 33px;
@@ -30,6 +31,9 @@ body {
         font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
         color: #fff;
         width: 100px;
+        &.singleline {
+          top: 42px;
+        }
       }
       &.userpic {
         width: 58px;
@@ -59,7 +63,7 @@ body {
       }
       &.one {
         top: 20px;
-        left: 30%;
+        left: 31%;
       }
       &.two {
         top: 10px;
@@ -219,6 +223,7 @@ fieldset {
       border: 1px solid #555;
       @include border-radius(16px);
       background: transparent;
+      outline-style: none;
       &.uprof_submit {
         background: transparent image-url('save-icon.png') no-repeat 60px 1px;
       }

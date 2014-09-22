@@ -91,11 +91,11 @@ class SphereController < ApplicationController
         if current_dashboard_user
             render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
                                             "id" => current_dashboard_user.id.to_s,
-                                            "pic" => current_dashboard_user.profile_image}}
+                                            "pic" => current_dashboard_user.profile_image(true)}}
         elsif current_user
           render :json => {"signedin" => {"handle" => current_user.handle,
                                           "id" => current_user.id.to_s,
-                                          "pic" => current_user.profile_image}}
+                                          "pic" => current_user.profile_image(true)}}
         else
             render :json => {"signedin" => false}
         end

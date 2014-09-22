@@ -95,6 +95,9 @@
                   font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
                   color: #fff;
                   width: 100px;
+                  &.singleline {
+                    top: 42px;
+                  }
                 }
                 &.userpic {
                   width: 58px;
