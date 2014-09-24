@@ -52,10 +52,12 @@ Topical::Application.routes.draw do
   get "/personal_settings/search_topics" => 'personal_settings#search_topics'
   get "/personal_settings/personal_profile" => 'personal_settings#personal_profile'
   post "/personal_settings/upload_profile_pic" => 'personal_settings#upload_profile_pic'
-  get "personal_settings/profile" => 'personal_settings#profile'
-  get "personal_settings/edit_profile" => 'personal_settings#edit_profile'
-  post "personal_settings/change_password" => 'personal_settings#change_password'
-
+  get "/personal_settings/profile" => 'personal_settings#profile'
+  get "/personal_settings/edit_profile" => 'personal_settings#edit_profile'
+  post "/personal_settings/change_password" => 'personal_settings#change_password'
+  get "/personal_settings/unique_email_check" => 'personal_settings#unique_email_check'
+  get "/personal_settings/unique_screenname_check" => 'personal_settings#unique_screenname_check'
+  post "/personal_settings/update_profile" => 'personal_settings#update_profile'
   get "/nda" => 'nda#index'
 
   root :to => 'sphere#signin'

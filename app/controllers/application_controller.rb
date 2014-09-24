@@ -1,13 +1,21 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   include AdminChecks
-  before_filter :require_autht_in_xhr, :has_remember_me
+  before_filter :has_remember_me, :set_csrf_cookie_for_ng
   helper_method :current_user, :is_mobile?, :valid_admin, :channelctx
 
   ## in Rack::MobileDetect the target regex returns "Android" only if the device is NOT a mobile
   ## see config in application.rb
   def is_mobile?
     request.headers['X_MOBILE_DEVICE'].present? #&& request.headers['X_MOBILE_DEVICE'] != "Android"
+  end
+
+  def set_csrf_cookie_for_ng
+    cookies['XSRF-TOKEN'] = form_authenticity_token
+  end
+
+  def verified_request?
+    super || form_authenticity_token == request.headers['X-XSRF-TOKEN']
   end
 
   def current_user
@@ -35,19 +43,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticity_token_verified?
-    session[:_csrf_token] == params[:authenticity_token] || session[:_csrf_token] == request.headers['X-CSRF-Token']
-  end
-  
-  def require_autht_in_xhr
-    ## The authenticity_token is always set in our xhr requests
-    ## by topical_utils.js ajaxSend method
-    if request.xhr? && !authenticity_token_verified?
-      reset_session
-      logger.warn "WARNING: XHR without CSRF token" if logger
-      render(:nothing => true, :status => 401) and return
-    end
-  end
+  # def authenticity_token_verified?
+  #   session[:_csrf_token] == params[:authenticity_token] || session[:_csrf_token] == request.headers['X-CSRF-Token']
+  # end
+  #
+  # def require_autht_in_xhr
+  #   ## The authenticity_token is always set in our xhr requests
+  #   ## by topical_utils.js ajaxSend method
+  #   if request.xhr? && !authenticity_token_verified?
+  #     reset_session
+  #     logger.warn "WARNING: XHR without CSRF token" if logger
+  #     render(:nothing => true, :status => 401) and return
+  #   end
+  # end
 
   def has_remember_me
     unless session[:user_id].present?

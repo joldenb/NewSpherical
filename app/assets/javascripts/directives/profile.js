@@ -101,4 +101,62 @@ angular.module('sphericalIoApp.ProfileDirectives', [])
       });
     }
   };
+}])
+.directive('uniqueEmail', ['$http', function($http) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      var formname = elm.closest('form').attr('name'),
+      fldname = elm.attr('name');
+      elm.on('blur', function() {
+        if (scope[formname][fldname].$pristine) {
+          return;
+        }
+        if (scope[formname][fldname].$modelValue === '') {
+          scope[formname][fldname].$setValidity('required', false);
+          return;
+        } else {
+          scope[formname][fldname].$setValidity('required', true);
+        }
+        if (!/^[a-z0-9\.\_\%\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,4}$/.test(scope[formname][fldname].$modelValue)) {
+          scope[formname][fldname].$setValidity('invalid', false);
+          return;
+        } else {
+          scope[formname][fldname].$setValidity('invalid', true);
+        }
+        scope.checking_email = true;
+        var email_to_check = scope[formname][fldname].$modelValue;
+        $http.get('/personal_settings/unique_email_check', {params: {email: email_to_check}})
+        .success(function(result) {
+          scope[formname][fldname].$setValidity('unique_email', result.email_unique);
+          scope.checking_email = false;
+        });
+      });
+    }
+  };
+}])
+.directive('uniqueScreenname', ['$http', function($http) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      var formname = elm.closest('form').attr('name'),
+      fldname = elm.attr('name');
+      elm.on('blur', function() {
+        if (scope[formname][fldname].$pristine) {
+          return;
+        }
+        if (scope[formname][fldname].$modelValue === '') {
+          scope[formname][fldname].$setPristine();
+          return;
+        }
+        scope.checking_screenname = true;
+        var screenname_to_check = scope[formname][fldname].$modelValue;
+        $http.get('/personal_settings/unique_screenname_check', {params: {screenname: screenname_to_check}})
+        .success(function(result) {
+          scope[formname][fldname].$setValidity('unique_screenname', result.screenname_unique);
+          scope.checking_screenname = false;
+        });
+      });
+    }
+  };
 }]);

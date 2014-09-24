@@ -172,10 +172,41 @@ fieldset {
         margin: 0;
         width: 14em;
       }
+      .spinner {
+        position: absolute;
+        top: 3px;
+        left: 305px;
+        width: 16px;
+        height: 16px;
+        img {
+          max-width: 100%;
+        }
+      }
     }
     .form_btn {
       text-align: right;
       padding-right: 42px;
+      .spinner {
+        position: absolute;
+        top: 2px;
+        left: 170px;
+        width: 22px;
+        height: 22px;
+        img {
+          max-width: 100%;
+        }
+      }
+      .feedback {
+        position: absolute;
+        top: 5px;
+        left: 0px;
+        color: #8dc63e;
+        width: 190px;
+        font-size: .9em;
+        &.fbk_error {
+          color: #d00;
+        }
+      }
     }
     .pprofile-dropzone {
         height: 136px;
@@ -226,13 +257,11 @@ fieldset {
       outline-style: none;
       &.uprof_submit {
         background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+        opacity: 0.2;
       }
       &.chpass_submit {
         background: transparent image-url('save-icon.png') no-repeat 60px 1px;
         opacity: 0.2;
-      }
-      &.highlight {
-        background-color: transparent;
       }
       &.active {
         opacity: 1;

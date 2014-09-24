@@ -255,29 +255,68 @@ class EntityAgent
              :image => data[:image]}
         end
 
-        def unique_screen_name(entity_id, screenname)
-          unless entity_id.to_s =~ RMongoIdRegex
-              raise ParamsError, "Bad entity id"
-          end
-          if entity = Entity.find(entity_id)
-              Context.find_by(:identifier => entity.id)
-          else
+        def unique_screen_name(screenname, entity_id=nil)
+          if entity_id
+            unless entity_id.to_s =~ RMongoIdRegex
+                raise ParamsError, "Bad entity id"
+            end
+            unless entity = Entity.find(entity_id)
               raise ParamsError, "Cannot find entity"
-          end
+            end
 
-          if sn = Entity.find_by(:screen_name => screenname)
-            if sn.id != entity.id
+            if sn = Entity.find_by(:screen_name => screenname)
+              if sn.id != entity.id
+                return false
+              end
+            end
+            if hnd = Entity.find_by(:handle => screenname)
+              if hnd.id != entity.id
+                return false
+              end
+            end
+
+            ## returned false if screen name or handle is already in use
+            ## by someone other than this entity, otherwise:
+            true
+          else
+            if sn = Entity.find_by(:screen_name => screenname)
               return false
             end
-          end
-          if hnd = Entity.find_by(:handle => screenname)
-            if hnd.id != entity.id
+            if hnd = Entity.find_by(:handle => screenname)
               return false
             end
-          end
 
-          ## returned false if screen name or handle is already in use, otherwise:
-          true
+            ## returned false if screen name or handle is already in use, otherwise:
+            true
+          end
+        end
+
+        def unique_email(email, entity_id=nil)
+          if REmailRegex !~ email
+            raise ParamsError, "Incorrect email format"
+          end
+          if entity_id
+            unless entity_id.to_s =~ RMongoIdRegex
+                raise ParamsError, "Bad entity id"
+            end
+            unless entity = Entity.find(entity_id)
+              raise ParamsError, "Cannot find entity"
+            end
+            if ent = Entity.find_by(:email => email)
+              if ent.id != entity.id
+                return false
+              end
+            end
+            ## returned false if email is already in use
+            ## by someone other than this entity, otherwise:
+            true
+          else
+            if ent = Entity.find_by(:email => email)
+              return false
+            end
+            ## returned false if email is already in use, otherwise:
+            true
+          end
         end
     end
 end

@@ -66,8 +66,59 @@ class PersonalSettingsController < ApplicationController
       render :json => {:email => current_user.email, :screen_name => screen_name}
     end
 
-    def change_password
+    def unique_email_check
+      render(:nothing => true, :status => 401) and return unless current_user
+      email = params[:email].to_s.strip
+      email_unique = EntityAgent.unique_email(email, current_user.id)
+      render(:json => {:email_unique => email_unique}) and return
+    end
 
+    def unique_screenname_check
+      render(:nothing => true, :status => 401) and return unless current_user
+      screenname = params[:screenname].to_s.strip
+      screenname_unique = EntityAgent.unique_screen_name(screenname, current_user.id)
+      render(:json => {:screenname_unique => screenname_unique}) and return
+    end
+
+    def update_profile
+      render(:nothing => true, :status => 401) and return unless current_user
+      screenname = params[:screenname].to_s.strip
+      email = params[:email].to_s.strip
+      if (screenname.present?)
+        unless screenname_unique = EntityAgent.unique_screen_name(screenname, current_user.id)
+          render(:json => {:msg => "Screen name not unique"}, :status => 403) and return
+        end
+      end
+      unless email_unique = EntityAgent.unique_email(email, current_user.id)
+        render(:json => {:msg => "Email not unique"}, :status => 403) and return
+      end
+
+      if current_user.update_attributes(:screen_name => screenname, :email => email)
+        render(:json => {:msg => "Updated profile"}) and return
+      else
+        render(:json => {:msg => current_user.errors.full_messages.join(', ')}, :status => 403) and return
+      end
+    end
+
+    def change_password
+      render(:json => {:msg => "Please sign in"}, :status => 401) and return unless current_user
+      if params[:password].present? && params[:pwd_confirm].present?
+        password = params[:password].to_s.strip
+        pwd_confirm = params[:pwd_confirm].to_s.strip
+      else
+        render(:json => {:msg => "Error : incomplete data"}, :status => 403) and return
+      end
+
+      if password == pwd_confirm
+        result = EntityAgent.update_password(current_user.id, password, pwd_confirm)
+        if result == "Updated password"
+          render(:json => {:msg => result}) and return
+        else
+          render(:json => {:msg => result}, :status => 403) and return
+        end
+      else
+        render(:json => {:msg => "Error : password not confirmed"}, :status => 403) and return
+      end
     end
 
     def upload_profile_pic

@@ -1,32 +1,34 @@
 <div class="form_containers profile_container" ng-controller="ProfileCtrl">
   <h1>Edit Profile</h1>
 
-  <form name="userprofileform" ng-submit="userprofileSubmit()" novalidate>
-
-    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <form name="userprofileform" novalidate>
     <p><span class="label">Signin Name</span><em><%= current_user.handle %></em></p>
-
     <fieldset>
       <p>
         <span class="fld label">Screen Name</span>
-        <input type="text" placeholder="Optional" name="screenname" ng-model="userprofile.screen_name" value="{{userprofile.screen_name || signedin.handle}}" is-focussed />
-        <span class="ok" ng-show="userprofileform.screenname.$dirty"></span>
+        <input type="text" placeholder="Optional" name="screenname" ng-model="userprofile.screen_name" value="{{userprofile.screen_name || signedin.handle}}" is-focussed unique-screenname />
+        <span class="ok" ng-show="userprofileform.screenname.$dirty && userprofileform.screenname.$valid && !_focussed.screenname && !checking_screenname"></span>
+        <span class="error" ng-show="userprofileform.screenname.$dirty && userprofileform.screenname.$error.unique_screenname && !_focussed.screenname && !checking_screenname">in use</span>
+        <span class="spinner" ng-show="checking_screenname"><%= image_tag('ajax-loader.gif') %></span>
       </p>
       <p>
         <span class="fld label">Email</span>
-        <input type="email" placeholder="Required" name="email" ng-model="userprofile.email" value="{{userprofile.email}}" required is-focussed />
-        <span class="ok" ng-show="userprofileform.email.$dirty && userprofileform.email.$valid && !_focussed.email"></span>
-        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.required && !_focussed.email">required</span>
-        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.email && !_focussed.email">invalid</span>
+        <input type="email" placeholder="Required" name="email" ng-model="userprofile.email" value="{{userprofile.email}}" is-focussed unique-email />
+        <span class="ok" ng-show="userprofileform.email.$dirty && userprofileform.email.$valid && !_focussed.email && !checking_email"></span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.required && !_focussed.email && !checking_email">required</span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.invalid && !userprofileform.email.$error.required && !_focussed.email && !checking_email">invalid</span>
+        <span class="error" ng-show="userprofileform.email.$dirty && userprofileform.email.$error.unique_email && !userprofileform.email.$error.required && !userprofileform.email.$error.invalid && !_focussed.email && !checking_email">in use</span>
+        <span class="spinner" ng-show="checking_email"><%= image_tag('ajax-loader.gif') %></span>
       </p>
 
-      <p class="form_btn"><input type="button" class="uprof_submit" name="uprof_submit" value="Save" hover-highlight></p>
+      <p class="form_btn">
+        <span class="feedback" ng-show="userprofileform.$pristine && show_prof_feedback" ng-class="{fbk_error: prof_error}">{{prof_message}}</span>
+        <span class="spinner" ng-show="userprofileform.$pristine && show_prof_spinner"><%= image_tag('ajax-loader.gif') %></span>
+        <input type="button" ng-click="userprofileSubmit()" ng-class="{active: userprofileform.$dirty && userprofileform.$valid && !_focussed.screenname && !_focussed.email}" class="uprof_submit" name="uprof_submit" value="Save" hover-highlight></p>
     </fieldset>
-
   </form>
 
-  <form name="changepwdform" ng-submit="changepwdSubmit()" novalidate>
-    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+  <form name="changepwdform" novalidate>
     <fieldset>
       <p>
         <span class="fld label">Change Password</span>
@@ -42,13 +44,17 @@
         <span class="error" style="top:0;" ng-show="changepwdform.pwd_confirm.$dirty && !changepwdform.pwd_confirm.$error.required && changepwdform.pwd_confirm.$error.match && !_focussed.pwd_confirm">doesn't<br />match</span>
       </p>
 
-      <p class="form_btn"><input type="button" class="chpass_submit" ng-class="{active: changepwdform.$dirty && changepwdform.$valid}" name="chpass_submit" value="Change" hover-highlight></p>
+      <p class="form_btn">
+        <span class="feedback" ng-show="changepwdform.$pristine && show_pwd_feedback" ng-class="{fbk_error: chpwd_error}">{{chpwd_message}}</span>
+        <span class="spinner" ng-show="changepwdform.$pristine && show_pwd_spinner"><%= image_tag('ajax-loader.gif') %></span>
+        <input type="button" ng-click="changepwdSubmit()" class="chpass_submit" ng-class="{active: changepwdform.$dirty && changepwdform.$valid && !_focussed.password && !_focussed.pwd_confirm}" name="chpass_submit" value="Change" hover-highlight>
+        </p>
     </fieldset>
   </form>
 
   <form class="pprofile-dropzone dropzone" dzone>
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
         <div class="dz-message">To upload picture<br />drop file here<br />(or click)</div>
-       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
   </form>
   <div style="position:relative">
     <div class="menu_item savepic" ng-class="{active: picture_present && !picture_error}" hover-highlight save-pic>Save</div>
