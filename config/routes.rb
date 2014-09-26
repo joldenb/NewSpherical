@@ -24,6 +24,7 @@ Topical::Application.routes.draw do
 
   get "/invite/invitations_form/:group_id" => 'invite#invitations_form'
   get "/invite/invite_with_article_form/:group_id/:article_id" => 'invite#invite_with_article_form'
+  get "/invite/card(/:token)" => 'invite#card'
   get "/invite/accept(/:token)" => 'invite#accept'
   get "/invite/opt_out(/:token)" => 'invite#opt_out'
   post "/invite/send_invitations" => 'invite#send_invitations'

@@ -1,0 +1,38 @@
+<div class="form_containers invitation_container" ng-controller="ProfileCtrl">
+  <h1>Invitation</h1>
+  <form name="invitationform" novalidate>
+    <fieldset>
+      <p>
+        <span class="fld label">Invite into</span>
+        <input type="text" placeholder="Drag Sphere(s) Here" name="invite_spheres" />
+      </p>
+
+      <p>
+        <span class="fld label">Send to</span>
+        <input type="email" placeholder="Recipient's Email" name="invite_email" />
+      </p>
+
+      <p>
+        <span class="fld label">Invitation will read:</span>
+      </p>
+      <p class="email_text">To: {{invite_email || '[email]'}},
+<br /><br />
+This is an invitation to join the BFI sphere, part of Spherical.
+<br /><br />
+If you wish to accept, please click on the following link:
+<%= ENV['FULLHOST'] %>invite/accept/[key]
+<br /><br />
+Spherical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at https://spherical.io/nda.
+<br /><br />
+If you don't wish to accept, you may just ignore this email.</span>
+      </p>
+
+      <p>
+        <span class="fld label">Add a p.s.</span>
+        <textarea class="invitation_ps" name="invitation_ps" placeholder="Personalize the invitation here." rows="5"></textarea>
+      </p>
+    </fieldset>
+
+  </form>
+
+</div>

@@ -41,15 +41,47 @@ body {
         @include border-radius(29px);
         overflow: hidden;
         top: 15px;
-        left: 48%;
+        left: 46%;
+      }
+      &.subsphere {
+        width: 50px;
+        height: 50px;
+        @include border-radius(25px);
+        overflow: hidden;
+        p, a {
+          position: absolute;
+          top: 17px;
+          text-align: center;
+          font: .7em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+          color: #fff;
+          width: 50px;
+        }
+        a {
+          text-decoration: none;
+          &:link, &:visited, &:hover {
+              color: #fff;
+          }
+        }
+        &.share {
+          top: 8px;
+          left: 51%;
+        }
+        &.spheres {
+          left: 54.5%;
+          top: 27px;
+        }
+        &.people {
+          left: 58%;
+          top: 43px;
+        }
       }
       &.signout {
         width: 58px;
         height: 58px;
         @include border-radius(29px);
         overflow: hidden;
-        top: 15px;
-        left: 51.5%;
+        top: 36px;
+        left: 48.5%;
         @include background-image(radial-gradient(center center, #444, #333));
         a {
           background: transparent image-url('signout-icon.png') no-repeat 15px 15px;
@@ -70,12 +102,8 @@ body {
         left: 37%;
       }
       &.three {
-        top: 10px;
-        right: 37%;
-      }
-      &.four {
-        top: 20px;
-        right: 30%;
+        top: 12px;
+        right: 31%;
       }
     }
 }
@@ -123,7 +151,7 @@ fieldset {
           margin: 10px 0 0;
       }
   }
-  &.profile_container {
+  &.profile_container, &.invitation_container {
     width: 340px;
     height: 480px;
     padding: 30px;
@@ -240,6 +268,21 @@ fieldset {
     .dz-message {
       text-align: center;
       padding-top: 20px;
+    }
+  }
+  &.invitation_container {
+    .email_text {
+      display: block;
+      font: .75em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+      width: 320px;
+      margin-top: 35px;
+      background: #f9f9f9;
+      color: #555;
+      padding: 7px;
+    }
+    .invitation_ps {
+      font: .8em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+      width: 213px;
     }
   }
   fieldset {

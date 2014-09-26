@@ -1,53 +1,60 @@
 class InviteController < ApplicationController
-    layout false
+    #layout false
 
-    def invitations_form
-      if params[:group_id] =~ RMongoIdRegex
-        if ctx = Context.find(params[:group_id])
-          # an admin or whatever the Context#ctx_settings_list#can_invite is set to
-          if valid_admin(ctx.id, [ctx.ctx_settings_list.can_invite])
-            render :partial => "send_email_invitations", 
-                                :locals => {:ctx_id => ctx.id, 
-                                            :ctx_name => ctx.display_identifier} and return
-          else
-            render(:nothing => true, :status => 401) and return
-          end
-        else
-          render(:nothing => true, :status => 404) and return
-        end
-      else
-        render(:nothing => true, :status => 404) and return
+    # def invitations_form
+    #   if params[:group_id] =~ RMongoIdRegex
+    #     if ctx = Context.find(params[:group_id])
+    #       # an admin or whatever the Context#ctx_settings_list#can_invite is set to
+    #       if valid_admin(ctx.id, [ctx.ctx_settings_list.can_invite])
+    #         render :partial => "send_email_invitations",
+    #                             :locals => {:ctx_id => ctx.id,
+    #                                         :ctx_name => ctx.display_identifier} and return
+    #       else
+    #         render(:nothing => true, :status => 401) and return
+    #       end
+    #     else
+    #       render(:nothing => true, :status => 404) and return
+    #     end
+    #   else
+    #     render(:nothing => true, :status => 404) and return
+    #   end
+    # end
+
+    def card
+      unless current_user
+        session[:return_to] = "/invite/card"
+        redirect_to("/sphere/signin") and return
       end
     end
 
-    def invite_with_article_form
-      if params[:group_id] =~ RMongoIdRegex
-        if ctx = Context.find(params[:group_id])
-          # an admin or whatever the Context#ctx_settings_list#can_invite is set to
-          if valid_admin(ctx.id, [ctx.ctx_settings_list.can_invite])
-            if params[:article_id] && ctx.item_contexts.map{|i| i.item_id.to_s}.include?(params[:article_id])
-                if article = Item.find(params[:article_id])
-                    render :partial => "invite_with_article", 
-                                        :locals => {:ctx_id => ctx.id, 
-                                                    :ctx_name => ctx.display_identifier,
-                                                    :article => article,
-                                                    :position => params[:position].to_i} and return
-                else
-                    render(:nothing => true, :status => 404) and return
-                end
-            else
-                render(:nothing => true, :status => 422) and return
-            end
-          else
-            render(:nothing => true, :status => 401) and return
-          end
-        else
-          render(:nothing => true, :status => 404) and return
-        end
-      else
-        render(:nothing => true, :status => 404) and return
-      end
-    end
+    # def invite_with_article_form
+    #   if params[:group_id] =~ RMongoIdRegex
+    #     if ctx = Context.find(params[:group_id])
+    #       # an admin or whatever the Context#ctx_settings_list#can_invite is set to
+    #       if valid_admin(ctx.id, [ctx.ctx_settings_list.can_invite])
+    #         if params[:article_id] && ctx.item_contexts.map{|i| i.item_id.to_s}.include?(params[:article_id])
+    #             if article = Item.find(params[:article_id])
+    #                 render :partial => "invite_with_article",
+    #                                     :locals => {:ctx_id => ctx.id,
+    #                                                 :ctx_name => ctx.display_identifier,
+    #                                                 :article => article,
+    #                                                 :position => params[:position].to_i} and return
+    #             else
+    #                 render(:nothing => true, :status => 404) and return
+    #             end
+    #         else
+    #             render(:nothing => true, :status => 422) and return
+    #         end
+    #       else
+    #         render(:nothing => true, :status => 401) and return
+    #       end
+    #     else
+    #       render(:nothing => true, :status => 404) and return
+    #     end
+    #   else
+    #     render(:nothing => true, :status => 404) and return
+    #   end
+    # end
 
     def send_invitations
         if params[:context] =~ RMongoIdRegex
@@ -73,9 +80,9 @@ class InviteController < ApplicationController
                             article_id = (params[:article_id] =~ RMongoIdRegex) ? params[:article_id] : nil
 
                             access_key = SecureRandom.urlsafe_base64(20)
-                            if invitee = Invitee.new(:inviter => current_user.id, 
-                                                        :email => email, 
-                                                        :invitee_name => realname, 
+                            if invitee = Invitee.new(:inviter => current_user.id,
+                                                        :email => email,
+                                                        :invitee_name => realname,
                                                         :access_key => access_key,
                                                         :invited_role => invited_role,
                                                         :view_article => article_id)
@@ -104,13 +111,13 @@ class InviteController < ApplicationController
                             end
                         end
                     end
-                    render :json => {:successes => successes, 
-                                    :invalid => invalid_items_array, 
+                    render :json => {:successes => successes,
+                                    :invalid => invalid_items_array,
                                     :failed => failed_items,
                                     :ctx_name => ctx.display_identifier} and return
                 else
                     render(:nothing => true, :status => 401) and return
-                end  
+                end
             else
                 render(:nothing => true, :status => 404) and return
             end
@@ -142,7 +149,7 @@ class InviteController < ApplicationController
                             else
                                 author = nil
                             end
-                            @article = {:item => article, 
+                            @article = {:item => article,
                                       :author => author}
                         end
                     end
@@ -220,7 +227,7 @@ class InviteController < ApplicationController
             globally_opted_out = true if invitee.has_globally_opted_out?
           end
         end
-        
+
         ## email in invitations and globally opted-out
         if globally_opted_out
           invite, message = false, "global"
