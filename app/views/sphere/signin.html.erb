@@ -1,29 +1,17 @@
-<div class="form_containers signin_container">
-  <% if current_user -%>
-    <%= form_tag("/sphere/signout_submit", :id => "signout_form") do %>
-      <fieldset style="text-align:center;">
-        <p class="signedin_notice">You are signed in as <em><%= current_user.handle %></em></p>
+<% if !current_user -%>
+  <div class="form_containers signin_container">
+      <%= form_tag("/sphere/signin_submit", :id => "signin_form") do %>
+        <fieldset style="text-align:center;">
+          <input type="text" placeholder="User-handle or Email" name="user[cred]" value="<%= flash[:cred] %>" focus-field />
+          <br />
+          <input type="password" placeholder="Password" name="user[password]" />
+        </fieldset>
 
         <p class="submit_notice"><% if flash[:msg] -%><%= flash[:msg] %><% else -%>&nbsp;<% end -%></p>
 
         <button style="display:none;"></button>
-        <div class="menu_item signout" hover-highlight submittor>Sign Out</div>
+        <div class="menu_item signin" hover-highlight submittor>Sign In</div>
 
-
-    <% end -%>
-  <% else -%>
-    <%= form_tag("/sphere/signin_submit", :id => "signin_form") do %>
-      <fieldset style="text-align:center;">
-        <input type="text" placeholder="User-handle or Email" name="user[cred]" value="<%= flash[:cred] %>" focus-field />
-        <br />
-        <input type="password" placeholder="Password" name="user[password]" />
-      </fieldset>
-
-      <p class="submit_notice"><% if flash[:msg] -%><%= flash[:msg] %><% else -%>&nbsp;<% end -%></p>
-
-      <button style="display:none;"></button>
-      <div class="menu_item signin" hover-highlight submittor>Sign In</div>
-
-    <% end -%>
-  <% end -%>
-</div>
+      <% end -%>
+  </div>
+<% end -%>
