@@ -20,7 +20,7 @@ body {
     width: 100px;
     background: #555;
     @include border-radius(50px);
-    @include box-shadow(1px 1px 50px 1px #222);
+    /* @include box-shadow(10px 10px 50px 0px #222); */
     @include background-image(radial-gradient(center center, #888, #555));
     cursor: pointer;
     overflow: hidden;
