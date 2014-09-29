@@ -1,15 +1,15 @@
 body {
-    background: #000 image-url('stratocu640.jpg') no-repeat center top;
+    background: #000 image-url('earthspace.jpg') no-repeat center top;
     font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 }
 @media screen and (min-width: 481px) {
     body {
-        background: #000 image-url('stratocu1280.jpg') no-repeat center top;
+        background: #000 image-url('earthspace.jpg') no-repeat center top;
     }
 }
 @media screen and (min-width: 1280px) {
     body {
-        background: #000 image-url('stratocu2000.jpg') no-repeat center top;
+        background: #000 image-url('earthspace.jpg') no-repeat center 100px;
     }
 }
 
