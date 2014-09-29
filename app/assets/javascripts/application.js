@@ -5,9 +5,11 @@
 //= require angular-1.2.16/angular-sanitize.min
 //= require angular-1.2.16/angular-animate.min
 //= require angular-1.2.16/angular-ui-router
-//= require_directory .
+//= require app
+//= require filters
 //= require_directory ./controllers
 //= require_directory ./directives
 //= require_directory ./services
 //= require websocket_rails/main
 //= require dropzone.min
+//= require chosen.jquery.min

@@ -54,10 +54,8 @@ class PersonalSettingsController < ApplicationController
 
     def profile
       unless current_user
-        session[:return_to] = "/personal_settings/profile"
-        redirect_to("/sphere/signin") and return
+        render(:nothing => true, :status => 401) and return
       end
-      render :layout => 'application'
     end
 
     def edit_profile

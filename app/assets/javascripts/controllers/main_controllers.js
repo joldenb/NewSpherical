@@ -4,11 +4,15 @@
 'use strict';
 
 angular.module('sphericalIoApp.MainControllers', [])
-  .controller('MainCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$http', function($scope, $rootScope, $state, $timeout, $http) {
+  .controller('MainCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$http', 'UserInfo', function($scope, $rootScope, $state, $timeout, $http, UserInfo) {
     Dropzone.autoDiscover = false;
     $scope.usersignin = {};
+    UserInfo.signedin().then(function(d) {
+        $scope.usersignin.signedin = d.signedin;
+    });
 }])
   .controller('UserCtrl', ['$scope', 'UserInfo', function($scope, UserInfo) {
+    $scope.usersignin = {};
     UserInfo.signedin().then(function(d) {
         $scope.usersignin.signedin = d.signedin;
     });

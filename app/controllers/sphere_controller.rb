@@ -1,6 +1,10 @@
 class SphereController < ApplicationController
     after_filter :add_cors_headers
 
+    def index
+      render :signin
+    end
+
     def signin_token
         uri = URI(params[:rtn].to_s)
         if Context.find_by("channel_info.allowed_rdr_hosts" => uri.host)
@@ -20,6 +24,10 @@ class SphereController < ApplicationController
     def signin
         token = params[:token]
         signin_token_value = $redis.lrange("sntoken:#{token}", 0, -1)
+        rtn = params[:rtn].to_s if params[:rtn]
+        if rtn =~ /\A\/[\w\/]+\z/
+          session[:return_to] = rtn
+        end
         if signin_token_value.present?
             session[:signin_return], session[:rtnstate] = signin_token_value
             $redis.del("sntoken:#{token}")

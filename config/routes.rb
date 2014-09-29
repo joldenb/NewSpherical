@@ -16,6 +16,9 @@ Topical::Application.routes.draw do
   get "/sphere/dashboard_signout" => 'sphere#dashboard_signout'
   get "/sphere/signed_in" => 'sphere#signed_in'
 
+  ## defer to angular routes
+  get "/sphere(/*anything)" => 'sphere#index'
+
   post "/forum_persistence/save_forum_post" => 'forum_persistence#save_forum_post'
   post "/forum_persistence/save_conversation_post" => 'forum_persistence#save_conversation_post'
 

@@ -1,5 +1,5 @@
 class InviteController < ApplicationController
-    #layout false
+    layout false
 
     # def invitations_form
     #   if params[:group_id] =~ RMongoIdRegex
@@ -22,8 +22,7 @@ class InviteController < ApplicationController
 
     def card
       unless current_user
-        session[:return_to] = "/invite/card"
-        redirect_to("/sphere/signin") and return
+        render(:nothing => true, :status => 401) and return
       end
     end
 
