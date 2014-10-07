@@ -7,7 +7,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
-      elm.draggable({ containment: "parent", stack: ".usphere"});
+      elm.draggable({ containment: "parent", stack: ".psphere"});
     }
   };
 }])

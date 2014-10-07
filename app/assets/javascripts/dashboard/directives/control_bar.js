@@ -15,9 +15,9 @@ angular.module('sphericalApp.ControlBarDirectives', [])
             next_topic_index,
             all = function() {
                 var topic_index = activityController.currentTopicIdx;
-                if (topic_index >= 0) {
+                //if (topic_index >= 0) {
                     activityController.restore_topic_list();
-                }
+                //}
             },
             previous = function() {
                 var topic_index = activityController.currentTopicIdx;
@@ -69,7 +69,7 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                         ActivityVis.stories = false;
                         ActivityVis.discussions = false;
                         ActivityVis.discussion_edit = true;
-                      
+
                         ActivityVis.show_drag_target = false;
                         ActivityVis.swipe_enable = true;
                         ChooserData.thispostdata = {citations:[]};
