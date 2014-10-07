@@ -1,32 +1,10 @@
-<div id="invitation_accept" class="topical_invite">
-    <% if @article -%>
-        <h3 style="margin:15px 10px 0;"><%= @message ? @message : @error_message %></h3>
+<div class="form_containers invite_response_container">
+  <h1><%= @message ? @message : @error_message %></h1>
 
-        <% unless @error_message.present? -%>
-          <% if @new_group_invite -%>
-            <div id="new_group_accept" class="topical-btn blue" style="width:8em;margin:15px auto 25px;">Click to Accept</div>
-          <% else -%>
-            <div id="accept_invitation" class="topical-btn blue" style="width:8em;margin:15px auto 25px;">Click to Accept</div>
-          <% end -%>
-        <% end -%>
+  <% unless @error_message.present? -%>
+    <div class="menu_item invitation_respond" ng-show="!afteraccpt_signin" hover-highlight accept-invitation newgroup="<%= @new_group_invite %>">Click to Accept</div>
+    <div class="message"></div>
+    <div class="afteraccpt_signin" ng-show="afteraccpt_signin" ng-click="rdr2signin()">Sign In</div>
+  <% end -%>
 
-        <p id="error_notice"></p>
-
-        <div id="topical_news_content" style="display:block;"><div id="tn_wrapper">
-            <%= render :partial => "api/news_item_content", :locals => {:item => @article[:item], :author => @article[:author]} %>
-            <div style="clear:both"></div>
-        </div></div>
-    <% else -%>
-        <h3><%= @message ? @message : @error_message %></h3>
-
-        <% unless @error_message.present? -%>
-          <% if @new_group_invite -%>
-            <div id="new_group_accept" class="topical-btn blue" style="width:8em;margin:35px auto;">Click to Accept</div>
-          <% else -%>
-            <div id="accept_invitation" class="topical-btn blue" style="width:8em;margin:35px auto;">Click to Accept</div>
-          <% end -%>
-        <% end -%>
-
-        <p id="error_notice"></p>
-    <% end -%>
 </div>

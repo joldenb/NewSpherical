@@ -15,6 +15,7 @@ Topical::Application.routes.draw do
   post "/sphere/signout_submit" => 'sphere#signout_submit'
   get "/sphere/dashboard_signout" => 'sphere#dashboard_signout'
   get "/sphere/signed_in" => 'sphere#signed_in'
+  get "/sphere/signup" => 'sphere#signup'
 
   ## defer to angular routes
   get "/sphere(/*anything)" => 'sphere#index'
@@ -31,7 +32,9 @@ Topical::Application.routes.draw do
   get "/invite/accept(/:token)" => 'invite#accept'
   get "/invite/opt_out(/:token)" => 'invite#opt_out'
   post "/invite/send_invitations" => 'invite#send_invitations'
+  post "/invite/send_invitation" => 'invite#send_invitation'
   post "/invite/process_opt_out" => 'invite#process_opt_out'
+  get "/invite/invitable" => 'invite#invitable'
 
   post "/topics/preview_new_topic" =>      'topics#preview_new_topic'
   post "/topics/create_new_topic" =>       'topics#create_new_topic'

@@ -5,6 +5,10 @@ class SphereController < ApplicationController
       render :signin
     end
 
+    def signup
+
+    end
+
     def signin_token
         uri = URI(params[:rtn].to_s)
         if Context.find_by("channel_info.allowed_rdr_hosts" => uri.host)

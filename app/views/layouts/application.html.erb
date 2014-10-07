@@ -9,8 +9,8 @@
     <%= csrf_meta_tags %>
 </head>
 <body ng-app="sphericalIoApp">
-    <div id="wrapper">
-      <div id="uiwrapper" ng-controller="MainCtrl" ui-view></div>
+    <div id="wrapper" ng-controller="MainCtrl">
+      <div id="uiwrapper" ui-view></div>
       <%= yield %>
       <%= render :partial => "sphere/spheres" %>
     </div>

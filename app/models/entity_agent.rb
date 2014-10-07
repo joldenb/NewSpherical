@@ -264,12 +264,12 @@ class EntityAgent
               raise ParamsError, "Cannot find entity"
             end
 
-            if sn = Entity.find_by(:screen_name => screenname)
+            if sn = Entity.find_by(:screen_name => /^#{screenname}$/i)
               if sn.id != entity.id
                 return false
               end
             end
-            if hnd = Entity.find_by(:handle => screenname)
+            if hnd = Entity.find_by(:handle => /^#{screenname}$/i)
               if hnd.id != entity.id
                 return false
               end
@@ -279,10 +279,10 @@ class EntityAgent
             ## by someone other than this entity, otherwise:
             true
           else
-            if sn = Entity.find_by(:screen_name => screenname)
+            if sn = Entity.find_by(:screen_name => /^#{screenname}$/i)
               return false
             end
-            if hnd = Entity.find_by(:handle => screenname)
+            if hnd = Entity.find_by(:handle => /^#{screenname}$/i)
               return false
             end
 

@@ -1,10 +1,10 @@
 body {
-    background: #000 image-url('earthspace.jpg') no-repeat center top;
+    background: #000 image-url('earthspace.jpg') no-repeat center 100px;
     font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
 }
 @media screen and (min-width: 481px) {
     body {
-        background: #000 image-url('earthspace.jpg') no-repeat center top;
+        background: #000 image-url('earthspace.jpg') no-repeat center 100px;
     }
 }
 @media screen and (min-width: 1280px) {
@@ -113,20 +113,20 @@ body {
       }
 
       &.four {
-        top: 180px;
-        left: 25.9%;
+        top: 115px;
+        left: 21.5%;
       }
       &.five {
-        top: 180px;
-        left: 66.4%;
+        top: 115px;
+        left: 72%;
       }
       &.six {
-        top: 310px;
-        left: 24.7%;
+        top: 234px;
+        left: 13.5%;
       }
       &.seven {
-        top: 310px;
-        left: 67.5%;
+        top: 234px;
+        left: 79.6%;
       }
     }
 }
@@ -212,7 +212,10 @@ fieldset {
           margin: 10px 0 0;
       }
   }
-  &.profile_container, &.invitation_container {
+  &.profile_container,
+  &.invitation_container,
+  &.invite_response_container,
+  &.signup_container {
     width: 340px;
     height: 480px;
     padding: 30px;
@@ -246,6 +249,11 @@ fieldset {
       font-family: 'open_sanslight_italic';
       color: #d00;
       font-size: .85em;
+      &.multiline {
+        top: 0;
+        right: -25px;
+        width: 60px;
+      }
     }
     .ok {
       position: absolute;
@@ -260,6 +268,21 @@ fieldset {
       input {
         margin: 0;
         width: 14em;
+        &.drop-hover {
+          background-color: #069;
+        }
+      }
+      input[type="radio"],
+      input[type="checkbox"] {
+        width: 13px;
+        font-size: 1em;
+        margin-left: 10px;
+      }
+      .radioline  {
+        font-size: .85em;
+        margin-left: -10px;
+        width: 232px;
+        display: inline-block;
       }
       .spinner {
         position: absolute;
@@ -271,10 +294,28 @@ fieldset {
           max-width: 100%;
         }
       }
+      .nda {
+        font-size: .75em;
+        font-family: 'open_sanslight';
+        a {
+          font-family: 'open_sans';
+          font-size: 1.2em;
+          text-decoration: none;
+          &:link, &:visited {
+              color: #0080c9;
+          }
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
     }
     .form_btn {
       text-align: right;
       padding-right: 42px;
+      &.space_above {
+        margin-top: 30px;
+      }
       .spinner {
         position: absolute;
         top: 2px;
@@ -332,6 +373,7 @@ fieldset {
     }
   }
   &.invitation_container {
+    height: 580px;
     .email_text {
       display: block;
       font: .75em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
@@ -345,8 +387,32 @@ fieldset {
       font: .8em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
       width: 213px;
     }
-    .drop_hover {
-      border: 1px solid #039;
+  }
+  &.signup_container {
+    height: 300px;
+  }
+  &.invite_response_container {
+    height: 120px;
+    h1 {
+      margin-top: 15px;
+    }
+    .message {
+      color: #8dc63e;
+      text-align: center;
+      font-size: .9em;
+      &.error {
+        color: #d00;
+      }
+    }
+    .afteraccpt_signin {
+      text-align: center;
+      font-size: .9em;
+      color: #0080c9;
+      &:hover {
+        color: #fff;
+      }
+      margin-top: 20px;
+      cursor: pointer;
     }
   }
   fieldset {
@@ -368,6 +434,14 @@ fieldset {
       }
       &.chpass_submit {
         background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+        opacity: 0.2;
+      }
+      &.invitation_submit {
+        background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+        opacity: 0.2;
+      }
+      &.signup_submit {
+        background: transparent image-url('signin-icon.png') no-repeat 60px 3px;
         opacity: 0.2;
       }
       &.active {
@@ -396,6 +470,10 @@ fieldset {
   }
   &.signout {
     background: transparent image-url('signout-icon.png') no-repeat 93px 7px;
+  }
+  &.invitation_respond {
+    padding: 7px 0 5px;
+    width: 160px;
   }
   &.savepic, &.cancelpic {
     width: 60px;

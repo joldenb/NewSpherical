@@ -159,4 +159,41 @@ angular.module('sphericalIoApp.ProfileDirectives', [])
       });
     }
   };
+}])
+.directive('uniqueHandle', ['$http', function($http) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      var formname = elm.closest('form').attr('name'),
+      fldname = elm.attr('name');
+      elm.on('blur', function() {
+        if (scope[formname][fldname].$pristine) {
+          return;
+        }
+        if (scope[formname][fldname].$modelValue === '') {
+          scope[formname][fldname].$setPristine();
+          return;
+        }
+        scope.checking_handle = true;
+        var screenname_to_check = scope[formname][fldname].$modelValue;
+        $http.get('/personal_settings/unique_screenname_check', {params: {screenname: screenname_to_check}})
+        .success(function(result) {
+          scope[formname][fldname].$setValidity('unique_handle', result.screenname_unique);
+          scope.checking_handle = false;
+        });
+      });
+    }
+  };
+}])
+.directive('handleFormatter', [function() {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('keyup', function() {
+        var corrected = elm.val().toLowerCase();
+        corrected = corrected.replace(/[^a-z0-9\-]/, '');
+        elm.val(corrected);
+      });
+    }
+  };
 }]);

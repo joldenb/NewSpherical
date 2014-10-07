@@ -65,22 +65,22 @@ class PersonalSettingsController < ApplicationController
     end
 
     def unique_email_check
-      render(:nothing => true, :status => 401) and return unless current_user
+      current_user_id = current_user ? current_user.id : nil
       email = params[:email].to_s.strip
-      email_unique = EntityAgent.unique_email(email, current_user.id)
+      email_unique = EntityAgent.unique_email(email, current_user_id)
       render(:json => {:email_unique => email_unique}) and return
     end
 
     def unique_screenname_check
-      render(:nothing => true, :status => 401) and return unless current_user
+      current_user_id = current_user ? current_user.id : nil
       screenname = params[:screenname].to_s.strip
-      screenname_unique = EntityAgent.unique_screen_name(screenname, current_user.id)
+      screenname_unique = EntityAgent.unique_screen_name(screenname, current_user_id)
       render(:json => {:screenname_unique => screenname_unique}) and return
     end
 
     def update_profile
       render(:nothing => true, :status => 401) and return unless current_user
-      screenname = params[:screenname].to_s.strip
+      screenname = params[:screenname].to_s.strip.gsub(/[\s]+/, ' ')
       email = params[:email].to_s.strip
       if (screenname.present?)
         unless screenname_unique = EntityAgent.unique_screen_name(screenname, current_user.id)

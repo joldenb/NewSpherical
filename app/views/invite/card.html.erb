@@ -1,15 +1,31 @@
 <div class="form_containers invitation_container" ng-controller="ProfileCtrl">
   <h1>Invitation</h1>
   <form name="invitationform" novalidate>
+    <input type="hidden" name="invite_ctx" ng-model="invite_ctx" ng-init="invite_ctx = '<%= @ctx_id %>'">
     <fieldset>
       <p>
-        <span class="fld label">Invite into</span>
-        <input type="text" placeholder="Drag Sphere(s) Here" name="invite_spheres" />
+        <span class="fld label">Send to</span>
+        <input type="email" placeholder="Recipient's Email" name="invite_email" ng-model="invite_email" is-focussed is-invitable />
+        <span class="ok" ng-show="invitationform.invite_email.$dirty && invitationform.invite_email.$valid && !_focussed.invite_email && !checking_invitable"></span>
+        <span class="error" ng-show="invitationform.invite_email.$dirty && invitationform.invite_email.$error.required && !_focussed.invite_email && !checking_invitable">required</span>
+        <span class="error" ng-show="invitationform.invite_email.$dirty && invitationform.invite_email.$error.invalid && !invitationform.invite_email.$error.required && !_focussed.invite_email && !checking_invitable">invalid</span>
+        <span class="error multiline" ng-show="invitationform.invite_email.$dirty && invitationform.invite_email.$error.invitable && !invitationform.invite_email.$error.required && !invitationform.invite_email.$error.invalid && !_focussed.invite_email && !checking_invitable">{{not_invitable_reason}}</span>
+        <span class="spinner" ng-show="checking_invitable"><%= image_tag('ajax-loader.gif') %></span>
       </p>
 
       <p>
-        <span class="fld label">Send to</span>
-        <input type="email" placeholder="Recipient's Email" name="invite_email" />
+        <span class="fld label">Invite into</span>
+        <input type="text" placeholder="Drag Sphere Here" name="invite_sphere" ng-model="invite_sphere" drop-psphere required />
+        <span class="ok" ng-show="invitationform.invite_sphere.$dirty && invitationform.invite_sphere.$valid && !_focussed.invite_sphere && !checking_invitable"></span>
+        <span class="error" ng-show="invitationform.invite_sphere.$dirty && invitationform.invite_sphere.$error.required && !_focussed.invite_sphere && !checking_invitable">required</span>
+      </p>
+
+      <p><span class="label">Invite as</span>
+          <span class="radioline">
+            <input name="role" ng-model="invite_role" type="radio" value="participant" ng-checked="invite_role === 'participant'"> Participant
+            <input name="role" ng-model="invite_role" type="radio" value="curator"> Curator
+            <input name="role" ng-model="invite_role" type="radio" value="demo"> Demo
+          </span>
       </p>
 
       <p>
@@ -17,7 +33,7 @@
       </p>
       <p class="email_text">To: {{invite_email || '[email]'}},
 <br /><br />
-This is an invitation to join the BFI sphere, part of Spherical.
+This is an invitation to join the {{invite_sphere || '[sphere name]'}} sphere, part of Spherical.
 <br /><br />
 If you wish to accept, please click on the following link:
 <%= ENV['FULLHOST'] %>invite/accept/[key]
@@ -29,8 +45,13 @@ If you don't wish to accept, you may just ignore this email.</span>
 
       <p>
         <span class="fld label">Add a p.s.</span>
-        <textarea class="invitation_ps" name="invitation_ps" placeholder="Personalize the invitation here." rows="5"></textarea>
+        <textarea class="invitation_ps" name="invitation_ps" ng-model="invitation_ps" placeholder="Optionally personalize the invitation here." rows="5"></textarea>
       </p>
+
+      <p class="form_btn">
+        <span class="feedback" ng-show="invitationform.$pristine && show_invite_feedback" ng-class="{fbk_error: invite_error}">{{invite_message}}</span>
+        <span class="spinner" ng-show="invitationform.$pristine && show_invite_spinner"><%= image_tag('ajax-loader.gif') %></span>
+        <input type="button" ng-click="invitationSubmit()" ng-class="{active: invitationform.$valid && invitationform.invite_email.$dirty && invitationform.invite_sphere.$dirty}" class="invitation_submit" name="invitation_submit" value="Send" hover-highlight></p>
     </fieldset>
 
   </form>

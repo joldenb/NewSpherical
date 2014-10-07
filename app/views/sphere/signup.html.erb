@@ -1,0 +1,60 @@
+<div class="form_containers signup_container" ng-controller="SignupCtrl">
+  <h1>Please Complete your Signup</h1>
+
+  <form name="signupform" novalidate>
+    <fieldset>
+      <p>
+        <span class="fld label">Signin Name</span>
+        <input type="text" placeholder="Required" name="handle" ng-model="handle"  required handle-formatter is-focussed unique-handle />
+        <span class="ok" ng-show="signupform.handle.$dirty && signupform.handle.$valid && !_focussed.handle && !checking_handle"></span>
+        <span class="error" ng-show="signupform.handle.$dirty && signupform.handle.$error.unique_handle && !_focussed.handle && !checking_handle">in use</span>
+        <span class="spinner" ng-show="checking_handle"><%= image_tag('ajax-loader.gif') %></span>
+      </p>
+
+      <p>
+        <span class="fld label">Screen Name</span>
+        <input type="text" placeholder="Optional" name="screenname" ng-model="signupform.screen_name" value="{{signupform.screen_name || signedin.handle}}" is-focussed unique-screenname space-remover />
+        <span class="ok" ng-show="signupform.screenname.$dirty && signupform.screenname.$valid && !_focussed.screenname && !checking_screenname"></span>
+        <span class="error" ng-show="signupform.screenname.$dirty && signupform.screenname.$error.unique_screenname && !_focussed.screenname && !checking_screenname">in use</span>
+        <span class="spinner" ng-show="checking_screenname"><%= image_tag('ajax-loader.gif') %></span>
+      </p>
+
+      <p>
+        <span class="fld label">Email</span>
+        <input type="email" placeholder="Required" name="email" ng-model="email" ng-init="email = '<%= session[:invitee_email] %>'" required is-focussed unique-email />
+        <span class="ok" ng-show="signupform.email.$dirty && signupform.email.$valid && !_focussed.email && !checking_email"></span>
+        <span class="error" ng-show="signupform.email.$dirty && signupform.email.$error.required && !_focussed.email && !checking_email">required</span>
+        <span class="error" ng-show="signupform.email.$dirty && signupform.email.$error.invalid && !signupform.email.$error.required && !_focussed.email && !checking_email">invalid</span>
+        <span class="error" ng-show="signupform.email.$dirty && signupform.email.$error.unique_email && !signupform.email.$error.required && !signupform.email.$error.invalid && !_focussed.email && !checking_email">in use</span>
+        <span class="spinner" ng-show="checking_email"><%= image_tag('ajax-loader.gif') %></span>
+      </p>
+
+      <p>
+        <span class="fld label">Password</span>
+        <input type="password" placeholder="Password" name="password" value="" ng-model="password" required is-focussed />
+        <span class="ok" ng-show="signupform.password.$dirty && signupform.password.$valid && !_focussed.password"></span>
+        <span class="error" ng-show="signupform.password.$dirty && signupform.password.$error.required && !_focussed.password">required</span>
+      </p>
+      <p>
+        <span class="fld label">Confirm Password</span>
+        <input type="password" placeholder="Password Again" name="pwd_confirm" value="" ng-model="pwd_confirm" required is-focussed pwd-match />
+        <span class="ok" ng-show="signupform.pwd_confirm.$dirty && signupform.password.$valid && signupform.pwd_confirm.$valid && !_focussed.pwd_confirm"></span>
+        <span class="error" ng-show="signupform.pwd_confirm.$dirty && signupform.pwd_confirm.$error.required && !_focussed.pwd_confirm">required</span>
+        <span class="error" style="top:0;" ng-show="signupform.pwd_confirm.$dirty && !signupform.pwd_confirm.$error.required && signupform.pwd_confirm.$error.match && !_focussed.pwd_confirm">doesn't<br />match</span>
+      </p>
+
+      <p class="nda">
+        <input type="checkbox" name="nda_accept" ng-model="nda_accept" required />
+        <span>This is a private demo site.  By clicking here to you agree to abide by our <a href="https://spherical.io/nda" target="_blank">terms of non-disclosure.</a></span>
+      </p>
+
+      <p class="form_btn space_above">
+        <span class="feedback" ng-show="signupform.$pristine && show_signup_feedback" ng-class="{fbk_error: signup_error}">{{signup_message}}</span>
+        <span class="spinner" ng-show="signupform.$pristine && show_signup_spinner"><%= image_tag('ajax-loader.gif') %></span>
+        <input type="button" ng-click="signupSubmit()" ng-class="{active: signupform.$dirty && signupform.$valid}" class="signup_submit" name="signup_submit" value="Signup" hover-highlight>
+      </p>
+    </fieldset>
+  </form>
+
+
+</div>

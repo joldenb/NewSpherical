@@ -86,4 +86,15 @@ angular.module('sphericalIoApp.UtilityDirectives', [])
       });
     }
   };
+}])
+.directive('spaceRemover', [function() {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('keyup', function() {
+        var corrected = elm.val().replace(/[\s]+/g, ' ');
+        elm.val(corrected);
+      });
+    }
+  };
 }]);

@@ -1,5 +1,5 @@
 class EntityController < ApplicationController
-    
+
     def user_signup
         signup_topics = []
         if session[:invitee_id]
@@ -15,23 +15,22 @@ class EntityController < ApplicationController
         else
             signup_topics << "planetwork"
         end
-        
-        if params[:nda_accept] != "1"
-            render :json => {:success => false, :notice => "You must accept NDA."} and return
-        elsif !params[:user]
-            render :json => {:success => false, :notice => "No params."} and return
-        elsif !params[:user][:email].instance_of?(String) ||
-                !params[:user][:handle].instance_of?(String) ||
-                !params[:user][:password].instance_of?(String) ||
-                !params[:user][:password_confirmation].instance_of?(String)
+
+        if !params[:nda_accept]
+            render :json => {:success => false, :notice => "You must accept the NDA."} and return
+        elsif !params[:email].instance_of?(String) ||
+                !params[:handle].instance_of?(String) ||
+                !params[:password].instance_of?(String) ||
+                !params[:pwd_confirm].instance_of?(String)
             render :json => {:success => false, :notice => "Missing or incorrect params."} and return
         end
 
         user_data = {
-            :email => params[:user][:email].downcase.strip, 
-            :handle => params[:user][:handle].downcase.strip, 
-            :password => params[:user][:password],
-            :password_confirmation => params[:user][:password_confirmation]}
+            :email => params[:email].downcase.strip,
+            :handle => params[:handle].downcase.strip,
+            :password => params[:password],
+            :password_confirmation => params[:pwd_confirm]}
+        user_data[:screen_name] = params[:screen_name].strip if params[:screen_name]
         if invitee
             user_data[:role] = invitee.invited_role
             if invitee.invited_role == "demo"
@@ -67,8 +66,8 @@ class EntityController < ApplicationController
 
         generated_password = SecureRandom.urlsafe_base64(20)
         user_data = {
-            :email => params[:user][:email].downcase.strip, 
-            :handle => params[:user][:handle].downcase.strip, 
+            :email => params[:user][:email].downcase.strip,
+            :handle => params[:user][:handle].downcase.strip,
             :password => generated_password,
             :password_confirmation => generated_password,
             :oauth_data => session[:oauth]}
@@ -100,7 +99,7 @@ class EntityController < ApplicationController
                         if params[:remember_me] == "1"
                             update_remember_me_token(user)
                         end
-                        render :json => {:success => true, 
+                        render :json => {:success => true,
                                         :notice => "You are signed in!",
                                         :rdr => @rdr}
                     else
@@ -182,8 +181,8 @@ class EntityController < ApplicationController
                         render :json => {:success => false, :notice => e.message} and return
                     end
                     invitee.update_attributes(:accepted => true)
-                    signin_user(existing_entity.id)
-                    render :json => {:success => true, :notice => "You have joined #{invitee.context.display_identifier}!"} and return
+                    #signin_user(existing_entity.id)
+                    render :json => {:success => true, :notice => "You have joined #{invitee.sphere_name}!"} and return
                 else
                     render :json => {:success => false, :notice => "No existing user found."} and return
                 end

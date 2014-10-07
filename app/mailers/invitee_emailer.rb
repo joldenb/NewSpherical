@@ -1,6 +1,6 @@
 class InviteeEmailer
     @queue = :mailgun
-    def self.perform(sender, recipient, access_key, groupname, text, sig, article_id=nil, name=nil)
+    def self.perform(sender, recipient, access_key, groupname, ps, article_id=nil, name=nil)
       logfile = "#{Rails.root}/log/mailgun.log"
       log = File.new(logfile, 'a')
       log.sync = true
@@ -13,20 +13,20 @@ class InviteeEmailer
 
         response = @conn.post do |req|
           params = {}
-          req.url "/v2/topical.planetwork.net/messages"
+          req.url "/v2/mg.spherical.io/messages"
           params[:to] = recipient
           if sender =~ EmailAddressesParser::DEFAULT_REGEX
             params[:from] = sender
             params[:reply_to] = sender
           else
-            params[:from] = "admin@topical.planetwork.net"
-            params[:reply_to] = "admin@topical.planetwork.net"
+            params[:from] = "admin@spherical.io"
+            params[:reply_to] = "admin@spherical.io"
           end
-          params[:subject] = "Topical Invitation"
+          params[:subject] = "Spherical Invitation"
           link_host = ENV['FULLHOST']
           access_key = access_key
           salutation = name.present? ? name : recipient
-          params[:text] = self.text(recipient, access_key, groupname, text, sig, salutation, link_host, article_id)
+          params[:text] = self.text(recipient, access_key, groupname, ps, salutation, link_host, article_id)
           req.body = params
         end
 
@@ -36,58 +36,58 @@ class InviteeEmailer
           log.write("#{t} Invite #{recipient} failed:#{response.status}\n")
         end
       rescue Exception => e
-        log.write("#{t} Invite #{e}\n")
+        log.write("#{t} Invite error #{e}\n")
       end
     end
 
-    def self.text(recipient, access_key, groupname, text, sig, salutation, link_host, article_id)
+    def self.text(recipient, access_key, groupname, ps, salutation, link_host, article_id)
       if article_id
-        self.email_article_text(recipient, access_key, groupname, text, sig, salutation, link_host)
+        self.email_article_text(recipient, access_key, groupname, ps, salutation, link_host)
       else
-        self.email_text(recipient, access_key, groupname, text, sig, salutation, link_host)
+        self.email_text(recipient, access_key, groupname, ps, salutation, link_host)
       end
     end
 
-    def self.email_text(recipient, access_key, groupname, text, sig, salutation, link_host)
+    def self.email_text(recipient, access_key, groupname, ps, salutation, link_host)
         %Q{To: #{salutation},
 
-#{text}
+This is an invitation to join the #{groupname} sphere, part of Spherical.
 
 If you wish to accept, please click on the following link:
 <#{link_host}invite/accept/#{access_key}>
 
-Topical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at <https://topical.planetwork.net/nda>.
+Spherical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at <https://spherical.io/nda>.
 
 If you don't wish to accept, you may just ignore this email.
 
-#{sig}
+#{ps}
 
 -----------------------------------------------------------
-This invitation was sent to #{recipient}. 
+This invitation was sent to #{recipient}.
 If you do not wish to accept, you may just ignore it.
-If you do not wish to receive any more invitations like this, 
+If you do not wish to receive any more invitations like this,
 please click on the following link:
 <#{link_host}invite/opt_out/#{access_key}>}
     end
 
-    def self.email_article_text(recipient, access_key, groupname, text, sig, salutation, link_host)
+    def self.email_article_text(recipient, access_key, groupname, ps, salutation, link_host)
               %Q{To: #{salutation},
 
-      #{text}
+      This is an invitation to view an article and join the #{groupname} sphere, part of Spherical.
 
       If you wish to view the article and optionally accept the invitation, please click on the following link:
       <#{link_host}invite/accept/#{access_key}>
 
-      Topical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at <https://topical.planetwork.net/nda>.
+      Spherical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at <https://spherical.io/nda>.
 
       If you don't wish to accept, you may still view the article.
 
-      #{sig}
+      #{ps}
 
       -----------------------------------------------------------
-      This invitation was sent to #{recipient}. 
+      This invitation was sent to #{recipient}.
       If you do not wish to accept, you may just ignore it.
-      If you do not wish to receive any more invitations like this, 
+      If you do not wish to receive any more invitations like this,
       please click on the following link:
       <#{link_host}invite/opt_out/#{access_key}>}
     end
