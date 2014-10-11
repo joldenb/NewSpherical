@@ -14,12 +14,13 @@ class Context
 
     embeds_one :ctx_settings_list
     embeds_one :channel_info
-    
+
     field :identifier, :type => String
     field :context_types, :type => Array
     field :display_name, :type => String
     field :description, :type => String
     field :sort_order, :type => Integer, :default => 0
+    field :dashboard_url, :type => String
 
     index({:identifier => 1}, {:unique => true})
     index({:display_name => 1}, {:unique => true, :sparse => true})

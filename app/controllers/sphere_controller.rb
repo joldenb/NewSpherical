@@ -17,7 +17,7 @@ class SphereController < ApplicationController
                         "stateparams" => params[:stateparams]}.to_json
             $redis.rpush("sntoken:#{token}", %Q{#{uri.scheme}://#{uri.host}/#/signin/})
             $redis.rpush("sntoken:#{token}", rtnstate)
-            $redis.expire("sntoken:#{token}", 30)
+            $redis.expire("sntoken:#{token}", 60)
             render :json => {"token" => token} and return
         else
             render(:nothing => true, :status => 401) and return
@@ -35,7 +35,6 @@ class SphereController < ApplicationController
         if signin_token_value.present?
             session[:signin_return], session[:rtnstate] = signin_token_value
             $redis.del("sntoken:#{token}")
-
             #if user is already signed in to Spherical bounce them back
             if current_user && session[:signin_return] && session[:rtnstate]
                 if session[:sess] && $redis.exists("sess:#{session[:sess]}")
@@ -52,6 +51,7 @@ class SphereController < ApplicationController
                     redirect_to(return_uri) and return
                 end
             end
+            #otherwise, we just present them with the signin screen
         end
     end
 
@@ -172,7 +172,7 @@ class SphereController < ApplicationController
         $redis.rpush("jtoken:#{signin_jwt_token}", jwt)
         $redis.rpush("jtoken:#{signin_jwt_token}", rtnstate)
         $redis.expire("jtoken:#{signin_jwt_token}", 30)
-        # return the temp token to the client's signin state uri
+        # return the temp token to the client's signin-state uri
         signin_return + signin_jwt_token
     end
 

@@ -22,6 +22,9 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
             $('#spherical_dashboard_container').hide({effect: 'blind', easing: 'easeOutCirc', duration: 1000});
         },
         signin = function() {
+            /* first get a signin token, so that io remembers where to
+            redirect you to after successful signin, then redirect
+            to io#signin */
             var url = SPHR_HST +'sphere/signin_token',
             sndata = {rtn: $window.location.href,
                     statename: scope.$parent.state.current.name,

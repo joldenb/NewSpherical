@@ -1,16 +1,22 @@
-<div id="invitation_opt_out" class="topical_invite">
-    <h3><%= @message ? @message : @error_message %></h3>
+<div class="form_containers optout_response_container">
+    <h1><%= @message ? @message : @error_message %></h1>
 
     <% unless @error_message.present? -%>
-        <%= form_tag('#', :id => 'opt_out_form') do -%>
-            <p><%= radio_button_tag("opt_out", "group", true) %> Opt-out from the <%= @ctx_name %> Planetwork group.</p>
-            <p><%= radio_button_tag("opt_out", "global") %> Opt-out from all Planetwork groups.</p>
-        <% end -%>
-        <div id="decline_invitation" class="topical-btn blue" style="width:14em;margin:35px auto;">Opt-Out (cannot be undone)</div>
-        
-        <p id="error_notice" style="margin:-20px 0 20px">&nbsp;</p>
+        <div ng-show="!after_optout">
+          <form name="optoutform" novalidate>
+            <p class="radioline">
+              <input name="opt_out" ng-model="opt_out" type="radio" value="group" ng-checked="opt_out === 'group'"> Opt-out from the <%= @sphere_name %> Spherical group.
+            </p>
+            <p class="radioline">
+              <input name="opt_out" ng-model="opt_out" type="radio" value="global"> Opt-out from all Spherical groups.
+            </p>
+          </form>
 
-        <p>Or, you could change your mind and <a href="<%= @accept_link %>">accept.</a></p>
+          <div class="menu_item invitation_respond" style="margin-top:15px;" hover-highlight opt-out>Click to Opt Out</div>
+          <div class="accpt_signin">Or, you could change your mind and <a href="<%= @accept_link %>" target="_self">accept.</a></div>
+        </div>
+
+        <div class="message" ng-show="after_optout"></div>
     <% end -%>
 
 </div>

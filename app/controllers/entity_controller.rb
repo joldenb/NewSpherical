@@ -45,9 +45,13 @@ class EntityController < ApplicationController
         if new_user.valid?
             if invitee
                 invitee.update_attributes(:accepted => true, :accepted_user => new_user.id)
+                dashboard_url = invitee.context.dashboard_url
+            else
+              dashboard_url = ''
             end
-            signin_user(new_user.id)
-            render :json => {:success => true, :notice => "You are signed up!"}
+            ## signin new user without resetting session
+            session[:user_id] = new_user.id
+            render :json => {:success => true, :notice => "You are signed up!", :dashboard_url => dashboard_url}
         else
             render :json => {:success => false, :notice => "Signup failed."}
         end

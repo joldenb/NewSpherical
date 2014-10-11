@@ -18,7 +18,7 @@ angular.module('sphericalIoApp.MainControllers', [])
   .controller('UserCtrl', ['$scope', '$rootScope', 'UserInfo', function($scope, $rootScope, UserInfo) {
     // spheres and menubox under this controller
   }])
-  .controller('SignupCtrl', ['$scope', '$rootScope', '$http', '$state', 'UserInfo', function($scope, $rootScope, $http,  $state, UserInfo) {
+  .controller('SignupCtrl', ['$scope', '$rootScope', '$http', '$state', '$window', '$timeout', 'UserInfo', function($scope, $rootScope, $http,  $state, $window, $timeout, UserInfo) {
     $scope.state = $state;
     $scope.show_signup_spinner = false;
     $scope.signup_error = false;
@@ -43,6 +43,29 @@ angular.module('sphericalIoApp.MainControllers', [])
             $scope.signup_error = false;
             $scope.show_signup_feedback = true;
             $scope.signup_message = res.notice;
+
+            if (res.dashboard_url && res.dashboard_url !== '') {
+              /* Once new user has successfully signed up and a dashboard
+              url exists, get a signin token and redirect the new user
+              to sphere#signin with it, from whence they will be
+              verified and redirected to their dashboard/#/signin/:token
+              That token was set by sphere#signin_token. The dashboard/#/signin/:token
+              uses that token to retrieve and store the jwt and state.go
+              to the dashboard_url.
+              */
+              var data = {};
+              data.rtn = res.dashboard_url;
+              data.statename = 'sphere';
+              data.stateparams = {};
+              $http.post('/sphere/signin_token', data)
+              .success(function(tokenresult) {
+                var signin_token = tokenresult.token,
+                rdr = '/sphere/signin/' + signin_token;
+                $timeout(function () {
+                  $window.location.href = rdr;
+                }, 3000);
+              });
+            }
           } else {
             $scope.show_signup_spinner = false;
             $scope.signup_error = true;
