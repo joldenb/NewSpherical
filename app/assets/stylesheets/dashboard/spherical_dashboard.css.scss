@@ -386,7 +386,7 @@
                     top: -1px;
                     left: -6px;
                     opacity: 0.2;
-                    background: #000 url(/assets/discussion.png) no-repeat 110px 3px;
+                    background: #000 image-url('discussion.png') no-repeat 110px 3px;
                     width: 115px;
                     height: 18px;
                     padding: 6px 10px;
@@ -399,7 +399,7 @@
                     top: -1px;
                     left: 37px;
                     opacity: 0.2;
-                    background: #000; /* url(/assets/discussion.png) no-repeat 110px 3px; */
+                    background: #000 image-url('elevate-icon.png') no-repeat 60px 5px;
                     width: 65px;
                     height: 18px;
                     padding: 6px 10px;
@@ -412,7 +412,7 @@
                     top: -1px;
                     left: 80px;
                     opacity: 0.2;
-                    background: #000; /* url(/assets/discussion.png) no-repeat 110px 3px; */
+                    background: #000 image-url('repost-icon.png') no-repeat 60px 6px;
                     width: 65px;
                     height: 18px;
                     padding: 6px 10px;
@@ -425,7 +425,7 @@
                     top: -1px;
                     left: 88px;
                     opacity: 0.2;
-                    background: #000; /* url(/assets/discussion.png) no-repeat 110px 3px; */
+                    background: #000 image-url('share-icon.png') no-repeat 93px 4px;
                     width: 100px;
                     height: 18px;
                     padding: 6px 10px;
@@ -1038,7 +1038,7 @@
                   background: transparent;
                   outline-style: none;
                   &.share_send {
-                    background: transparent image-url('save-icon.png') no-repeat 60px 1px;
+                    background: transparent image-url('share-icon.png') no-repeat 60px 2px;
                     opacity: 0.2;
                   }
                   &.active {
