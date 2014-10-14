@@ -1,0 +1,57 @@
+<div class="share_form">
+  <form name="shareinviteform" novalidate>
+    <p><span class="info label">Share</span>&nbsp;<em>{{current_headline}}</em></p>
+    <fieldset>
+        <span class="fld label">With</span>
+        <input type="email" placeholder="Email Address" name="invite_email" ng-model="invite_email" is-focussed />
+        <span class="ok" ng-show="invite_email.$dirty && invite_email.$valid && !_focussed.email && !checking_email"></span>
+        <span class="error" ng-show="invite_email.$dirty && invite_email.$error.required && !_focussed.email && !checking_email">required</span>
+        <span class="error" ng-show="invite_email.$dirty && invite_email.$error.invalid && !invite_email.$error.required && !_focussed.email && !checking_email">invalid</span>
+        <span class="spinner" ng-show="checking_email"><%= image_tag('ajax-loader.gif') %></span>
+      </p>
+
+      <p class="chkbox">
+        <input type="checkbox" name="invite" ng-model="invite" />
+        <span>Also send an invitation to join this sphere.</span>
+      </p>
+      <p ng-show="invite"><span class="info label">Invite as</span>
+          <span class="radioline">
+            <input name="role" ng-model="invite_role" type="radio" value="participant" ng-checked="true"> Participant
+            <input name="role" ng-model="invite_role" type="radio" value="curator"> Curator
+            <input name="role" ng-model="invite_role" type="radio" value="demo"> Demo
+          </span>
+      </p>
+
+      <p>
+        <span class="fld label">Add a p.s.</span>
+        <textarea class="email_ps" name="email_ps" ng-model="email_ps" placeholder="Optionally personalize the email here." rows="12"></textarea>
+      </p>
+
+      <p class="share_send_btn">
+        <span class="feedback" ng-show="userprofileform.$pristine && show_prof_feedback" ng-class="{fbk_error: prof_error}">{{prof_message}}</span>
+        <span class="spinner" ng-show="userprofileform.$pristine && show_prof_spinner"><%= image_tag('ajax-loader.gif') %></span>
+        <input type="button" ng-click="userprofileSubmit()" ng-class="{active: userprofileform.$dirty && userprofileform.$valid && !_focussed.screenname && !_focussed.email}" class="share_send" name="share_send" value="Send" hover-highlight></p>
+    </fieldset>
+  </form>
+
+  <div class="inv_preview"
+    <p>
+      <span class="fld label">Email will read:</span>
+    </p>
+    <p class="email_text">To: {{invite_email || '[email]'}},
+  <br /><br />
+  {{signedin.screenname}} would like to share the following Spherical item with you:
+  <br />
+  {{thiswindow.location.origin}}/#/sphere/[link]
+  <br /><br /><span ng-show="invite">
+  You are also invited to join the BFI sphere, part of Spherical.
+  <br /><br />
+  If you wish to accept, please click on the following link:
+  {{sphr_hst}}invite/accept/[key]
+  <br /><br />
+  Spherical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at https://spherical.io/nda.
+  <br /><br />
+  If you don't wish to accept, you may just ignore this email.</span>
+    </p>
+  </div>
+</div>

@@ -8,7 +8,8 @@ angular.module('sphericalApp.DataContainerServices', [])
             stories_active: true,
             show_drag_target: false,
             swipe_enable: true,
-            thispost_disabled: false
+            thispost_disabled: false,
+            shareitem: false
         };
     }])
     .service('ForumData', [function() {

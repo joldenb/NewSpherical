@@ -1,14 +1,14 @@
 <div ng-controller="UserCtrl"><div id="user_area">
 
-    <div class="userspheres">
-      <div ng-show="signedin" class="seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth2.png") %></div>
-      <div ng-show="signedin" class="six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Pachamama1.png") %></div>
-      <div ng-show="signedin" class="five psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE1.png") %></div>
-      <div ng-show="signedin" class="four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/AGU1.png") %></div>
-      <div ng-show="signedin" class="three psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers_sphere.png") %></div>
-      <div ng-show="signedin" class="two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo_sphere1.png") %></div>
-      <div ng-show="signedin" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></a></div>
-    </div>
+  <div class="userspheres">
+    <div ng-show="signedin" class="seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth2.png") %></div>
+    <div ng-show="signedin" class="six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Pachamama1.png") %></div>
+    <div ng-show="signedin" class="five psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE1.png") %></div>
+    <div ng-show="signedin" class="four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/AGU1.png") %></div>
+    <div ng-show="signedin" class="three psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers_sphere.png") %></div>
+    <div ng-show="signedin" class="two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo_sphere1.png") %></div>
+    <div ng-show="signedin" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></a></div>
+  </div>
 </div>
 
 <div id="dashlogo"><img alt="" ng-src="{{spheredata.dashlogo}}"></div>
@@ -21,53 +21,42 @@
 
 
 <div ng-controller="ActivityCtrl" class="activity_ctrl">
-    <div class="topic-swiper" topic-swiper slidearray="spheredata.topics"></div>
+  <div class="topic-swiper" topic-swiper slidearray="spheredata.topics"></div>
 
-    <div class="controls_bar">
-        <div class="topic_controls">
-            <!-- <div class="control" topic-cntrl-btn btntarget="all" tool-tip>
-                <span ng-class="{active:currentTopicIdx >= 0}">&nbsp;</span>
-                <div class="tooltip_above">All Topics<div class="arrow">&nbsp;</div></div>
-            </div>
-            <div class="control" topic-cntrl-btn btntarget="previous" tool-tip>
-                <span ng-class="{active:currentTopicIdx > 0}" style="background-position:-21px 0;">&nbsp;</span>
-                <div class="tooltip_above">Previous Topic<div class="arrow">&nbsp;</div></div>
-            </div>
-            <div class="control" topic-cntrl-btn btntarget="next" tool-tip>
-                <span ng-class="{active:(currentTopicIdx < spheredata.num_topics-1 && currentTopicIdx >= 0)}" style="background-position:-46px 0;">&nbsp;</span>
-                <div class="tooltip_above">Next Topic<div class="arrow">&nbsp;</div></div>
-            </div> -->
-            <div class="control_rt" cntrlbar-btn btntarget="new_discussion">
-                <span class="discussion" ng-class="{active: visible.show_new_discussion()}">New Discussion</span>
-                <!-- <div class="tooltip_above twoln">Start a New Discussion<div class="arrow">&nbsp;</div></div> -->
-            </div>
-            <div class="control_rt" cntrlbar-btn btntarget="elevate">
-                <span class="elevate" ng-class="{active: true}">Elevate</span>
-            </div>
-            <div class="control_rt" cntrlbar-btn btntarget="repost">
-                <span class="repost" ng-class="{active: true}">Repost</span>
-            </div>
-            <div class="control_rt" cntrlbar-btn btntarget="share">
-                <span class="share" ng-class="{active: true}">Share</span>
-            </div>
-        </div>
+  <div class="controls_bar">
+    <div class="topic_controls">
+      <div class="control_rt" cntrlbar-btn btntarget="new_discussion">
+        <span class="discussion" ng-class="{active: visible.topicctls() && !visible.shareitem}">New Discussion</span>
+      </div>
+      <div class="control_rt" cntrlbar-btn btntarget="elevate">
+        <span class="elevate" ng-class="{active: visible.itemctls() && !visible.shareitem}">Elevate</span>
+      </div>
+      <div class="control_rt" cntrlbar-btn btntarget="repost">
+        <span class="repost" ng-class="{active: visible.itemctls() && !visible.shareitem}">Repost</span>
+      </div>
+      <div class="control_rt" cntrlbar-btn btntarget="share">
+        <span class="share" ng-class="{active: visible.itemctls()}">Share / Invite</span>
+      </div>
     </div>
+  </div>
 
-    <div class="activity_window">
-        <div class="topic_indicator" id="{{currentTopic.id}}">
-            <h3 ng-show="topicIndicatorVisible">{{currentTopic.name}}</h3>
-            <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !topicIndicatorVisible}">Topics</h4>
-            <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories && topicIndicatorVisible}" ng-show="topicIndicatorVisible">Stories</h4>
-            <!-- <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**') && currentTopicDiscussions.length > 0">Discussions</h4> -->
-            <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="topicIndicatorVisible">Discussions</h4>
-            <h4 ng-show="topicIndicatorVisible">Resources</h4>
-            <h4 ng-show="topicIndicatorVisible">People</h4>
-            <h4 ng-show="topicIndicatorVisible">Related</h4>
-        </div>
-        <div class="item_display">
-            <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
-            <div class="discussions" ng-show="visible.discussions" discussion-display></div>
-            <div class="new_discussion" ng-show="visible.discussion_edit" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
-        </div>
+  <div class="activity_window">
+    <div class="topic_indicator" id="{{currentTopic.id}}">
+      <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !topicIndicatorVisible}">Topics</h4>
+
+      <h3 ng-show="topicIndicatorVisible">{{currentTopic.name}}</h3>
+      <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories && topicIndicatorVisible}" ng-show="topicIndicatorVisible">Stories</h4>
+      <!-- <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**') && currentTopicDiscussions.length > 0">Discussions</h4> -->
+      <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="topicIndicatorVisible">Discussions</h4>
+      <h4 ng-show="topicIndicatorVisible">Resources</h4>
+      <h4 ng-show="topicIndicatorVisible">People</h4>
+      <h4 ng-show="topicIndicatorVisible">Related</h4>
     </div>
+    <div class="item_display">
+      <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
+      <div class="discussions" ng-show="visible.discussions" discussion-display></div>
+      <div class="new_discussion" ng-show="visible.discussion_edit" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
+      <div class="shareinvite" ng-show="visible.shareitem" shareform></div>
+    </div>
+  </div>
 </div>

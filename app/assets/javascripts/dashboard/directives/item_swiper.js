@@ -44,6 +44,7 @@ angular.module('sphericalApp.ItemSwiperDirectives', [])
                         }
                         var actv_slide = angular.element(e.wrapper).children()[actv],
                         actv_slide_id = angular.element(actv_slide).children()[0].id;
+                        actv_slide_id = actv_slide_id.slice(4); //remove the 'item' prefix
                         if (has_topic) {
                            itemSwiperCtrl.parentController.state.go(
                                'sphere.topic.story', {story: actv_slide_id}

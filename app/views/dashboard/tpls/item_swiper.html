@@ -1,7 +1,7 @@
 <div class="swiper-container" id="item_swiper">
     <div class="swiper-wrapper">
         <div class="swiper-slide" ng-repeat="slide in itemarray" item-swiper-ready>
-            <div class="swiper-entity" id="{{slide[0]._id}}">
+            <div class="swiper-entity" id="item{{slide[0]._id}}">
                 <div class="item_content">
                     <div class="item_img">
                         <img src="{{slide[0].image_src}}" brkn-img />
@@ -10,7 +10,7 @@
                     <p class="item_date">{{slide[0].created_at | date:"MMMM d, yyyy"}}</p>
                     <p>{{slide[0].text}}</p>
                 </div>
-                
+
 
             </div>
         </div>

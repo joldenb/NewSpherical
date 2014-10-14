@@ -36,6 +36,13 @@ class Entity
   index({"idp.uid" => 1, "idp.provider" => 1})
   index({"role.context" => 1})
 
+  def screenname
+    if self.screen_name.present?
+      self.screen_name
+    else
+      self.handle
+    end
+  end
 
   def profile_image(alt=false)
     if self.profile_pic && !self.profile_pic.pic.thumb.url.nil?

@@ -14,6 +14,9 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.openDash = false;
         }
 
+        UserInfo.signedin().then(function(d) {
+            $scope.signedin = d.signedin;
+        });
         $scope.check_signin = function(callback) {
           UserInfo.signedin().then(function(d) {
               callback(d.signedin);
@@ -22,11 +25,8 @@ angular.module('sphericalApp.MainControllers', [])
     }])
     .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', 'UserInfo', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData, UserInfo) {
         $scope.state = $state;
-        UserInfo.signedin().then(function(d) {
-            $scope.signedin = d.signedin;
-        });
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', function($scope, $rootScope, $state, $timeout, $compile, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
 
         // these run when page loads
         SphereInfo.sphereData.then(function(d) {
@@ -49,11 +49,11 @@ angular.module('sphericalApp.MainControllers', [])
                       }
                       if ($state.includes('**.discussion.**')) {
                         $scope.spheredata.topics = format_discussion_items_simple(items);
-                        var discussion_index = get_discussion_index(items, $state.params.discussion);
+                        var discussion_index = get_item_index(items, $state.params.discussion);
                         ChooserData.active_discussion = discussion_index;
                         $scope.currentDiscussion = format_discussion_item(items[discussion_index]);
-                        var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][discussion_index];
-                        ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
+                        $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][discussion_index];
+                        ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
                         ActivityVis.stories = false;
                         ActivityVis.discussions = true;
                         ActivityVis.discussions_active = true;
@@ -102,9 +102,11 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.topicItems = {};
         $scope.topicIndicatorVisible = false;
         $scope.state = $state;
-
+        $scope.sphr_hst = SPHR_HST;
+        $scope.thiswindow = $window;
         // $scope functions
         $scope.activityShow = function(show) {
+            $scope.visible.shareitem = false;
             if (show == 'discussions') {
                 ActivityVis.stories = false;
                 ActivityVis.discussions = true;
@@ -112,8 +114,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.discussions_active = true;
                 ActivityVis.stories_active = false;
                 set_current_discussions($scope.currentTopic.id);
-                var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
-                ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
+                $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
+                ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
                 $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
 
             } else if (show == 'stories') {
@@ -134,7 +136,14 @@ angular.module('sphericalApp.MainControllers', [])
                 }
             }
         };
-        $scope.visible.show_new_discussion = function() {
+        $scope.visible.itemctls = function() {
+            if ($scope.visible.signedin && $state.includes('**.topic.*')) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+        $scope.visible.topicctls = function() {
             if ($scope.visible.signedin && $state.includes('**.topic.**')) {
                 return true;
             } else {
@@ -178,6 +187,7 @@ angular.module('sphericalApp.MainControllers', [])
         };
         $scope.restore_topic_list = function() {
             restore_topic_list();
+            $scope.visible.shareitem = false;
             $scope.$apply(function() {
                 $scope.topicIndicatorVisible = false;
                 ActivityVis.stories = true;
@@ -197,6 +207,7 @@ angular.module('sphericalApp.MainControllers', [])
             );
         };
         $scope.adjacent_topic = function(adjacent_topic_index) {
+            $scope.visible.shareitem = false;
             $scope.$apply(function() {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
@@ -249,15 +260,18 @@ angular.module('sphericalApp.MainControllers', [])
           get_discussion_items($scope.currentTopic.id).then(function() {
             $scope.currentTopicDiscussions = $scope.topic_discussions[$scope.currentTopic.id];
             set_current_discussions($scope.currentTopic.id);
-            var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
-            ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
+            $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
+            ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
           });
         };
         $scope.load_current_discussion = function(idx) {
-          var current_discussion = $scope.topic_discussions[$scope.currentTopic.id][idx];
-          $scope.currentDiscussion = format_discussion_item(current_discussion);
+          $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][idx];
+          $scope.currentDiscussion = format_discussion_item($scope.current_discussion);
           ChooserData.active_discussion = idx;
-          ForumData.change_context($scope.currentTopic.id, current_discussion[0]['_id']);
+          ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
+        };
+        $scope.get_item_index = function(items, item_id) {
+          return get_item_index(items, item_id);
         };
 
         // private functions
@@ -378,16 +392,15 @@ angular.module('sphericalApp.MainControllers', [])
               }, 0);
           });
         },
-        get_discussion_index = function (items, item_id) {
+        get_item_index = function(items, item_id) {
           var item_index = 0;
-          angular.forEach(items, function (item, idx) {
+          angular.forEach(items, function(item, idx) {
             if (item_id == item[0]['_id']) {
               item_index = idx;
               return;
             } else {
               // TODO: ask server to lookup item and add it to the front of the chooser
               //       in case it's in a downrange page.
-              //       Need to do something similar for stories.
             }
           });
           return item_index;

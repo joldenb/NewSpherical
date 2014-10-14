@@ -102,10 +102,12 @@ class SphereController < ApplicationController
     def signed_in
         if current_dashboard_user
             render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
+                                            "screenname" => current_dashboard_user.screenname,
                                             "id" => current_dashboard_user.id.to_s,
                                             "pic" => current_dashboard_user.profile_image(true)}}
         elsif current_user
           render :json => {"signedin" => {"handle" => current_user.handle,
+                                          "screenname" => current_dashboard_user.screenname,
                                           "id" => current_user.id.to_s,
                                           "pic" => current_user.profile_image(true)}}
         else

@@ -51,15 +51,22 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
         }
     };
 }])
-.directive('slideSelect', [function() {
+.directive('slideSelect', ['ActivityVis', 'ChooserData', function(ActivityVis, ChooserData) {
 	return {
 		restrict: 'A',
 		require: '^topicSwiper',
         link: function(scope, elm, attrs, topicSwiperCtrl) {
     			elm.on('click', function() {
             var this_index = parseInt(scope.$index);
+            $('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
+            scope.$apply(function() {
+              ActivityVis.shareitem = false;
+            });
             if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'topic') {
                 topicSwiperCtrl.parentController.slide_select(this_index, attrs.id);
+                scope.$apply(function() {
+                  ActivityVis.stories = true;
+                });
             } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'story') {
                 // itemSwiper is defined in the itemSwiperReady directive,
                 // on the parent controller of its and this controller, i.e. MainCtrl
@@ -67,9 +74,13 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                 topicSwiperCtrl.parentController.state.go(
                     'sphere.topic.story', {story: attrs.id}
                 );
+                scope.$apply(function() {
+                  ActivityVis.stories = true;
+                });
             } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'discussion') {
               scope.$apply(function() {
                 topicSwiperCtrl.parentController.load_current_discussion(this_index);
+                ActivityVis.discussions = true;
               });
               topicSwiperCtrl.parentController.state.go(
                   'sphere.topic.discussion', {discussion: attrs.id}

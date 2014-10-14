@@ -59,11 +59,11 @@ angular.module('sphericalApp.ControlBarDirectives', [])
             btntarget: '@'
         },
         link: function(scope, elm, attrs) {
-            var newDiscussion = function() {
-                if (!$state.includes('**.topic.**')) {
+            var activityController = scope.$parent,
+            newDiscussion = function() {
+                if (!$state.includes('**.topic.**')  || ActivityVis.shareitem) {
                     return;
                 }
-                var actvtyctrl = scope.$parent;
                 UserInfo.signedin().then(function(d) {
                     if (d.signedin) {
                         ActivityVis.stories = false;
@@ -75,16 +75,46 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                         ChooserData.thispostdata = {citations:[]};
                         if (ChooserData.thispost_disabled) {
                           ChooserData.thispost_disabled = false;
-                          $compile(ChooserData.tswiper)(actvtyctrl);
+                          $compile(ChooserData.tswiper)(activityController);
                         }
 
                     }
                 });
             },
+            share = function() {
+              if (!ActivityVis.itemctls()) {
+                return;
+              }
+              var item_index = activityController.get_item_index(activityController.topicItems, activityController.currentStory),
+              is_discussion = ActivityVis.discussions;
+              $('.swiper-entity', '.topic-swiper').addClass('unhighlight');
+              $('#' + activityController.currentStory).removeClass('unhighlight');
+              if (activityController.currentDiscussion) {
+                $('#' + activityController.currentDiscussion.id).removeClass('unhighlight');
+              }
+              if (ActivityVis.discussions) {
+                item_index = activityController.get_item_index(activityController.topicItems, activityController.currentDiscussion.id);
+              }
+              scope.$apply(function() {
+                ActivityVis.stories = false;
+                ActivityVis.discussions = false;
+                ActivityVis.discussion_edit = false;
+                ActivityVis.shareitem = true;
+                ActivityVis.current_item_index = item_index;
+                if (is_discussion) {
+                  activityController.current_headline = activityController.current_discussion[0].headline;
+                } else
+                activityController.current_headline = activityController.topicItems[ActivityVis.current_item_index][0].headline;
+              });
+              activityController.topicSwiper.swipeTo(item_index - 1, 300, false);
+            },
             btnAction = function(btntarget) {
                 switch(btntarget) {
                     case 'new_discussion':
                         newDiscussion();
+                        break;
+                    case 'share':
+                        share();
                         break;
                 }
             };
