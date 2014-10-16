@@ -10,6 +10,31 @@ class InviteController < ApplicationController
       @ctx_id = Context.find_by(:identifier => "planetwork").id
     end
 
+    def with_share
+      unless current_dashboard_user
+        render(:nothing => true, :status => 401) and return
+      end
+      if REmailRegex =~ params[:invite_email]
+        invite_email = params[:invite_email]
+      else
+        render(:msg => "Invalid email", :status => 400) and return
+      end
+
+      #TODO: sanitize these
+      recipient = params[:invite_email]
+      share_url = params[:share_url]
+      headline = params[:headline]
+      ps = params[:email_ps]
+      sphere = params[:invite_sphere]
+
+      begin
+        ShareEmailer.perform(current_dashboard_user.email, current_dashboard_user.screenname, recipient, share_url, headline, ps, sphere)
+        render(:json => {:msg => "message sent"}) and return
+      rescue Exception => e
+        render(:json => {:msg => e.message}, :status => 400) and return
+      end
+    end
+
     def send_invitation
       unless current_user
         render(:nothing => true, :status => 401) and return

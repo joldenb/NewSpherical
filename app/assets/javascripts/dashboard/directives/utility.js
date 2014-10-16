@@ -57,4 +57,22 @@ angular.module('sphericalApp.UtilityDirectives', [])
             });
         }
     };
+}])
+.directive('isFocussed', [function() {
+  var FOCUS_CLASS = "isfocussed";
+  return {
+    restrict: 'A',
+    controller: function($scope) {
+      $scope._focussed = {};
+    },
+    link: function(scope, element, attrs) {
+      element.on('focus', function(evt) {
+        element.addClass(FOCUS_CLASS);
+        scope.$apply(function() {scope._focussed[element[0].name] = true;});
+      }).on('blur', function(evt) {
+        element.removeClass(FOCUS_CLASS);
+        scope.$apply(function() {scope._focussed[element[0].name] = false;});
+      });
+    }
+  };
 }]);

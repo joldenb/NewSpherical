@@ -26,7 +26,7 @@ angular.module('sphericalApp.MainControllers', [])
     .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', 'UserInfo', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData, UserInfo) {
         $scope.state = $state;
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
 
         // these run when page loads
         SphereInfo.sphereData.then(function(d) {
@@ -273,6 +273,43 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.get_item_index = function(items, item_id) {
           return get_item_index(items, item_id);
         };
+        $scope.invite_role = 'participant';
+        $scope.shareInviteSubmit = function() {
+          if ($scope.shareinviteform.$valid && $scope.shareinviteform.$dirty) {
+            var data = {};
+            data.invite_ctx = $scope.invite_ctx;
+            data.invite_sphere = $scope.invite_sphere;
+            data.share_url = $window.location.href;
+            data.headline = $scope.current_headline;
+            data.invite_email = $scope.invite_email;
+            data.invite = $scope.invite;
+            data.role = $scope.invite_role;
+            data.email_ps = $scope.email_ps;
+
+            $scope.shareinviteform.$setPristine();
+            $scope.show_share_feedback = false;
+            $scope.show_share_spinner = true;
+            $scope.invite_sphere = '';
+            $scope.invite_email = '';
+            $scope.email_ps = '';
+            console.log(data);
+
+            $http.post(SPHR_HST + 'invite/with_share', data)
+            .success(function(res, status) {
+              $scope.show_share_spinner = false;
+              $scope.share_error = false;
+              $scope.show_share_feedback = true;
+              $scope.share_message = res.msg;
+            })
+            .error(function(res, status) {
+              $scope.show_share_spinner = false;
+              $scope.show_share_feedback = true;
+              $scope.share_error = true;
+              $scope.share_message = res.msg;
+            });
+          }
+        };
+
 
         // private functions
         var format_topic_items_simple = function(items) {

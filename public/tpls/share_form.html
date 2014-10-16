@@ -1,13 +1,17 @@
 <div class="share_form">
   <form name="shareinviteform" novalidate>
+    <!-- TODO: use config instead of these hidden fields -->
+    <input type="hidden" name="invite_ctx" ng-model="invite_ctx" ng-init="invite_ctx = 'planetwork'">
+    <input type="hidden" name="invite_sphere" ng-model="invite_sphere" ng-init="invite_sphere = 'BFI'">
     <p><span class="info label">Share</span>&nbsp;<em>{{current_headline}}</em></p>
     <fieldset>
+      <p class="fld">
         <span class="fld label">With</span>
-        <input type="email" placeholder="Email Address" name="invite_email" ng-model="invite_email" is-focussed />
-        <span class="ok" ng-show="invite_email.$dirty && invite_email.$valid && !_focussed.email && !checking_email"></span>
-        <span class="error" ng-show="invite_email.$dirty && invite_email.$error.required && !_focussed.email && !checking_email">required</span>
-        <span class="error" ng-show="invite_email.$dirty && invite_email.$error.invalid && !invite_email.$error.required && !_focussed.email && !checking_email">invalid</span>
-        <span class="spinner" ng-show="checking_email"><%= image_tag('ajax-loader.gif') %></span>
+        <input type="email" placeholder="Email Address" name="invite_email" ng-model="invite_email" is-focussed invitable-email />
+        <span class="ok" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$valid && !_focussed.invite_email && !checking_email"></span>
+        <span class="error" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$error.required && !_focussed.invite_email && !checking_email">required</span>
+        <span class="error" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$error.invalid && !_focussed.invite_email && !shareinviteform.invite_email.$error.required && !checking_email">invalid</span>
+        <span class="spinner" ng-show="checking_email"><img src="{{sphr_hst}}assets/ajax-loader.gif" /></span>
       </p>
 
       <p class="chkbox">
@@ -16,7 +20,7 @@
       </p>
       <p ng-show="invite"><span class="info label">Invite as</span>
           <span class="radioline">
-            <input name="role" ng-model="invite_role" type="radio" value="participant" ng-checked="true"> Participant
+            <input name="role" ng-model="invite_role" type="radio" value="participant" ng-checked="invite_role === 'participant'"> Participant
             <input name="role" ng-model="invite_role" type="radio" value="curator"> Curator
             <input name="role" ng-model="invite_role" type="radio" value="demo"> Demo
           </span>
@@ -28,9 +32,9 @@
       </p>
 
       <p class="share_send_btn">
-        <span class="feedback" ng-show="userprofileform.$pristine && show_prof_feedback" ng-class="{fbk_error: prof_error}">{{prof_message}}</span>
-        <span class="spinner" ng-show="userprofileform.$pristine && show_prof_spinner"><%= image_tag('ajax-loader.gif') %></span>
-        <input type="button" ng-click="userprofileSubmit()" ng-class="{active: userprofileform.$dirty && userprofileform.$valid && !_focussed.screenname && !_focussed.email}" class="share_send" name="share_send" value="Send" hover-highlight></p>
+        <span class="feedback" ng-show="shareinviteform.$pristine && show_share_feedback" ng-class="{fbk_error: share_error}">{{share_message}}</span>
+        <span class="spinner btn" ng-show="shareinviteform.$pristine && show_share_spinner"><img src="{{sphr_hst}}assets/ajax-loader.gif" /></span>
+        <input type="button" ng-click="shareInviteSubmit()" ng-class="{active: shareinviteform.$dirty && shareinviteform.$valid && !_focussed.invite_email}" class="share_send" name="share_send" value="Send" hover-highlight></p>
     </fieldset>
   </form>
 
@@ -40,7 +44,9 @@
     </p>
     <p class="email_text">To: {{invite_email || '[email]'}},
   <br /><br />
-  {{signedin.screenname}} would like to share the following Spherical item with you:
+  {{signedin.screenname}} would like to share the following item on the {{invite_sphere}} sphere with you:
+  <br /><br />
+  {{current_headline}}
   <br />
   {{thiswindow.location.origin}}/#/sphere/[link]
   <br /><br /><span ng-show="invite">

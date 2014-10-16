@@ -929,6 +929,9 @@
                       color: #0080c9;
                       font-weight: 400;
                   }
+                  &.fld {
+                    width: 360px;
+                  }
                 }
                 .label {
                   float: left;
@@ -948,11 +951,11 @@
                 }
                 .error {
                   position: absolute;
-                  top: 5px;
-                  right: -10px;
+                  top: 1px;
+                  right: 20px;
                   font-family: 'open_sanslight_italic';
                   color: #d00;
-                  font-size: .85em;
+                  font-size: 1em;
                   &.multiline {
                     top: 0;
                     right: -25px;
@@ -961,8 +964,8 @@
                 }
                 .ok {
                   position: absolute;
-                  top: 2px;
-                  right: 16px;
+                  top: 0;
+                  right: 56px;
                   width: 20px;
                   height: 20px;
                   background: transparent image-url('okcheck.png') no-repeat 0 1px;
@@ -991,12 +994,16 @@
                   }
                   .spinner {
                     position: absolute;
-                    top: 3px;
-                    left: 305px;
+                    top: 2px;
+                    right: 55px;
                     width: 16px;
                     height: 16px;
                     img {
                       max-width: 100%;
+                    }
+                    &.btn {
+                      top: 5px;
+                      right: 105px;
                     }
                   }
                 }
@@ -1004,6 +1011,17 @@
                   position: absolute;
                   bottom: 30px;
                   left: 286px;
+                  .feedback {
+                    position: absolute;
+                    top: 4px;
+                    right: 110px;
+                    width: 270px;
+                    text-align: right;
+                    color: #8dc63e;
+                    &.fbk_error {
+                      color: #d00;
+                    }
+                  }
                 }
                 .chkbox {
                   margin-left: 104px;
