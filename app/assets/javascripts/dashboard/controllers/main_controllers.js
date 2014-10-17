@@ -309,6 +309,24 @@ angular.module('sphericalApp.MainControllers', [])
             });
           }
         };
+        $scope.elevation_result = {};
+        $scope.elevateItem = function(item_id, mode) {
+          var data = {item_id: item_id};
+          $http.post(SPHR_HST + 'topics/elevate_item', data)
+          .success(function(res, status) {
+            if (res.success) {
+              if (mode === 'discussions') {
+                set_current_discussions($scope.currentTopic.id);
+              } else {
+                switch_topics($scope.currentTopic.id);
+              }
+            }
+            $scope.elevation_result = res;
+            $timeout(function () {
+              $scope.elevation_result = {};
+            }, 2000);
+          });
+        };
 
 
         // private functions

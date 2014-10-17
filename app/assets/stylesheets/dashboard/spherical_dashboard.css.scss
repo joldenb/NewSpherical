@@ -309,6 +309,17 @@
                     border: none;
                     opacity: 0.7;
                 }
+                .elevation {
+                  position: absolute;
+                  height: 15px;
+                  padding: 0 3px 0 5px;
+                  font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                  text-align: center;
+                  background: #000;
+                  color: #fff;
+                  bottom: 0;
+                  right: 0;
+                }
                 &.discussion_slide {
                   background: #fff;
                   color: #222;
@@ -406,6 +417,21 @@
                     &.active {
                         opacity: 1;
                     }
+                }
+                .elevate_fbk {
+                  position: absolute;
+                  z-index: 1002;
+                  top: -1px;
+                  left: 37px;
+                  width: 65px;
+                  min-height: 18px;
+                  padding: 6px 10px;
+                  color: #8dc63e;
+                  background: #000;
+                  text-align: center;
+                  &.error {
+                    color: #d00;
+                  }
                 }
                 .repost {
                     position: absolute;

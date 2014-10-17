@@ -30,6 +30,7 @@
       </div>
       <div class="control_rt" cntrlbar-btn btntarget="elevate">
         <span class="elevate" ng-class="{active: visible.itemctls() && !visible.shareitem}">Elevate</span>
+        <span class="elevate_fbk" ng-class="{error: !elevation_result.success}" ng-show="elevation_result.message">{{elevation_result.message}}</span>
       </div>
       <div class="control_rt" cntrlbar-btn btntarget="repost">
         <span class="repost" ng-class="{active: visible.itemctls() && !visible.shareitem}">Repost</span>
@@ -52,6 +53,7 @@
       <h4 ng-show="topicIndicatorVisible">People</h4>
       <h4 ng-show="topicIndicatorVisible">Related</h4>
     </div>
+
     <div class="item_display">
       <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
       <div class="discussions" ng-show="visible.discussions" discussion-display></div>

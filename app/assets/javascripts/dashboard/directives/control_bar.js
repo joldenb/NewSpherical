@@ -101,12 +101,27 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                 ActivityVis.discussion_edit = false;
                 ActivityVis.shareitem = true;
                 ActivityVis.current_item_index = item_index;
+                activityController.share_message = '';
                 if (is_discussion) {
                   activityController.current_headline = activityController.current_discussion[0].headline;
                 } else
                 activityController.current_headline = activityController.topicItems[ActivityVis.current_item_index][0].headline;
               });
               activityController.topicSwiper.swipeTo(item_index - 1, 300, false);
+            },
+            elevate = function() {
+              if (!ActivityVis.itemctls()) {
+                return;
+              }
+              var current_item, current_mode;
+              if (ActivityVis.discussions) {
+                current_item = activityController.currentDiscussion.id;
+                current_mode = 'discussions';
+              } else {
+                current_item = activityController.currentStory;
+                current_mode = 'stories';
+              }
+              activityController.elevateItem(current_item, current_mode);
             },
             btnAction = function(btntarget) {
                 switch(btntarget) {
@@ -115,6 +130,9 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                         break;
                     case 'share':
                         share();
+                        break;
+                    case 'elevate':
+                        elevate();
                         break;
                 }
             };

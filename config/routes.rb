@@ -44,6 +44,7 @@ Topical::Application.routes.draw do
   get  "/topics/search_topics"  =>         'topics#search_topics'
   post "/topics/add_topic_relations" =>    'topics#add_topic_relations'
   post "/topics/remove_topic_relations" => 'topics#remove_topic_relations'
+  post "/topics/elevate_item" => 'topics#elevate_item'
 
   post "/entity/user_signup" => 'entity#user_signup', :as => "user_signup"
   post "/entity/user_signin" => 'entity#user_signin', :as => "user_signin"

@@ -1,6 +1,7 @@
 class TopicsController < ApplicationController
     layout false
     include ContextUtils
+    after_filter :add_cors_headers
 
     def preview_new_topic
         render(:nothing => true, :status => 401) and return unless admin_in_any_ctx("curator")
@@ -95,6 +96,40 @@ class TopicsController < ApplicationController
         else
             render(:nothing => true, :status => 404) and return
         end
+    end
+
+    def elevate_item
+      unless item = Item.find(params[:item_id])
+        render(:nothing => true, :status => 404) and return
+      end
+
+      if current_dashboard_user
+        userid = current_dashboard_user.id
+      elsif current_user
+        userid = current_user.id
+      else
+        render(:json => {"message" => "Please sign in."}, :status => 401) and return
+      end
+
+      elv = ItemAgent.new('*', {:item_id => item.id,
+                                  :entity_id => userid}).elevate_item
+      if elv >= 1
+        render :json => {"success" => true, "message" => "Elevated!"} and return
+      elsif elv.zero?
+        render :json => {"success" => false, "message" => "Already Elevated"} and return
+      else
+        render :json => {"success" => false, "message" => "Elevation Failed"} and return
+      end
+
+    end
+
+    private
+
+    def add_cors_headers
+      response.headers["Access-Control-Allow-Origin"] = "*"
+      response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+      response.headers["Access-Control-Allow-Credentials"] = "true"
+      response.headers["Access-Control-Allow-Headers"] = "x-csrf-token, authorization, accept, content-type"
     end
 
 
