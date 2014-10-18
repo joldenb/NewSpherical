@@ -311,7 +311,8 @@ angular.module('sphericalApp.MainControllers', [])
         };
         $scope.elevation_result = {};
         $scope.elevateItem = function(item_id, mode) {
-          var data = {item_id: item_id};
+          var data = {item_id: item_id},
+          idx = 0;
           $http.post(SPHR_HST + 'topics/elevate_item', data)
           .success(function(res, status) {
             if (res.success) {
@@ -320,10 +321,21 @@ angular.module('sphericalApp.MainControllers', [])
               } else {
                 switch_topics($scope.currentTopic.id);
               }
+              update_current_topic($scope.currentTopicIdx);
+              set_current_discussions($scope.currentTopic);
+
             }
             $scope.elevation_result = res;
             $timeout(function () {
               $scope.elevation_result = {};
+              var newidx = get_item_index($scope.topics[$scope.currentTopic.id], item_id);
+              if (newidx > 1) {
+                  $scope.topicSwiper.swipeTo(newidx - 1, 300, false);
+                  ChooserData.active_slide = newidx - 1;
+              } else {
+                  $scope.topicSwiper.swipeTo(0, 300, false);
+                  ChooserData.active_slide = 0;
+              }
             }, 2000);
           });
         };

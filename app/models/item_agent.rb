@@ -182,7 +182,8 @@ class ItemAgent
                                     :context => ic.context_id,
                                     :elevation => 1)
                 ic.inc(:elevation, 1)
-                ic.touch  #update ItemContext#updated_at
+                #ic.touch  #update ItemContext#updated_at
+                ic.update_attributes(:sort_order => TopicalUtils.microtime2int(Time.now))
                 updated += 1
             end
         end
