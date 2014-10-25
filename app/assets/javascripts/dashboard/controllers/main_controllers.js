@@ -23,8 +23,12 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
     }])
-    .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'SPHR_HST', 'ControlPanelData', 'UserInfo', function($scope, $rootScope, $state, $timeout, SPHR_HST, ControlPanelData, UserInfo) {
+    .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$window', 'SPHR_HST', 'ControlPanelData', 'UserInfo', function($scope, $rootScope, $state, $timeout, $window, SPHR_HST, ControlPanelData, UserInfo) {
         $scope.state = $state;
+        if ($window.sessionStorage.invitation) {
+          $scope.invitation = SPHR_HST + 'invite/accept/' + $window.sessionStorage.invitation;
+        }
+
     }])
     .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
 
@@ -282,14 +286,15 @@ angular.module('sphericalApp.MainControllers', [])
             data.share_url = $window.location.href;
             data.headline = $scope.current_headline;
             data.invite_email = $scope.invite_email;
-            data.invite = $scope.invite;
+            data.also_invite = $scope.also_invite;
             data.role = $scope.invite_role;
             data.email_ps = $scope.email_ps;
+            data.statename = $state.current.name;
+            data.stateparams = $state.params;
 
             $scope.shareinviteform.$setPristine();
             $scope.show_share_feedback = false;
             $scope.show_share_spinner = true;
-            $scope.invite_sphere = '';
             $scope.invite_email = '';
             $scope.email_ps = '';
             console.log(data);

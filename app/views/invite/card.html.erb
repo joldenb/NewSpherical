@@ -33,7 +33,7 @@
       </p>
       <p class="email_text">To: {{invite_email || '[email]'}},
 <br /><br />
-This is an invitation to join the {{invite_sphere || '[sphere name]'}} sphere, part of Spherical.
+<%= current_user.screenname %> has invited you to join the {{invite_sphere || '[sphere name]'}} sphere, part of Spherical.
 <br /><br />
 If you wish to accept, please click on the following link:
 <%= ENV['FULLHOST'] %>invite/accept/[key]

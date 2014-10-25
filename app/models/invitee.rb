@@ -17,6 +17,8 @@ class Invitee
   field :on_resend_queue, :type => Boolean, :default => false
   field :invited_role, :type => String, :default => "participant"
   field :view_article, :type => String
+  field :article_statename, :type => String
+  field :article_stateparams, :type => Hash
 
   ##temporary until we have actual contexts to invite into
   field :sphere_name, :type => String

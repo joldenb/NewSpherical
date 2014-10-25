@@ -38,6 +38,11 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
             var rtn = $window.location.href;
             delete $window.sessionStorage.spheretoken;
             $window.location.href = SPHR_HST +'sphere/dashboard_signout?rtn=' + rtn;
+        },
+        invitation = function() {
+          var invite_token = $window.sessionStorage.invitation;
+          delete $window.sessionStorage.invitation;
+          $window.location.href = SPHR_HST +'invite/accept/' + invite_token;
         };
         elm.on('click', function() {
           console.log(scope.targt);
@@ -50,6 +55,9 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
                   break;
               case 'signout':
                   signout();
+                  break;
+              case 'invitation':
+                  invitation();
                   break;
           }
         });

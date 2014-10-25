@@ -39,6 +39,14 @@ angular.module('sphericalApp.MainServices', [])
           });
         };
     }])
+    .service('InvitationInfo', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+        this.get = function(token) {
+          return $http.get(SPHR_HST + 'invite/info/' + token)
+          .then(function(response) {
+            return response.data;
+          });
+        };
+    }])
     .service('UserInfo', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.signedin = function() {
           return $http.get(SPHR_HST + 'sphere/signed_in')

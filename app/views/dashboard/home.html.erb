@@ -1,23 +1,25 @@
-<div ng-controller="UserCtrl"><div id="user_area">
+<div ng-controller="UserCtrl">
+  <div id="user_area">
+    <div class="userspheres">
+      <div ng-show="signedin" class="seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth2.png") %></div>
+      <div ng-show="signedin" class="six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Pachamama1.png") %></div>
+      <div ng-show="signedin" class="five psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE1.png") %></div>
+      <div ng-show="signedin" class="four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/AGU1.png") %></div>
+      <div ng-show="signedin" class="three psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers_sphere.png") %></div>
+      <div ng-show="signedin" class="two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo_sphere1.png") %></div>
+      <div ng-show="true" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></a></div>
+    </div>
+  </div>
 
-  <div class="userspheres">
-    <div ng-show="signedin" class="seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth2.png") %></div>
-    <div ng-show="signedin" class="six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Pachamama1.png") %></div>
-    <div ng-show="signedin" class="five psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE1.png") %></div>
-    <div ng-show="signedin" class="four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/AGU1.png") %></div>
-    <div ng-show="signedin" class="three psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers_sphere.png") %></div>
-    <div ng-show="signedin" class="two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo_sphere1.png") %></div>
-    <div ng-show="signedin" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></a></div>
+  <div id="dashlogo"><img alt="" ng-src="{{spheredata.dashlogo}}"></div>
+
+  <div id="usermenu">
+    <div class="menu_item closedash" hover-highlight user-menu targt="close">Close Dash</div>
+    <div class="menu_item signin" hover-highlight user-menu targt="signin" ng-show="!signedin">Sign In</div>
+    <div class="menu_item signout" hover-highlight user-menu targt="signout" ng-show="signedin">Sign Out</div>
+    <div class="menu_item invitation" hover-highlight flasher user-menu targt="invitation" ng-show="invitation">Invitation</div>
   </div>
 </div>
-
-<div id="dashlogo"><img alt="" ng-src="{{spheredata.dashlogo}}"></div>
-
-<div id="usermenu">
-  <div class="menu_item closedash" hover-highlight user-menu targt="close">Close Dash</div>
-  <div class="menu_item signin" hover-highlight user-menu targt="signin" ng-show="!signedin">Sign In</div>
-  <div class="menu_item signout" hover-highlight user-menu targt="signout" ng-show="signedin">Sign Out</div>
-</div></div>
 
 
 <div ng-controller="ActivityCtrl" class="activity_ctrl">

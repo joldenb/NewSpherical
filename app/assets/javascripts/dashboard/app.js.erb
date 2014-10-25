@@ -50,61 +50,25 @@ angular.module('sphericalApp', [
     .state('sphere.topic.discussion', {
         url: '/discussion/:discussion'
     })
-    .state('sphere.ctrlpanel', {
-        url: '/ctrlpanel/:destination',
-        views: {
-          "ctrlpanel@sphere" : {
-            templateUrl: function ($stateParams){
-              return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
-            },
-            controllerProvider: function($stateParams) {
-                var controller_name = 'UserCtrl';
-                switch($stateParams.destination) {
-                    case 'forum':
-                        controller_name = 'MainForumCtrl';
-                        break;
-                }
-                return controller_name;
+    .state('invitation', {
+        url: '/invitation/:token',
+        resolve: {
+          sessionStore: function($window) {
+              return $window.sessionStorage;
+          },
+          InvitationInfo: 'InvitationInfo'
+        },
+        controller: function($stateParams, $state, sessionStore, InvitationInfo) {
+          InvitationInfo.get($stateParams.token)
+          .then(function(info) {
+            if (info.invited) {
+              sessionStore.invitation = $stateParams.token;
+              $state.go(info.statename, info.stateparams);
+            } else {
+              delete sessionStore.invitation;
+              $state.go('sphere');
             }
-          }
-        }
-    })
-    .state('sphere.topic.ctrlpanel', {
-        url: '/ctrlpanel/:destination',
-        views: {
-          "ctrlpanel@sphere" : {
-            templateUrl: function ($stateParams){
-              return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
-            },
-            controllerProvider: function($stateParams) {
-                var controller_name = 'UserCtrl';
-                switch($stateParams.destination) {
-                    case 'forum':
-                        controller_name = 'MainForumCtrl';
-                        break;
-                }
-                return controller_name;
-            }
-          }
-        }
-    })
-    .state('sphere.topic.story.ctrlpanel', {
-        url: '/ctrlpanel/:destination',
-        views: {
-          "ctrlpanel@sphere" : {
-            templateUrl: function ($stateParams){
-              return SPHR_HST + "tpls/" + $stateParams.destination + '.html';
-            },
-            controllerProvider: function($stateParams) {
-                var controller_name = 'UserCtrl';
-                switch($stateParams.destination) {
-                    case 'forum':
-                        controller_name = 'MainForumCtrl';
-                        break;
-                }
-                return controller_name;
-            }
-          }
+          });
         }
     })
     .state('signin', {

@@ -8,17 +8,17 @@
       <p class="fld">
         <span class="fld label">With</span>
         <input type="email" placeholder="Email Address" name="invite_email" ng-model="invite_email" is-focussed invitable-email />
-        <span class="ok" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$valid && !_focussed.invite_email && !checking_email"></span>
-        <span class="error" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$error.required && !_focussed.invite_email && !checking_email">required</span>
-        <span class="error" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$error.invalid && !_focussed.invite_email && !shareinviteform.invite_email.$error.required && !checking_email">invalid</span>
-        <span class="spinner" ng-show="checking_email"><img src="{{sphr_hst}}assets/ajax-loader.gif" /></span>
+        <span class="ok" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$valid && !_focussed.invite_email"></span>
+        <span class="error" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$error.required && !_focussed.invite_email">required</span>
+        <span class="error" ng-show="shareinviteform.invite_email.$dirty && shareinviteform.invite_email.$error.invalid && !_focussed.invite_email && !shareinviteform.invite_email.$error.required">invalid</span>
+        <!-- <span class="spinner" ng-show="checking_email"><img src="{{sphr_hst}}assets/ajax-loader.gif" /></span> -->
       </p>
 
-      <p class="chkbox">
-        <input type="checkbox" name="invite" ng-model="invite" />
+      <p class="chkbox" ng-show="is_invitable && !_focussed.invite_email">
+        <input type="checkbox" name="also_invite" ng-model="also_invite" />
         <span>Also send an invitation to join this sphere.</span>
       </p>
-      <p ng-show="invite"><span class="info label">Invite as</span>
+      <p ng-show="also_invite && is_invitable && !_focussed.invite_email"><span class="info label">Invite as</span>
           <span class="radioline">
             <input name="role" ng-model="invite_role" type="radio" value="participant" ng-checked="invite_role === 'participant'"> Participant
             <input name="role" ng-model="invite_role" type="radio" value="curator"> Curator
@@ -48,16 +48,13 @@
   <br /><br />
   {{current_headline}}
   <br />
-  {{thiswindow.location.origin}}/#/sphere/[link]
-  <br /><br /><span ng-show="invite">
+  <span ng-show="!also_invite">{{thiswindow.location.origin}}/#/sphere/[link]</span>
+  <span ng-show="also_invite">{{thiswindow.location.origin}}/#/invitation/[link]</span>
+  <span ng-show="also_invite"><br /><br />
   You are also invited to join the BFI sphere, part of Spherical.
   <br /><br />
-  If you wish to accept, please click on the following link:
-  {{sphr_hst}}invite/accept/[key]
-  <br /><br />
-  Spherical is a private demo site.  By accepting this invitation you agree to abide by our terms of non-disclosure available at https://spherical.io/nda.
-  <br /><br />
-  If you don't wish to accept, you may just ignore this email.</span>
+  Clicking on the link above will bring you to the shared item, where an optional invitation link will be also be waiting for you.</span>
+  <br /><br /><span ng-show="email_ps">P.S. {{email_ps}}</span>
     </p>
   </div>
 </div>

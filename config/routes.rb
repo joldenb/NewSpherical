@@ -36,6 +36,7 @@ Topical::Application.routes.draw do
   post "/invite/with_share" => 'invite#with_share'
   post "/invite/process_opt_out" => 'invite#process_opt_out'
   get "/invite/invitable" => 'invite#invitable'
+  get "/invite/info/:token" => 'invite#info'
 
   post "/topics/preview_new_topic" =>      'topics#preview_new_topic'
   post "/topics/create_new_topic" =>       'topics#create_new_topic'

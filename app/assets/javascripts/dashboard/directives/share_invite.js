@@ -11,41 +11,43 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
     templateUrl: SPHR_HST + "tpls/share_form.html"
   };
 }])
-.directive('invitableEmail', ['$http', function($http) {
+.directive('invitableEmail', ['SPHR_HST', '$http', function(SPHR_HST, $http) {
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
+      var email_to_check = scope.shareinviteform.invite_email,
+      check_invitable_url = SPHR_HST + '/invite/invitable';
       elm.on('blur', function() {
-        if (scope.shareinviteform.invite_email.$pristine) {
+        scope.is_invitable = false;
+        if (email_to_check.$pristine) {
           return;
         }
-        if (scope.shareinviteform.invite_email.$modelValue === '') {
+        if (email_to_check.$modelValue === '') {
           scope.$apply(function() {
-            scope.shareinviteform.invite_email.$setValidity('required', false);
-          });
-          return;
-        } else {
-          scope.$apply(function() {
-            scope.shareinviteform.invite_email.$setValidity('required', true);
-          });
-        }
-        if (!/^[a-z0-9\.\_\%\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,4}$/.test(scope.shareinviteform.invite_email.$modelValue)) {
-          scope.$apply(function() {
-            scope.shareinviteform.invite_email.$setValidity('invalid', false);
+            email_to_check.$setValidity('required', false);
           });
           return;
         } else {
           scope.$apply(function() {
-            scope.shareinviteform.invite_email.$setValidity('invalid', true);
+            email_to_check.$setValidity('required', true);
           });
         }
-        // scope.checking_email = true;
-        // var email_to_check = scope.shareinviteform.invite_email.$modelValue;
-        // $http.get('/personal_settings/unique_email_check', {params: {email: email_to_check}})
-        // .success(function(result) {
-        //   scope.shareinviteform.invite_email.$setValidity('unique_email', result.email_unique);
-        //   scope.checking_email = false;
-        // });
+        if (!/^[a-z0-9\.\_\%\+\-]+@[a-z0-9\.\-]+\.[a-z]{2,4}$/.test(email_to_check.$modelValue)) {
+          scope.$apply(function() {
+            email_to_check.$setValidity('invalid', false);
+          });
+          return;
+        } else {
+          scope.$apply(function() {
+            email_to_check.$setValidity('invalid', true);
+          });
+        }
+        $http.get(check_invitable_url, {params: {email: email_to_check.$modelValue}})
+        .success(function(result) {
+          if (result.success) {
+            scope.is_invitable = true;
+          }
+        });
       });
     }
   };

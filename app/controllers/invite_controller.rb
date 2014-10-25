@@ -16,23 +16,42 @@ class InviteController < ApplicationController
         render(:nothing => true, :status => 401) and return
       end
       if REmailRegex =~ params[:invite_email]
-        invite_email = params[:invite_email]
+        recipient = params[:invite_email]
       else
         render(:msg => "Invalid email", :status => 400) and return
       end
 
-      #TODO: sanitize these
-      recipient = params[:invite_email]
-      share_url = params[:share_url]
-      headline = params[:headline]
-      ps = params[:email_ps]
-      sphere = params[:invite_sphere]
+      f = HTML::FullSanitizer.new
+      inviteparams = {}
+      inviteparams[:current_user] = current_dashboard_user
+      inviteparams[:recipient] = recipient
+      inviteparams[:also_invite] = params[:also_invite]
+      inviteparams[:sphere] = f.sanitize(params[:invite_sphere])
+      inviteparams[:role] = params[:role]
+      inviteparams[:ps] = f.sanitize(params[:email_ps])
+      inviteparams[:headline] = f.sanitize(params[:headline])
+      inviteparams[:statename] = params[:statename]
+      inviteparams[:stateparams] = params[:stateparams]
+      inviteparams[:current_user_email] = current_dashboard_user.email
+      inviteparams[:current_user_screename] = current_dashboard_user.screenname
+      inviteparams[:share_url] = f.sanitize(params[:share_url])
+      if params[:invite_ctx] =~ RMongoIdRegex
+        inviteparams[:thisctx] = Context.find(params[:invite_ctx])
+      elsif params[:invite_ctx].present?
+        inviteparams[:thisctx] = Context.find_by(:identifier => params[:invite_ctx])
+      end
 
-      begin
-        ShareEmailer.perform(current_dashboard_user.email, current_dashboard_user.screenname, recipient, share_url, headline, ps, sphere)
-        render(:json => {:msg => "message sent"}) and return
-      rescue Exception => e
-        render(:json => {:msg => e.message}, :status => 400) and return
+
+      if inviteparams[:also_invite].present?
+        message, status = create_invitation(inviteparams)
+        render(:json => {:msg => message}, :status => status) and return
+      else
+        begin
+          ShareEmailer.perform(inviteparams)
+          render(:json => {:msg => "message sent"}) and return
+        rescue Exception => e
+          render(:json => {:msg => e.message}, :status => 400) and return
+        end
       end
     end
 
@@ -43,129 +62,42 @@ class InviteController < ApplicationController
       if REmailRegex =~ params[:invite_email]
         invite_email = params[:invite_email]
       else
-        render(:msg => "Invalid email", :status => 400) and return
+        render(:json => {:msg => "Invalid email"}, :status => 400) and return
       end
+
+      f = HTML::FullSanitizer.new
+      inviteparams = {}
+      inviteparams[:current_user] = current_user
+      inviteparams[:recipient] = invite_email
+      inviteparams[:invite] = true
+      inviteparams[:sphere] = f.sanitize(params[:invite_sphere])
+      inviteparams[:role] = params[:role]
+      inviteparams[:ps] = f.sanitize(params[:invitation_ps])
+      inviteparams[:current_user_email] = current_user.email
+      inviteparams[:current_user_screename] = current_user.screenname
       if params[:invite_ctx] =~ RMongoIdRegex
-          if ctx = Context.find(params[:invite_ctx])
-              groupname = params[:invite_sphere]  ##TODO: ctx.display_identifier
-              if valid_role(current_user.id, ctx.id, [ctx.ctx_settings_list.can_invite])
-                should_invite, message = invite?(invite_email, ctx.id)
-                case message
-                  when "global", "optout"
-                    msg = "opted out"
-                  when "active"
-                    msg = "already active"
-                  when "invited"
-                    msg = "already invited"
-                  else
-                    msg = ""
-                  end
-                invited_role = (%w{participant curator demo}.include?(params[:role])) ? params[:role] : "participant"
-                realname = '' ##TODO
-                if should_invite
-                    f = HTML::FullSanitizer.new
-                    ps = f.sanitize(params[:invitation_ps])
-                    article_id = (params[:article_id] =~ RMongoIdRegex) ? params[:article_id] : nil
-                    access_key = SecureRandom.urlsafe_base64(20)
-                    if invitee = Invitee.new(:inviter => current_user.id,
-                                                :email => invite_email,
-                                                :invitee_name => realname,
-                                                :access_key => access_key,
-                                                :invited_role => invited_role,
-                                                :view_article => article_id,
-                                                :sphere_name => groupname)
-                      ctx.invitees << invitee
-                      begin
-                        InviteeEmailer.perform(current_user.email, invite_email, access_key, groupname, ps, article_id, realname)
-                        render(:json => {:msg => "invitation sent"}) and return
-                      rescue Exception => e
-                        render(:json => {:msg => e.message}, :status => 400) and return
-                      end
-                    else
-                      render(:msg => "Couldn't create invitee", :status => 400) and return
-                    end #if invitee
-                  else
-                    render(:json => {:msg => msg, :status => 400})
-                  end #should_invite
-              else
-                render(:msg => "You don't have invite permissions", :status => 400) and return
-              end #if valid_admin
-          else
-            render(:msg => "Unknown context", :status => 400) and return
-          end #if ctx
-        else
-          render(:msg => "Invalid context", :status => 400) and return
-        end #if params[:context]
+        inviteparams[:thisctx] = Context.find(params[:invite_ctx])
+      elsif params[:invite_ctx].present?
+        inviteparams[:thisctx] = Context.find_by(:identifier => params[:invite_ctx]).id.to_s
+      end
+
+      message, status = create_invitation(inviteparams)
+      render(:json => {:msg => message}, :status => status) and return
     end
 
-    def send_invitations
-        if params[:context] =~ RMongoIdRegex
-            if ctx = Context.find(params[:context])
-                if valid_admin(ctx.id, [ctx.ctx_settings_list.can_invite])
-                    failed_items = {}
-                    successes = 0
-                    invited_role = (%w{participant curator demo}.include?(params[:role])) ? params[:role] : "participant"
-                    valid_items_hash, invalid_items_array = EmailAddressesParser.parse_list(params[:invitation_addresses])
-                    valid_items_hash.each do |email, realname|
-                        should_invite, message = invite?(email, ctx.id)
-                        if should_invite
-                            f = HTML::FullSanitizer.new
-                            text = f.sanitize(params[:invitation_text].strip)
-                            sig = f.sanitize(params[:invitation_sig].strip)
-                            if text.to_s.empty?
-                                text = "This is an invitation to join the #{ctx.display_identifier} Topical group."
-                            end
-                            if sig.to_s.empty?
-                                sig = "Warm regards,\r\nThe Topical Admins"
-                            end
-
-                            article_id = (params[:article_id] =~ RMongoIdRegex) ? params[:article_id] : nil
-
-                            access_key = SecureRandom.urlsafe_base64(20)
-                            if invitee = Invitee.new(:inviter => current_user.id,
-                                                        :email => email,
-                                                        :invitee_name => realname,
-                                                        :access_key => access_key,
-                                                        :invited_role => invited_role,
-                                                        :view_article => article_id)
-                                ctx.invitees << invitee
-                                #Resque.enqueue(InviteeEmailer, current_user.email, email, access_key, ctx.display_identifier, text, sig, article_id, realname)
-                                InviteeEmailer.perform(current_user.email, email, access_key, ctx.display_identifier, text, sig, article_id, realname)
-                                successes += 1
-                            end
-                        else
-                            case message
-                            when "global"
-                                failed_items[:global_optout] ||= []
-                                failed_items[:global_optout] << email
-                            when "optout"
-                                failed_items[:optout] ||= []
-                                failed_items[:optout] << email
-                            when "active"
-                                failed_items[:active] ||= []
-                                failed_items[:active] << email
-                            when "invited"
-                                failed_items[:invited] ||= []
-                                failed_items[:invited] << email
-                            else
-                                failed_items[:unknown] ||= []
-                                failed_items[:unknown] << email
-                            end
-                        end
-                    end
-                    render :json => {:successes => successes,
-                                    :invalid => invalid_items_array,
-                                    :failed => failed_items,
-                                    :ctx_name => ctx.display_identifier} and return
-                else
-                    render(:nothing => true, :status => 401) and return
-                end
-            else
-                render(:nothing => true, :status => 404) and return
-            end
+    def info
+      token = params[:token]
+      if invitee = Invitee.find_by(:access_key => token)
+        if !invitee.accepted && !invitee.opted_out && !invitee.globally_opted_out
+          render(:json => {:invited => true,
+                            :statename => invitee.article_statename,
+                            :stateparams => invitee.article_stateparams}) and return
         else
-            render(:nothing => true, :status => 404) and return
+          render(:json => {:invited => false, :msg => "Invitation not active"}) and return
         end
+      else
+        render(:json => {:invited => false, :msg => "Invitee not found"}) and return
+      end
     end
 
     def accept
@@ -308,7 +240,69 @@ class InviteController < ApplicationController
         [invite, message]
     end
 
-    private
+    def create_invitation(inviteparams)
+      message, status = nil, nil
+
+      if inviteparams[:thisctx].kind_of?(Context)
+        ctx = inviteparams[:thisctx]
+        if valid_role(inviteparams[:current_user], ctx.id, [ctx.ctx_settings_list.can_invite])
+          should_invite, message = invite?(inviteparams[:recipient], ctx.id)
+          case message
+            when "global", "optout"
+              msg = "opted out"
+            when "active"
+              msg = "already active"
+            when "invited"
+              msg = "already invited"
+            else
+              msg = ""
+            end
+          invited_role = (%w{participant curator demo}.include?(inviteparams[:role])) ? inviteparams[:role] : "participant"
+          realname = '' ##TODO
+          dshbrd = URI(ctx.dashboard_url)
+          inviteparams[:dashboard_url] = %Q{#{dshbrd.scheme}://#{dshbrd.host}}
+          if should_invite
+              ps = inviteparams[:ps]
+              inviteparams[:access_key] = SecureRandom.urlsafe_base64(20)
+              if invitee = Invitee.new(
+                :inviter => inviteparams[:current_user].id,
+                :email => inviteparams[:recipient],
+                :invitee_name => realname,
+                :access_key => inviteparams[:access_key],
+                :invited_role => inviteparams[:role],
+                :sphere_name => inviteparams[:sphere],
+                :view_article => inviteparams[:headline],
+                :article_statename => inviteparams[:statename],
+                :article_stateparams => inviteparams[:stateparams])
+                ctx.invitees << invitee
+                begin
+                  InviteeEmailer.perform(inviteparams)
+                rescue Exception => e
+                  message = e.message
+                  status = 500
+                else
+                  message = "invitation sent"
+                  status = 200
+                end
+              else
+                message = "Couldn't create invitee"
+                status = 400
+              end #if invitee
+            else
+              message = msg
+              status = 400
+            end #should_invite
+          else
+            message = "You don't have invite permissions"
+            status = 400
+          end #if valid_admin
+        else
+          message = "Invalid context object"
+          status = 400
+        end #kind_of?(Context)
+
+        [message, status]
+    end
 
 
     def add_cors_headers

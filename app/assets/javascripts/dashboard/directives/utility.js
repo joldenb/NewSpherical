@@ -58,6 +58,30 @@ angular.module('sphericalApp.UtilityDirectives', [])
         }
     };
 }])
+.directive('flasher', ['$window', '$timeout', function($window, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, elm, attrs) {
+            var flashing = false,
+            fcount = 0;
+            $timeout(function () {
+              var intervalID = $window.setInterval(function() {
+                if (!flashing && fcount < 3) {
+                  elm.addClass('flash');
+                  flashing = true;
+                } else if (flashing && fcount < 3) {
+                  elm.removeClass('flash');
+                  flashing = false;
+                  fcount = fcount + 1;
+                }
+                if (fcount >= 3) {
+                  $window.clearInterval(intervalID);
+                }
+              }, 500);
+            }, 3000);
+        }
+    };
+}])
 .directive('isFocussed', [function() {
   var FOCUS_CLASS = "isfocussed";
   return {

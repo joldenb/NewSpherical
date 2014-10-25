@@ -65,6 +65,12 @@
             &.signout {
               background: transparent image-url('signout-icon.png') no-repeat 104px 6px;
             }
+            &.invitation {
+              background: transparent image-url('sharebl-icon.png') no-repeat 104px 6px;
+            }
+            &.flash {
+              opacity: 0.1;
+            }
             &.highlight {
               background-color: #073a70;
             }
@@ -978,7 +984,7 @@
                 .error {
                   position: absolute;
                   top: 1px;
-                  right: 20px;
+                  right: 10px;
                   font-family: 'open_sanslight_italic';
                   color: #d00;
                   font-size: 1em;
@@ -991,7 +997,7 @@
                 .ok {
                   position: absolute;
                   top: 0;
-                  right: 56px;
+                  right: 36px;
                   width: 20px;
                   height: 20px;
                   background: transparent image-url('okcheck.png') no-repeat 0 1px;
@@ -1000,7 +1006,7 @@
                   margin-bottom: 20px;
                   input {
                     margin: 0;
-                    width: 14em;
+                    width: 16em;
                     font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
                     &.drop-hover {
                       background-color: #069;
