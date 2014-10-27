@@ -19,6 +19,9 @@ angular.module('sphericalIoApp', [
 .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
   //$urlRouterProvider.otherwise("/");
   $stateProvider
+    .state('home', {
+      url: '/'
+    })
     .state('profile', {
         url: '/sphere/profile',
         templateUrl: "/personal_settings/profile",

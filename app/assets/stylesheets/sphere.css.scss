@@ -104,12 +104,12 @@ body {
         left: 47%;
       }
       &.two {
-        top: 30px;
-        left: 32%;
+        top: 20px;
+        left: 31.5%;
       }
       &.three {
-        top: 30px;
-        left: 61.5%;
+        top: 20px;
+        left: 62%;
       }
 
       &.four {
@@ -139,12 +139,17 @@ body {
   .menu_item {
     position: relative;
     border: none;
+    width: 150px;
+    text-align: right;
     a {
       text-decoration: none;
       display: block;
       &:link, &:visited, &:hover {
           color: #fff;
       }
+    }
+    .standoff {
+      margin-right: 20px;
     }
     .image {
       width: 29px;
@@ -165,7 +170,10 @@ body {
       color: #0080c9;
     }
     &.invite {
-      background: transparent image-url('invite-share.png') no-repeat 93px 7px;
+      background: transparent image-url('invite-share.png') no-repeat 143px 7px;
+    }
+    &.signout {
+      background: transparent image-url('signout-icon.png') no-repeat 143px 7px;
     }
   }
 }
@@ -372,6 +380,15 @@ fieldset {
     .dz-message {
       text-align: center;
       padding-top: 20px;
+    }
+    .closebox {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      background: transparent image-url('ioclose.png') no-repeat 0 0;
+      cursor: pointer;
     }
   }
   &.invitation_container {

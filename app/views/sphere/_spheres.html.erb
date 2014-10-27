@@ -11,12 +11,15 @@
     </div>
 
     <div class=menubox>
-      <div class="menu_item profile" hover-highlight><a href="/sphere/profile"><em><%= current_user.screenname %></em><span class="image"><img ng-src="{{usersignin.signedin.pic}}" brkn-img /></span></a></div>
+      <div class="menu_item profile" hover-highlight>
+        <a href="/sphere/profile" class="standoff"><em><%= current_user.screenname %></em></a>
+        <span class="image"><a href="/sphere/profile"><img ng-src="{{usersignin.signedin.pic}}" brkn-img /></a></span>
+      </div>
 
-      <div class="menu_item invite" hover-highlight><a href="/sphere/invite">Invite</a></div>
+      <div class="menu_item invite" hover-highlight><a href="/sphere/invite" class="standoff">Invite</a></div>
 
       <%= form_tag("/sphere/signout_submit", :id => "signout_form") do %>
-        <div class="menu_item signout" hover-highlight submittor>Sign Out</div>
+        <div class="menu_item signout" hover-highlight submittor><span class="standoff">Sign Out</span></div>
       <% end %>
     </div>
     <% end %>

@@ -97,4 +97,14 @@ angular.module('sphericalIoApp.UtilityDirectives', [])
       });
     }
   };
+}])
+.directive('goHome', ['$state', function($state) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        $state.go('home');
+      });
+    }
+  };
 }]);
