@@ -248,6 +248,12 @@
         .topic-swiper {
             height: 89px;
             margin: 2px 0 0;
+            .noslides {
+              text-align: center;
+              color: #777;
+              font-size: 1.3em;
+              margin: 30px 0;
+            }
             .swiper-container {
                 width: 106%;
                 margin: 0 0 0 -20px;

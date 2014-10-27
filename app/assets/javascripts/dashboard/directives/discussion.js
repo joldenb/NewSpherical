@@ -125,6 +125,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                             ActivityVis.stories = false;
                             ActivityVis.discussions = true;
                             ActivityVis.discussion_edit = false;
+                            ActivityVis.noslides = false;
                         }
                     )
                     .error(

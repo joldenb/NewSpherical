@@ -111,17 +111,27 @@ angular.module('sphericalApp.MainControllers', [])
         // $scope functions
         $scope.activityShow = function(show) {
             $scope.visible.shareitem = false;
+            $scope.visible.noslides = false;
             if (show == 'discussions') {
                 ActivityVis.stories = false;
-                ActivityVis.discussions = true;
+                ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
                 ActivityVis.discussions_active = true;
                 ActivityVis.stories_active = false;
                 set_current_discussions($scope.currentTopic.id);
-                $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
-                ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
-                $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
-
+                if ($scope.topic_discussions[$scope.currentTopic.id] && $scope.topic_discussions[$scope.currentTopic.id].length > 0) {
+                  $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
+                  ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
+                  $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
+                  $timeout(function () {
+                    ActivityVis.discussions = true;
+                  }, 500); //otherwise flashes the previously loaded discussion
+                } else {
+                  if (ActivityVis.signedin) {
+                    ActivityVis.discussion_edit = true;
+                  }
+                  ActivityVis.noslides = "No Discussions Yet";
+                }
             } else if (show == 'stories') {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
@@ -377,6 +387,9 @@ angular.module('sphericalApp.MainControllers', [])
             return formatted;
         },
         format_discussion_item = function(item) {
+          if (!angular.isArray(item)) {
+            return;
+          }
           var formatted = {};
           formatted.id = item[0]['_id'];
           formatted.description = item[0]['headline'];
@@ -456,7 +469,9 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.spheredata.topics = format_discussion_items_simple(items);
                 ChooserData.active_discussion = 0;
                 $scope.currentDiscussion = format_discussion_item(items[0]);
-                ForumData.change_context(topic, $scope.currentDiscussion.id);
+                if ($scope.currentDiscussion) {
+                  ForumData.change_context(topic, $scope.currentDiscussion.id);
+                }
               }
               // $timeout lets the swiper get reloaded before reswiping
               $timeout(function() {
