@@ -204,6 +204,7 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.visible.shareitem = false;
             $scope.$apply(function() {
                 $scope.topicIndicatorVisible = false;
+                ActivityVis.noslides = false;
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;

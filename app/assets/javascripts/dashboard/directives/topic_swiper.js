@@ -58,6 +58,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
         link: function(scope, elm, attrs, topicSwiperCtrl) {
     			elm.on('click', function() {
             var this_index = parseInt(scope.$index);
+            ActivityVis.noslides = false;
             $('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
             scope.$apply(function() {
               ActivityVis.shareitem = false;
