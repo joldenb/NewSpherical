@@ -104,12 +104,14 @@ class SphereController < ApplicationController
             render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
                                             "screenname" => current_dashboard_user.screenname,
                                             "id" => current_dashboard_user.id.to_s,
-                                            "pic" => current_dashboard_user.profile_image(true)}}
+                                            "pic" => current_dashboard_user.profile_image(true),
+                                            "bigpic" => current_dashboard_user.profile_image}}
         elsif current_user
           render :json => {"signedin" => {"handle" => current_user.handle,
                                           "screenname" => current_user.screenname,
                                           "id" => current_user.id.to_s,
-                                          "pic" => current_user.profile_image(true)}}
+                                          "pic" => current_user.profile_image(true),
+                                          "bigpic" => current_user.profile_image}}
         else
             render :json => {"signedin" => false}
         end
