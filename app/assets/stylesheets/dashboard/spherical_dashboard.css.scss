@@ -50,6 +50,7 @@
           width: 132px;
           background: #222;
           .menu_item {
+            position: relative;
             height: 18px;
             font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
             cursor: pointer;
@@ -64,6 +65,21 @@
             }
             &.signout {
               background: transparent image-url('signout-icon.png') no-repeat 104px 6px;
+            }
+            &.dashboard_user {
+              em {
+                color: #0080c9;
+              }
+              .image {
+                position: absolute;
+                width: 25px;
+                height: 25px;
+                top: 3px;
+                right: 6px;
+                img {
+                    max-width: 100%;
+                }
+              }
             }
             &.invitation {
               background: transparent image-url('sharebl-icon.png') no-repeat 104px 6px;
