@@ -46,15 +46,16 @@
 
   <div class="activity_window">
     <div class="topic_indicator" id="{{currentTopic.id}}">
-      <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !topicIndicatorVisible}">Topics</h4>
+      <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !topicIndicatorVisible}">Planetwork</h4>
 
       <h3 ng-show="topicIndicatorVisible">{{currentTopic.name}}</h3>
+      <h4 ng-show="topicIndicatorVisible">Related</h4>
       <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories && topicIndicatorVisible}" ng-show="topicIndicatorVisible">Stories</h4>
       <!-- <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**') && currentTopicDiscussions.length > 0">Discussions</h4> -->
       <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="topicIndicatorVisible">Discussions</h4>
       <h4 ng-show="topicIndicatorVisible">Resources</h4>
-      <h4 ng-show="topicIndicatorVisible">People</h4>
-      <h4 ng-show="topicIndicatorVisible">Related</h4>
+      <h4 ng-show="topicIndicatorVisible">Curators</h4>
+      <h4 ng-show="topicIndicatorVisible">Participants</h4>
     </div>
 
     <div class="item_display">
