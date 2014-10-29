@@ -12,7 +12,7 @@ class InviteeEmailer
       invite = inviteparams[:invite]
       sphere = inviteparams[:sphere]
       role = inviteparams[:role]
-      ps = inviteparams[:ps]
+      ps = inviteparams[:ps].present? ? %Q{P.S. #{inviteparams[:ps]}} : ""
       headline = inviteparams[:headline]
       statename = inviteparams[:statename]
       stateparams = inviteparams[:stateparams]
@@ -78,7 +78,7 @@ Spherical is a private demo site.  By accepting this invitation you agree to abi
 
 If you don't wish to accept, you may just ignore this email.
 
-P.S. #{ps}
+#{ps}
 
 -----------------------------------------------------------
 This invitation was sent to #{recipient}.
@@ -97,9 +97,10 @@ please click on the following link:
 <#{dashboard_url}/#/invitation/#{access_key}>
 
 You are also invited to join the #{sphere} sphere, part of Spherical.
+
 Clicking on the link above will bring you to the shared item, where an optional invitation link will be also be waiting for you.
 
-P.S. #{ps}
+#{ps}
 
 -----------------------------------------------------------
 This invitation was sent to #{recipient}.

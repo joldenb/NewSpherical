@@ -9,7 +9,7 @@ class ShareEmailer
       current_user = inviteparams[:current_user]
       recipient = inviteparams[:recipient]
       sphere = inviteparams[:sphere]
-      ps = inviteparams[:ps]
+      ps = inviteparams[:ps].present? ? %Q{P.S. #{inviteparams[:ps]}} : ""
       headline = inviteparams[:headline]
       current_user_email = inviteparams[:current_user_email]
       current_user_screename = inviteparams[:current_user_screename]
@@ -56,7 +56,7 @@ class ShareEmailer
 #{headline}
 #{share_url}
 
-P.S. #{ps}
+#{ps}
 
 -----------------------------------------------------------
 This invitation was sent to #{recipient}.
