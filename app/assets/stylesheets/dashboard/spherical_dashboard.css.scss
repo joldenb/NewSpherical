@@ -67,6 +67,7 @@
               background: transparent image-url('signout-icon.png') no-repeat 104px 6px;
             }
             &.dashboard_user {
+              padding: 5px 40px 10px 0;
               em {
                 color: #0080c9;
               }
@@ -354,7 +355,7 @@
                   h4 {
                     color: #222;
                     text-shadow: none;
-                    font-weight: bold;
+                    font-family: 'open_sanssemibold', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
                   }
                   .author_data {
                     position: absolute;
@@ -381,6 +382,19 @@
                             opacity: 1;
                         }
                     }
+                  }
+                }
+                &.profile_slide {
+                  img {
+                    max-width: 100%;
+                    opacity: 1;
+                  }
+                  h4 {
+                    text-align: left;
+                    margin-left: 63px;
+                    width: 90px;
+                    font-size: .9em;
+                    overflow-wrap: break-word;
                   }
                 }
             }
@@ -880,6 +894,9 @@
                     cursor: pointer;
                     &.active {
                         color: #6e88aa;
+                    }
+                    &.inactive {
+                      opacity: 0.2;
                     }
                 }
             }

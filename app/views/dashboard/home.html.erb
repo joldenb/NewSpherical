@@ -54,8 +54,8 @@
       <!-- <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**') && currentTopicDiscussions.length > 0">Discussions</h4> -->
       <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="topicIndicatorVisible">Discussions</h4>
       <h4 ng-show="topicIndicatorVisible">Resources</h4>
-      <h4 ng-show="topicIndicatorVisible">Curators</h4>
-      <h4 ng-show="topicIndicatorVisible">Participants</h4>
+      <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.curators}">Curators</h4>
+      <h4 ng-click="activityShow('participants')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.participants}">Participants</h4>
     </div>
 
     <div class="item_display">

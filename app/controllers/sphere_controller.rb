@@ -104,14 +104,14 @@ class SphereController < ApplicationController
             render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
                                             "screenname" => current_dashboard_user.screenname,
                                             "id" => current_dashboard_user.id.to_s,
-                                            "pic" => current_dashboard_user.profile_image(true),
-                                            "bigpic" => current_dashboard_user.profile_image}}
+                                            "pic" => current_dashboard_user.profile_image('nopicdrk'),
+                                            "bigpic" => current_dashboard_user.profile_image('nopic58')}}
         elsif current_user
           render :json => {"signedin" => {"handle" => current_user.handle,
                                           "screenname" => current_user.screenname,
                                           "id" => current_user.id.to_s,
-                                          "pic" => current_user.profile_image(true),
-                                          "bigpic" => current_user.profile_image}}
+                                          "pic" => current_user.profile_image('nopicdrk'),
+                                          "bigpic" => current_user.profile_image('nopic58')}}
         else
             render :json => {"signedin" => false}
         end
@@ -141,6 +141,36 @@ class SphereController < ApplicationController
             redirect_to(root_url)
         end
 
+    end
+
+    def entities
+      if !current_user && !current_dashboard_user
+        render(:nothing => true, :status => 401) and return
+      end
+      ctx = params[:ctx_id].present? ? Context.find_by(:identifier => params[:ctx_id].to_s) : Context.find_by(:identifier => "planetwork")
+      entities = []
+      EntityAgent.get_entities(ctx, :limit => 24).each do |entity|
+        entities << {:id => entity.id.to_s,
+                      :itemtype => 'profile',
+                      :screenname => entity.screenname,
+                      :profile_image => entity.profile_image('nopic58')}
+      end
+      render(:json => {:participants => entities}) and return
+    end
+
+    def curators
+      if !current_user && !current_dashboard_user
+        render(:nothing => true, :status => 401) and return
+      end
+      ctx = params[:ctx_id].present? ? Context.find_by(:identifier => params[:ctx_id].to_s) : Context.find_by(:identifier => "planetwork")
+      curators = []
+      EntityAgent.get_curators(ctx, :limit => 24).each do |curator|
+        curators << {:id => curator.id.to_s,
+                      :itemtype => 'profile',
+                      :screenname => curator.screenname,
+                      :profile_image => curator.profile_image('nopic58')}
+      end
+      render(:json => {:curators => curators}) and return
     end
 
     ##

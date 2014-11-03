@@ -63,6 +63,30 @@ angular.module('sphericalApp.MainServices', [])
             });
          };
     }])
+    .service('Participants', ['$http', 'SPHR_HST', function($http, SPHR_HST ) {
+      this.get = function(ctx) {
+         var uri = SPHR_HST + 'sphere/entities';
+         if (ctx) {
+           uri = uri + '/' + ctx;
+         }
+         return $http.get(uri)
+         .then(function(response) {
+           return response.data;
+         });
+      };
+    }])
+    .service('Curators', ['$http', 'SPHR_HST', function($http, SPHR_HST ) {
+      this.get = function(ctx) {
+         var uri = SPHR_HST + 'sphere/curators';
+         if (ctx) {
+           uri = uri + '/' + ctx;
+         }
+         return $http.get(uri)
+         .then(function(response) {
+           return response.data;
+         });
+      };
+    }])
     .factory('authInterceptor', ['$rootScope', '$q', '$window', function ($rootScope, $q, $window) {
       return {
         request: function (config) {

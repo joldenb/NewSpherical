@@ -30,7 +30,7 @@ angular.module('sphericalApp.MainControllers', [])
         }
 
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'Participants', 'Curators', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, Participants, Curators, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
 
         // these run when page loads
         SphereInfo.sphereData.then(function(d) {
@@ -118,6 +118,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.discussion_edit = false;
                 ActivityVis.discussions_active = true;
                 ActivityVis.stories_active = false;
+                ActivityVis.curators = false;
+                ActivityVis.participants = false;
                 set_current_discussions($scope.currentTopic.id);
                 if ($scope.topic_discussions[$scope.currentTopic.id] && $scope.topic_discussions[$scope.currentTopic.id].length > 0) {
                   $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
@@ -138,6 +140,8 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.discussion_edit = false;
                 ActivityVis.discussions_active = false;
                 ActivityVis.stories_active = true;
+                ActivityVis.curators = false;
+                ActivityVis.participants = false;
                 switch_topics($scope.currentTopic.id);
                 if ($scope.currentStory) {
                     $state.go(
@@ -148,6 +152,14 @@ angular.module('sphericalApp.MainControllers', [])
                        'sphere.topic', {topic: $scope.currentTopic.name}
                    );
                 }
+            } else if (show == 'participants') {
+               load_participants();
+               ActivityVis.curators = false;
+               ActivityVis.participants = true;
+            } else if (show == 'curators') {
+               load_curators();
+               ActivityVis.curators = true;
+               ActivityVis.participants = false;
             }
         };
         $scope.visible.itemctls = function() {
@@ -356,7 +368,6 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
 
-
         // private functions
         var format_topic_items_simple = function(items) {
             var formatted = [];
@@ -478,6 +489,26 @@ angular.module('sphericalApp.MainControllers', [])
               $timeout(function() {
                 $scope.topicSwiper.swipeTo(0, 0, false);
               }, 0);
+          });
+        },
+        load_participants = function(ctx) {
+          Participants.get(ctx).then(function(data) {
+            console.log(data.participants);
+            $scope.spheredata.topics.length = 0;
+            $scope.spheredata.topics = data.participants;
+            $timeout(function() {
+              $scope.topicSwiper.swipeTo(0, 0, false);
+            }, 0);
+          });
+        },
+        load_curators = function(ctx) {
+          Curators.get(ctx).then(function(data) {
+            console.log(data.curators);
+            $scope.spheredata.topics.length = 0;
+            $scope.spheredata.topics = data.curators;
+            $timeout(function() {
+              $scope.topicSwiper.swipeTo(0, 0, false);
+            }, 0);
           });
         },
         get_item_index = function(items, item_id) {

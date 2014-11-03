@@ -59,9 +59,17 @@ class Entity
           return pvdr.image if pvdr.image.present?
         end
       end
-      ENV['FULLHOST'] + (alt ? 'assets/nopicdrk.png' : 'assets/nopic.png')
+      nopic(alt)
     else
-      ENV['FULLHOST'] + (alt ? 'assets/nopicdrk.png' : 'assets/nopic.png')
+      nopic(alt)
+    end
+  end
+
+  def nopic(alt)
+    if alt
+      %Q{#{ENV['FULLHOST']}assets/#{alt}.png}
+    else
+      %Q{#{ENV['FULLHOST']}assets/nopic.png}
     end
   end
 

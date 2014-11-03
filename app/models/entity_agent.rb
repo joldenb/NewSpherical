@@ -128,23 +128,23 @@ class EntityAgent
     ## class methods
     class << self
         def get_entities(context, options={})
+            #sort_order = options[:sort_order] || 'desc'
+            page = options[:page] || 0
+            limit = options[:limit] || EntityCarouselPerPage
+
+            raise ContextError, "Not a valid context." unless context.kind_of?(Context)
+            ent_ids = context.entity_contexts.map{|ec| ec.entity_id}.compact
+            Entity.where(:id.in => ent_ids).order_by(:handle => 'asc').skip(page).limit(limit).to_ary
+        end
+
+        def get_curators(context, options={})
             sort_order = options[:sort_order] || 'desc'
             page = options[:page] || 0
             limit = options[:limit] || EntityCarouselPerPage
 
             raise ContextError, "Not a valid context." unless context.kind_of?(Context)
-            context.entity_contexts.order_by(:context_id => "asc", :sort_order => sort_order).skip(page).limit(limit).map {|s| Entity.find(s.entity_id)}
-        end
-
-        def get_curators(context, options={})
-            sort_order = options[:sort_order] || 'desc'
-            #page = options[:page] || 0
-            #limit = options[:limit] || EntityCarouselPerPage
-
-            raise ContextError, "Not a valid context." unless context.kind_of?(Context)
-            context.entity_contexts.order_by(:context_id => "asc", :sort_order => sort_order).
-            map {|s| Entity.find(s.entity_id)}.
-            map{|ent| ent if ent.roles.find_by(:role.in => %w{admin founder curator}, :context => context.id.to_s)}.compact
+            ent_ids = context.entity_contexts.map{|ec| ec.entity_id}.compact
+            Entity.where(:id.in => ent_ids).and(:'roles.role'.in => %w{admin founder curator}).order_by(:handle => 'asc').skip(page).limit(limit).to_ary
         end
 
         def add_idp_to_entity(handle, oauth_data)
