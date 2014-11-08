@@ -22,6 +22,7 @@ angular.module('sphericalApp.MainControllers', [])
               callback(d.signedin);
           });
         };
+        $rootScope.state = $state;
     }])
     .controller('UserCtrl', ['$scope', '$rootScope', '$state', '$timeout', '$window', 'SPHR_HST', 'ControlPanelData', 'UserInfo', function($scope, $rootScope, $state, $timeout, $window, SPHR_HST, ControlPanelData, UserInfo) {
         $scope.state = $state;
@@ -154,10 +155,14 @@ angular.module('sphericalApp.MainControllers', [])
                 }
             } else if (show == 'participants') {
                load_participants();
+               ActivityVis.discussions = false;
+               ActivityVis.stories = false;
                ActivityVis.curators = false;
                ActivityVis.participants = true;
             } else if (show == 'curators') {
                load_curators();
+               ActivityVis.discussions = false;
+               ActivityVis.stories = false;
                ActivityVis.curators = true;
                ActivityVis.participants = false;
             }

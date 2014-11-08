@@ -37,7 +37,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                         onTouchEnd: function(e) {
                             if (ActivityVis.discussions) {
                               ChooserData.active_discussion = e.activeSlide;
-                            } else {
+                            } else if (ActivityVis.stories) {
                               ChooserData.active_slide = e.activeSlide;
                             }
                         }
