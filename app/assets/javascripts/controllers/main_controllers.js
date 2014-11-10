@@ -183,4 +183,7 @@ angular.module('sphericalIoApp.MainControllers', [])
         });
       }
     };
+  }])
+  .controller('AdminCtrl', ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
+    $scope.adminuserdata = {};
   }]);

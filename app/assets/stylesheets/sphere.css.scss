@@ -225,7 +225,8 @@ fieldset {
   &.invitation_container,
   &.invite_response_container,
   &.optout_response_container,
-  &.signup_container {
+  &.signup_container,
+  &.admin_container {
     width: 340px;
     height: 480px;
     padding: 30px;
@@ -467,6 +468,16 @@ fieldset {
       }
       margin-top: 20px;
       cursor: pointer;
+    }
+  }
+  &.admin_container {
+    .error {
+      right: -15px;
+    }
+    .pprofile-dropzone {
+      fieldset {
+        height: 36px;
+      }
     }
   }
   fieldset {

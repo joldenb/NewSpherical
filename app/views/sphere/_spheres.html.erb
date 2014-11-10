@@ -1,5 +1,5 @@
 <div ng-controller="UserCtrl">
-    <% if current_user %>
+    <% if current_user && controller_name != "admin" %>
     <div class="userspheres" usphere-revert>
       <div class="usphere seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag('WiserEarth2.png') %></div>
       <div class="usphere six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag('Pachamama1.png') %></div>

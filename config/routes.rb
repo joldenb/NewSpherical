@@ -7,6 +7,10 @@ Topical::Application.routes.draw do
   get "/auth/:provider/callback" => 'entity#oauth_signin'
   get "/auth/failure" => 'entity#oauth_failure'
 
+  get "/admin" => 'admin#index'
+  get "/admin/usercheck/:handle" => 'admin#usercheck'
+  post "/admin/upload_profile_pic" => 'admin#upload_profile_pic'
+
   get "/sphere/signin(/:token)" => 'sphere#signin', :as => 'signin'
   post "/sphere/signin_token" => 'sphere#signin_token'
   post "/sphere/signin_submit" => 'sphere#signin_submit'

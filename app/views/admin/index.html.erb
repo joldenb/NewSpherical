@@ -1,0 +1,25 @@
+<div class="form_containers admin_container" ng-controller="AdminCtrl">
+  <h1>Admin</h1>
+  <form name="useradminform" novalidate>
+    <fieldset>
+      <p>
+        <span class="fld label">User Handle</span>
+        <input type="text" name="userhandle" ng-model="userhandle" is-focussed user-exists />
+        <span class="ok" ng-show="useradminform.userhandle.$dirty && useradminform.userhandle.$valid && !_focussed.userhandle && !checking_userhandle"></span>
+        <span class="error" ng-show="useradminform.userhandle.$dirty && useradminform.userhandle.$error.user_exists && !_focussed.userhandle && !checking_userhandle">not found</span>
+        <span class="spinner" ng-show="checking_userhandle"><%= image_tag('ajax-loader.gif') %></span>
+      </p>
+    </fieldset>
+  </form>
+
+  <form class="pprofile-dropzone dropzone" admin-dzone>
+      <fieldset>
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+        <div class="dz-message">To upload picture<br />for the above user<br />drop file here<br />(or click)</div>
+      </fieldset>
+  </form>
+  <div style="position:relative">
+    <div class="menu_item savepic" ng-class="{active: picture_present && !picture_error}" hover-highlight admin-save-pic>Save</div>
+    <div class="menu_item cancelpic" ng-class="{active: picture_present}" hover-highlight admin-cancel-pic>Cancel</div>
+  </div>
+</div>
