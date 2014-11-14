@@ -25,9 +25,13 @@ angular.module('sphericalIoApp.AdminDirectives', [])
           if (result.exists) {
             scope.useradminform.userhandle.$setValidity('user_exists', true);
             scope.adminuserdata.userid = result.entity_id;
+            scope.adminuserdata.admin_editable = result.admin_editable;
+            scope.userprof = result.profile_text;
           } else {
             scope.useradminform.userhandle.$setValidity('user_exists', false);
             scope.adminuserdata.userid = null;
+            scope.adminuserdata.admin_editable = null;
+            scope.userprof = '';
           }
           scope.checking_userhandle = false;
         });
@@ -106,6 +110,51 @@ angular.module('sphericalIoApp.AdminDirectives', [])
             scope.picture_error = false;
           });
         }
+      });
+    }
+  };
+}])
+.directive('adminSaveProfile', ['$http', function($http) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        if (!scope.adminuserdata.userid) {
+          return;
+        }
+        var data = {};
+        data.userid = scope.adminuserdata.userid;
+        data.profile_text = scope.userprof;
+        scope.savingprof = true;
+        $http.post('/admin/edit_user_profile', data)
+        .success(function(res, status) {
+          if (res.success) {
+            scope.savingprof = false;
+            scope.prof_error = false;
+            scope.prof_fdback = res.msg;
+          } else {
+            scope.savingprof = false;
+            scope.prof_error = true;
+            scope.prof_fdback = res.msg;
+          }
+        })
+        .error(function(res, status) {
+          scope.savingprof = false;
+          scope.prof_error = true;
+          scope.prof_fdback = res.msg;
+        });
+      });
+    }
+  };
+}])
+.directive('userprofClearout', [function() {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('focus', function() {
+        scope.savingprof = false;
+        scope.prof_error = false;
+        scope.prof_fdback = '';
       });
     }
   };

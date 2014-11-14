@@ -24,6 +24,7 @@ class Entity
 
   embeds_many :idps
   embeds_many :roles
+  embeds_many :profiles
   embeds_one :settings_list
   has_many :entity_contexts
   has_many :item_elevators

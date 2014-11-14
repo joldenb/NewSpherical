@@ -498,9 +498,9 @@ angular.module('sphericalApp.MainControllers', [])
         },
         load_participants = function(ctx) {
           Participants.get(ctx).then(function(data) {
-            console.log(data.participants);
             $scope.spheredata.topics.length = 0;
             $scope.spheredata.topics = data.participants;
+            $scope.thisuser = data.participants[0];
             $timeout(function() {
               $scope.topicSwiper.swipeTo(0, 0, false);
             }, 0);
@@ -508,9 +508,9 @@ angular.module('sphericalApp.MainControllers', [])
         },
         load_curators = function(ctx) {
           Curators.get(ctx).then(function(data) {
-            console.log(data.curators);
             $scope.spheredata.topics.length = 0;
             $scope.spheredata.topics = data.curators;
+            $scope.thisuser = data.curators[0];
             $timeout(function() {
               $scope.topicSwiper.swipeTo(0, 0, false);
             }, 0);

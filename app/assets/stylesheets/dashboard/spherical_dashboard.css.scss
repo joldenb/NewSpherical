@@ -946,14 +946,12 @@
                         }
                         h3 {
                             font: 1.2em/1em 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
-                            /* -webkit-font-smoothing: antialiased; */
                             text-transform: none;
                             margin: 5px auto 0;
                             text-align: center;
                             color: #fff;
                             text-shadow: 1px 1px 1px #000;
                             text-align: center;
-                            /* font-weight: 200; */
                             padding-left: 20px
                         }
                         .item_img {
@@ -970,8 +968,6 @@
                             padding: 0 0 5px 20px;
                             font: .95em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                             line-height: 1.6em;
-                            /*-webkit-font-smoothing: antialiased; */
-                            /* font-weight: 200; */
                             &.item_date {
                                 padding: 20px 0 0 20px;
                                 font-size: .9em;
@@ -980,6 +976,55 @@
                         }
                     }
                 }
+            }
+            .userprofilepage {
+              background: #222;
+              height: 448px;
+              margin-top: -20px;
+              padding: 50px 35px 35px;
+              .upagecontent {
+                position: relative;
+                background: #444;
+                overflow: auto;
+                height: 380px;
+                &::-webkit-scrollbar {
+                  width: 10px;  /* for vertical scrollbars */
+                }
+                &::-webkit-scrollbar-track {
+                  background: #000;
+                }
+                &::-webkit-scrollbar-thumb {
+                  background: rgba(100, 100, 100, 0.5);
+                }
+                h3 {
+                    font: 1.2em/1em 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                    text-transform: none;
+                    position: absolute;
+                    top: 10px;
+                    left: 75px;
+                    color: #fff;
+                    text-shadow: 1px 1px 1px #000;
+                    text-align: left;
+                }
+                p {
+                    padding: 15px 20px 5px 20px;
+                    font: .95em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                    line-height: 1.6em;
+                    &.signup_date {
+                        position: absolute;
+                        top: 30px;
+                        left: 75px;
+                        padding: 0;
+                        font-size: .9em;
+                        color: #999;
+                    }
+                }
+                .profimage {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                }
+              }
             }
             .shareinvite {
               position: absolute;

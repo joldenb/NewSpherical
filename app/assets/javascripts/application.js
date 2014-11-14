@@ -13,3 +13,7 @@
 //= require websocket_rails/main
 //= require dropzone.min
 //= require chosen.jquery.min
+//= require showdown
+//= require markdown
+//= require he
+//= require to-markdown

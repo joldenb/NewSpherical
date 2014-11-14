@@ -19,7 +19,22 @@
       </fieldset>
   </form>
   <div style="position:relative">
-    <div class="menu_item savepic" ng-class="{active: picture_present && !picture_error}" hover-highlight admin-save-pic>Save</div>
+    <div class="menu_item savepic" ng-class="{active: adminuserdata.userid && picture_present && !picture_error}" hover-highlight admin-save-pic>Save</div>
     <div class="menu_item cancelpic" ng-class="{active: picture_present}" hover-highlight admin-cancel-pic>Cancel</div>
+  </div>
+
+  <div style="margin-top:30px;">
+    <form name="userprofadminform" novalidate>
+      <fieldset>
+        <textarea class="userprof" name="userprof" ng-model="userprof" placeholder="Enter user's default profile." rows="12" is-focussed userprof-clearout></textarea>
+      </fieldset>
+    </form>
+    <div style="position:relative">
+      <div class="menu_item saveprof" ng-class="{active: adminuserdata.userid && userprofadminform.userprof.$dirty && !_focussed.userprof && adminuserdata.admin_editable}" hover-highlight admin-save-profile>Save</div>
+      <div class="proffeedback">
+        <span class="spinner" ng-show="savingprof"><%= image_tag('ajax-loader.gif') %></span>
+        <span class="fdback" ng-class="{error: prof_error}" ng-show="prof_fdback && !savingprof && !_focussed.userprof">{{prof_fdback}}</span>
+      </div>
+    </div>
   </div>
 </div>

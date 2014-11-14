@@ -10,6 +10,7 @@ Topical::Application.routes.draw do
   get "/admin" => 'admin#index'
   get "/admin/usercheck/:handle" => 'admin#usercheck'
   post "/admin/upload_profile_pic" => 'admin#upload_profile_pic'
+  post "/admin/edit_user_profile" => 'admin#edit_user_profile'
 
   get "/sphere/signin(/:token)" => 'sphere#signin', :as => 'signin'
   post "/sphere/signin_token" => 'sphere#signin_token'

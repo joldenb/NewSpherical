@@ -479,6 +479,32 @@ fieldset {
         height: 36px;
       }
     }
+    .userprof {
+      font: .8em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+      width: 340px;
+    }
+    .proffeedback {
+      .spinner {
+        position: absolute;
+        top: -11px;
+        left: 110px;
+        width: 22px;
+        height: 22px;
+        img {
+          max-width: 100%;
+        }
+      }
+      .fdback {
+        color: #8dc63e;
+        font-size: .85em;
+        position: absolute;
+        top: -8px;
+        left: 110px;
+        &.error {
+          color: #d00;
+        }
+      }
+    }
   }
   fieldset {
     input[type="button"] {
@@ -540,7 +566,7 @@ fieldset {
     padding: 7px 0 5px;
     width: 160px;
   }
-  &.savepic, &.cancelpic {
+  &.savepic, &.cancelpic, &.saveprof {
     width: 60px;
     height: 25px;
     font-size: .75em;
@@ -569,6 +595,11 @@ fieldset {
     bottom: 0;
     left: 250px;
     background: transparent url(/assets/cancel.png) no-repeat 65px 2px;
+  }
+  &.saveprof {
+    position: absolute;
+    bottom: -15px;
+    background: transparent url(/assets/save-icon.png) no-repeat 62px 1px;
   }
   &.highlight {
     background-color: #111;

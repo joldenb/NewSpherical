@@ -150,10 +150,18 @@ class SphereController < ApplicationController
       ctx = params[:ctx_id].present? ? Context.find_by(:identifier => params[:ctx_id].to_s) : Context.find_by(:identifier => "planetwork")
       entities = []
       EntityAgent.get_entities(ctx, :limit => 24).each do |entity|
+        if thisentity = entity.profiles.where(:is_default => true).first
+          profile_text = thisentity.profiletxt ||"No Profile Yet"
+        else
+          profile_text = "No Profile Yet"
+        end
+        t = entity.created_at
         entities << {:id => entity.id.to_s,
                       :itemtype => 'profile',
                       :screenname => entity.screenname,
-                      :profile_image => entity.profile_image('nopic58')}
+                      :profile_image => entity.profile_image('nopic58'),
+                      :signupdate => t.strftime("%B #{t.day.ordinalize}, %Y"),
+                      :profile_text => profile_text}
       end
       render(:json => {:participants => entities}) and return
     end
@@ -165,10 +173,18 @@ class SphereController < ApplicationController
       ctx = params[:ctx_id].present? ? Context.find_by(:identifier => params[:ctx_id].to_s) : Context.find_by(:identifier => "planetwork")
       curators = []
       EntityAgent.get_curators(ctx, :limit => 24).each do |curator|
+        if thiscurator = curator.profiles.where(:is_default => true).first
+          profile_text = thiscurator.profiletxt ||"No Profile Yet"
+        else
+          profile_text = "No Profile Yet"
+        end
+        t = curator.created_at
         curators << {:id => curator.id.to_s,
                       :itemtype => 'profile',
                       :screenname => curator.screenname,
-                      :profile_image => curator.profile_image('nopic58')}
+                      :profile_image => curator.profile_image('nopic58'),
+                      :signupdate => t.strftime("%B #{t.day.ordinalize}, %Y"),
+                      :profile_text => profile_text}
       end
       render(:json => {:curators => curators}) and return
     end
