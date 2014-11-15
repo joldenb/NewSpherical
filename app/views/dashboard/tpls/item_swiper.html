@@ -4,7 +4,7 @@
             <div class="swiper-entity" id="item{{slide[0]._id}}">
                 <div class="item_content">
                     <div class="item_img">
-                        <img src="{{slide[0].image_src}}" brkn-img />
+                        <img ng-src="{{slide[0].image_src}}" brkn-img />
                     </div>
                     <h3>{{slide[0].headline}}</h3>
                     <p class="item_date">{{slide[0].created_at | date:"MMMM d, yyyy"}}</p>
