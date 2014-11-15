@@ -302,6 +302,9 @@ angular.module('sphericalApp.MainControllers', [])
           ChooserData.active_discussion = idx;
           ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
         };
+        $scope.load_profile = function(idx) {
+          $scope.thisuser = $scope.spheredata.topics[idx];
+        };
         $scope.get_item_index = function(items, item_id) {
           return get_item_index(items, item_id);
         };
