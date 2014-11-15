@@ -156,12 +156,14 @@ angular.module('sphericalApp.MainControllers', [])
             } else if (show == 'participants') {
                load_participants();
                ActivityVis.discussions = false;
+               ActivityVis.discussion_edit = false;
                ActivityVis.stories = false;
                ActivityVis.curators = false;
                ActivityVis.participants = true;
             } else if (show == 'curators') {
                load_curators();
                ActivityVis.discussions = false;
+               ActivityVis.discussion_edit = false;
                ActivityVis.stories = false;
                ActivityVis.curators = true;
                ActivityVis.participants = false;
@@ -505,6 +507,7 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.spheredata.topics = data.participants;
             $scope.thisuser = data.participants[0];
             $timeout(function() {
+              $compile(ChooserData.tswiper)($scope);
               $scope.topicSwiper.swipeTo(0, 0, false);
             }, 0);
           });
@@ -515,6 +518,7 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.spheredata.topics = data.curators;
             $scope.thisuser = data.curators[0];
             $timeout(function() {
+              $compile(ChooserData.tswiper)($scope);
               $scope.topicSwiper.swipeTo(0, 0, false);
             }, 0);
           });
