@@ -98,6 +98,35 @@ class PersonalSettingsController < ApplicationController
       end
     end
 
+    def edit_profile_text
+      if current_dashboard_user
+        profile_user = current_dashboard_user
+      elsif current_user
+        profile_user = current_user
+      else
+        render :json =>  {"success" => false, "msg" => "please sign in"} and return
+      end
+
+      unless params[:userid] == profile_user.id.to_s
+        render :json =>  {"success" => false, "msg" => "bad user"} and return
+      end
+
+      ctx = params[:ctx_id].present? ? Context.find_by(:identifier => params[:ctx_id]) : Context.find_by(:identifier => "planetwork")
+      s = HTML::WhiteListSanitizer.new
+      profile_text = s.sanitize(params[:profile_text])
+
+      if profile = profile_user.profiles.where(:context => ctx.id).first
+        profile.update_attributes(:profiletxt => profile_text, :admin_generated => false)
+        render :json =>  {"success" => true, "msg" => "profile edited"} and return
+      else
+        profile = Profile.new(:profiletxt => profile_text,
+                                :context => ctx.id,
+                                :admin_generated => false)
+        profile_user.profiles << profile
+        render :json =>  {"success" => true, "msg" => "profile created"} and return
+      end
+    end
+
     def change_password
       render(:json => {:msg => "Please sign in"}, :status => 401) and return unless current_user
       if params[:password].present? && params[:pwd_confirm].present?
@@ -148,6 +177,5 @@ class PersonalSettingsController < ApplicationController
         topic_results = Context.all(:context_types => ["Public Topic"]).and(:_id.nin => mychannel_topics).asc(:identifier).to_ary
         [mychannel_topics, topic_results]
     end
-
 
 end

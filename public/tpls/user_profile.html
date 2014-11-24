@@ -3,6 +3,18 @@
     <img class="profimage" src="{{thisuser.profile_image}}" brkn-img />
     <h3>{{thisuser.screenname}}</h3>
     <p class="signup_date">Participant since {{thisuser.signupdate}}</p>
-    <p btf-markdown="thisuser.profile_text" style="margin-top:50px;"></p>
+
+    <p btf-markdown="thisuser.profile_text" ng-show="!edit_mode" style="margin-top:50px;"></p>
+
+    <div class="menu_item edit" hover-highlight edit-userprof ng-show="thisuser.id === currentuser.id && !edit_mode">Edit</div>
+    <div class="menu_item save" hover-highlight save-userprof ng-show="thisuser.id === currentuser.id && edit_mode">Save</div>
+    <div class="menu_item cancel" hover-highlight cancel-userprof ng-show="thisuser.id === currentuser.id && edit_mode">Cancel</div>
+    <div class="edit_fbk" ng-class="{error: fbk_error}" ng-show="thisuser.id === currentuser.id && edit_fbk">{{edit_fbk}}</div>
+
+    <div class="edit_prof" ng-show="edit_mode">
+      <form name="editprofform" novalidate>
+        <textarea class="profdata" name="profdata" ng-model="thisuser.profile_edittext"></textarea>
+      </form>
+    </div>
   </div>
 </div>

@@ -1019,10 +1019,95 @@
                         color: #999;
                     }
                 }
+                strong {
+                  font-family: 'open_sanssemibold', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                  em {
+                    font-family: 'open_sanssemibold_italic', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                  }
+                }
+                em {
+                  font-family: 'open_sanslight_italic', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                }
+                a {
+                    color: #4183c4;
+                    &:link, &:visited {
+                        text-decoration: none;
+                    }
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
                 .profimage {
                   position: absolute;
                   top: 0;
                   left: 0;
+                }
+                .menu_item {
+                  position: absolute;
+                  height: 18px;
+                  font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                  cursor: pointer;
+                  padding: 7px 35px 2px 0;
+                  line-height: 1.1em;
+                  color: #fff;
+                  text-align: center;
+                  width: 50px;
+                  border: 1px solid #888;
+                  @include border-radius(16px);
+                  &.edit {
+                    top: 10px;
+                    right: 10px;
+                    background: transparent image-url('edit-icon.png') no-repeat 53px 3px;
+                  }
+                  &.save {
+                    top: 10px;
+                    right: 10px;
+                    background: transparent image-url('save-icon.png') no-repeat 53px 3px;
+                  }
+                  &.cancel {
+                    top: 10px;
+                    right: 120px;
+                    background: transparent image-url('close-x.png') no-repeat 60px 3px;
+                    padding-right: 30px;
+                    width: 60px;
+                  }
+                  &.highlight {
+                    background-color: #222;
+                  }
+                }
+                .edit_fbk {
+                  position: absolute;
+                  top: 14px;
+                  right: 230px;
+                  color: #8dc63e;
+                  background: transparent;
+                  text-align: right;
+                  &.error {
+                    color: #d00;
+                  }
+                }
+                .edit_prof {
+                  position: absolute;
+                  top: 65px;
+                  left: 0;
+                  width: 700px;
+                  padding: 15px 0px 5px 40px;
+                  font-size: 1em;
+                  .profdata {
+                    height: 294px;
+                    padding: 0 7px 0 0;
+                    font: .905em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                    line-height: 1.6em;
+                    background: #444;
+                    color: #fff;
+                    border: none;
+                    overflow: auto;
+                    resize: none;
+                    &:focus {
+                      -webkit-box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+                      box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+                    }
+                  }
                 }
               }
             }

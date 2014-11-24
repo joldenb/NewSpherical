@@ -75,6 +75,8 @@ Topical::Application.routes.draw do
   get "/personal_settings/unique_email_check" => 'personal_settings#unique_email_check'
   get "/personal_settings/unique_screenname_check" => 'personal_settings#unique_screenname_check'
   post "/personal_settings/update_profile" => 'personal_settings#update_profile'
+  post "/personal_settings/edit_profile_text" => 'personal_settings#edit_profile_text'
+
   get "/nda" => 'nda#index'
 
   root :to => 'sphere#signin'
