@@ -1,4 +1,5 @@
 class PersonalSettingsController < ApplicationController
+    after_filter :add_cors_headers
     layout false
 
     def settings
@@ -176,6 +177,13 @@ class PersonalSettingsController < ApplicationController
         mychannel_topics = get_mychannel_topics
         topic_results = Context.all(:context_types => ["Public Topic"]).and(:_id.nin => mychannel_topics).asc(:identifier).to_ary
         [mychannel_topics, topic_results]
+    end
+
+    def add_cors_headers
+      response.headers["Access-Control-Allow-Origin"] = "*"
+      response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
+      response.headers["Access-Control-Allow-Credentials"] = "true"
+      response.headers["Access-Control-Allow-Headers"] = "x-csrf-token, authorization, accept, content-type"
     end
 
 end
