@@ -330,7 +330,6 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.show_share_spinner = true;
             $scope.invite_email = '';
             $scope.email_ps = '';
-            console.log(data);
 
             $http.post(SPHR_HST + 'invite/with_share', data)
             .success(function(res, status) {
