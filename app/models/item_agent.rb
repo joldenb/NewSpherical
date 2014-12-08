@@ -113,35 +113,69 @@ class ItemAgent
         item
     end
 
-    def create_or_update_topical_item
-        raise ParamsError, "Topical item must have oid" unless oid = @params.delete(:oid)
-        item_type = "topical"
+    # def create_or_update_topical_item
+    #     raise ParamsError, "Topical item must have oid" unless oid = @params.delete(:oid)
+    #     item_type = "topical"
+    #
+    #     if item = Item.where(:oid => oid, :item_type => "topical").first
+    #         item.update_attributes(@params)
+    #     else
+    #         item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
+    #     end
+    #
+    #     if @context
+    #         if tpc = Context.find_by(:identifier => @context)
+    #             add_or_update_item_context(item, tpc, item_type)
+    #         else
+    #             item.destroy
+    #             raise ContextError, "Context #{@context} cannot be found."
+    #         end
+    #     else
+    #         @contexts.each do |context|
+    #             if tpc = Context.find_by(:identifier => context)
+    #                 add_or_update_item_context(item, tpc, item_type)
+    #             else
+    #                 item.destroy
+    #                 raise ContextError, "Context #{context} cannot be found."
+    #             end
+    #         end
+    #     end
+    #
+    #     item
+    # end
 
-        if item = Item.where(:oid => oid, :item_type => "topical").first
-            item.update_attributes(@params)
+    def create_or_elevate_spherical_item
+      raise ParamsError, "Spherical item must have oid" unless oid = @params.delete(:oid)
+      item_type = "spherical"
+      existing_item = false
+
+      if item = Item.where(:oid => oid, :item_type => "spherical").first
+        existing_item = true
+      else
+        item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
+      end
+
+      if @context
+        if tpc = Context.find_by(:identifier => @context)
+          item_ctx = add_or_update_item_context(item, tpc, item_type)
+          elevate_in_ctx(item_ctx, item.id, @params[:submitter]) if existing_item
         else
-            item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
+          item.destroy
+          raise ContextError, "Context #{@context} cannot be found."
         end
-
-        if @context
-            if tpc = Context.find_by(:identifier => @context)
-                add_or_update_item_context(item, tpc, item_type)
-            else
-                item.destroy
-                raise ContextError, "Context #{@context} cannot be found."
-            end
-        else
-            @contexts.each do |context|
-                if tpc = Context.find_by(:identifier => context)
-                    add_or_update_item_context(item, tpc, item_type)
-                else
-                    item.destroy
-                    raise ContextError, "Context #{context} cannot be found."
-                end
-            end
+      else
+        @contexts.each do |context|
+          if tpc = Context.find_by(:identifier => context)
+            item_ctx = add_or_update_item_context(item, tpc, item_type)
+            elevate_in_ctx(item_ctx, item.id, @params[:submitter]) if existing_item
+          else
+            item.destroy
+            raise ContextError, "Context #{context} cannot be found."
+          end
         end
+      end
 
-        item
+      item
     end
 
     def elevate_item
@@ -340,6 +374,22 @@ class ItemAgent
             context.item_contexts << item_ctx
             item.item_contexts << item_ctx
         end
+        item_ctx
+    end
+
+    def elevate_in_ctx(item_ctx, item_id, entity_id)
+      unless ItemElevator.where(:item => item_id,
+        :entity => entity_id,
+        :context => item_ctx.context_id).
+        and(:created_at.gte => TopicalUtils.item_elevation_expiration.hours.ago).first
+        ItemElevator.create(:item => item_id,
+        :entity => entity_id,
+        :context => item_ctx.context_id,
+        :elevation => 1)
+        item_ctx.inc(:elevation, 1)
+
+        item_ctx.update_attributes(:sort_order => TopicalUtils.microtime2int(Time.now))
+      end
     end
 
 end

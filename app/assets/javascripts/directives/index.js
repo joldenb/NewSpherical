@@ -5,5 +5,6 @@ angular.module('sphericalIoApp.directives', [
     'sphericalIoApp.UserSphereDirectives',
     'sphericalIoApp.ProfileDirectives',
     'sphericalIoApp.SignupDirectives',
-    'sphericalIoApp.AdminDirectives'
+    'sphericalIoApp.AdminDirectives',
+    'sphericalIoApp.CurateDirectives'
 ]);

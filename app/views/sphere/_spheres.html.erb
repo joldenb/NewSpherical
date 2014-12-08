@@ -1,26 +1,32 @@
 <div ng-controller="UserCtrl">
     <% if current_user && controller_name != "admin" %>
-    <div class="userspheres" usphere-revert>
-      <div class="usphere seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag('WiserEarth2.png') %></div>
-      <div class="usphere six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag('Pachamama1.png') %></div>
-      <div class="usphere five psphere" data-sphere="BALLE" user-sphere><%= image_tag('BALLE1.png') %></div>
-      <div class="usphere four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag('AGU1.png') %></div>
-      <div class="usphere three psphere" data-sphere="Bioneers" user-sphere><%= image_tag('Bioneers_sphere.png') %></div>
-      <div class="usphere two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag('RANLogo_sphere1.png') %></div>
-      <div class="usphere one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag('BFI_logo-sphere4.png') %></a></div>
-    </div>
 
-    <div class=menubox>
-      <div class="menu_item profile" hover-highlight>
-        <a href="/sphere/profile" class="standoff"><em><%= current_user.screenname %></em></a>
-        <span class="image"><a href="/sphere/profile"><img ng-src="{{usersignin.signedin.bigpic}}" brkn-img /></a></span>
+      <div class="userspheres" usphere-revert>
+        <div class="usphere seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag('WiserEarth2.png') %></div>
+        <div class="usphere six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag('Pachamama1.png') %></div>
+        <div class="usphere five psphere" data-sphere="BALLE" user-sphere><%= image_tag('BALLE1.png') %></div>
+        <div class="usphere four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag('AGU1.png') %></div>
+        <div class="usphere three psphere" data-sphere="Bioneers" user-sphere><%= image_tag('Bioneers_sphere.png') %></div>
+        <div class="usphere two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag('RANLogo_sphere1.png') %></div>
+        <div class="usphere one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag('BFI_logo-sphere4.png') %></a></div>
       </div>
 
-      <div class="menu_item invite" hover-highlight><a href="/sphere/invite" class="standoff">Invite</a></div>
+      <% if controller_name != 'curate' %>
+        <div class=menubox>
+          <div class="menu_item profile" hover-highlight>
+            <a href="/sphere/profile" class="standoff"><em><%= current_user.screenname %></em></a>
+            <span class="image"><a href="/sphere/profile"><img ng-src="{{usersignin.signedin.bigpic}}" brkn-img /></a></span>
+          </div>
 
-      <%= form_tag("/sphere/signout_submit", :id => "signout_form") do %>
-        <div class="menu_item signout" hover-highlight submittor><span class="standoff">Sign Out</span></div>
+          <div class="menu_item tools" hover-highlight><a href="/sphere/tools" class="standoff">Tools</a></div>
+
+          <div class="menu_item invite" hover-highlight><a href="/sphere/invite" class="standoff">Invite</a></div>
+
+          <%= form_tag("/sphere/signout_submit", :id => "signout_form") do %>
+            <div class="menu_item signout" hover-highlight submittor><span class="standoff">Sign Out</span></div>
+          <% end %>
+        </div>
       <% end %>
-    </div>
+
     <% end %>
 </div>

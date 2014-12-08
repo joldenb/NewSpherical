@@ -1,0 +1,11 @@
+<div class="form_containers tools_container" ng-controller="ProfileCtrl">
+  <h1>Tools</h1>
+
+  <div class="tooldef">
+    <p>Drag the CurateSphere bookmarklet to your bookmarks bar.</p>
+    <p class="bookmarklet"><a href="javascript:(function(){var loc=window.location.href,rdr='<%= ENV['FULLHOST'] %>curate/feed?r=' + encodeURIComponent(loc); if(/https?:\/\/spherical/.test(loc)){return;};window.location=rdr;})();">CurateSphere</a></p>
+    <p>Then use it to add web pages to your Sphere's newsfeed.</p>
+  </div>
+
+  <div class="closebox" go-home></div>
+</div>

@@ -36,8 +36,8 @@ YesMagazine = {
     }
 }
 
-ItemTypes = %w{r88r linktv topical yesmag curator discussion}
-StoryTypes = %w{r88r linktv topical yesmag}
+ItemTypes = %w{r88r linktv topical spherical yesmag curator discussion}
+StoryTypes = %w{r88r linktv topical spherical yesmag}
 
 EntityCarouselPerPage = 16
 CarouselPerPage = 6

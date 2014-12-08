@@ -27,13 +27,26 @@ angular.module('sphericalIoApp.UserSphereDirectives', [])
       };
     },
     link: function(scope, elm, attrs) {
+      var revertable = false;
       $rootScope.$on('$stateChangeStart',
          function(event, toState, toParams, fromState, fromParams) {
              if (scope.should_revert(toState.name)) {
                elm.children().draggable("option", "revert", true);
+               revertable = true;
              } else {
                elm.children().draggable("option", "revert", false);
+               revertable = false;
              }
+         }
+      );
+      $rootScope.$on('$locationChangeStart',
+         function(listener, arg) {
+           if (/\/curate\/feed/.test(arg)) {
+             elm.children().draggable("option", "revert", true);
+           } else if (!revertable) {
+             // don't override $stateChangeStart above
+             elm.children().draggable("option", "revert", false);
+           }
          }
       );
     }

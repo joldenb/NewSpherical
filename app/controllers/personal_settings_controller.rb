@@ -167,6 +167,10 @@ class PersonalSettingsController < ApplicationController
         end
     end
 
+    def tools
+      render(:nothing => true, :status => 401) and return unless current_user
+    end
+
     private
     def get_mychannel_topics
         my_channel = EntityAgent.get_my_channel(current_user.id)

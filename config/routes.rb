@@ -76,6 +76,11 @@ Topical::Application.routes.draw do
   get "/personal_settings/unique_screenname_check" => 'personal_settings#unique_screenname_check'
   post "/personal_settings/update_profile" => 'personal_settings#update_profile'
   post "/personal_settings/edit_profile_text" => 'personal_settings#edit_profile_text'
+  get "/personal_settings/tools" => 'personal_settings#tools'
+
+  get "/curate/feed" => 'curate#feed'
+  post "/curate/feeddata" => 'curate#feeddata'
+  post "/curate/add_feed_item" => 'curate#add_feed_item'
 
   get "/nda" => 'nda#index'
 

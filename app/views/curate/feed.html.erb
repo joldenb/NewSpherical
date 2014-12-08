@@ -1,0 +1,42 @@
+<div class="form_containers feed_container" ng-controller="FeedCtrl">
+  <h1>Add an Article</h1>
+  <div class="feed_preview" feed-preview data-docuri="<%= @doc_uri %>">
+      <p class="feed_preview_notice" ng-show="feed_preview.gathering_data && !feed_preview.error">Gathering data (this will take a few moments)...</p>
+      <p class="feed_preview_notice feederror" ng-show="feed_preview.error">{{feed_preview.error}}</p>
+
+      <form name="feedform" novalidate ng-show="!feed_preview.gathering_data">
+        <fieldset>
+          <p>
+            <p class="label">Sphere</p>
+            <input type="text" placeholder="Drag Sphere Here" name="feed_sphere" ng-model="feed_preview.feed_sphere" drop-feed-sphere required />
+          </p>
+
+          <p>
+            <p class="label">Headline</p>
+            <input type="text" class="headlinetxt" placeholder="Headline" name="headline" ng-model="feed_preview.page.headline" required />
+          </p>
+
+          <div ng-show="feed_preview.page.images.length > 0">
+            <p class="label">Select Image<span class="ckbx"><input type="checkbox" ng-model="feed_preview.no_image" img-deselect /> (none)</span></p>
+            <div style="clear:both;"></div>
+            <div class="image_select" ng-repeat="thsimg in feed_preview.page.images" ng-init="feedform.img_select.$setViewValue(0)">
+              <div class="one_img">
+                <img src={{thsimg}} class="fdimg" ng-class="{active: $index == 0}" id="fdimg{{$index}}" brkn-img />
+                <span class="ckbx"><input type="radio" name="img_select" ng-model="feed_preview.img_select" ng-value="$index" img-select /> image {{$index + 1}}</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="label">Synopsis</p>
+          <textarea class="synopsis" placeholder="Article Synopsis" name="synopsis" ng-model="feed_preview.page.text" required></textarea>
+
+          <p class="form_btn">
+            <span class="feedback feedform_feedback" ng-class="{fbk_error: feed_preview.fbk_error}" ng-show="feed_preview.feedform_feedback">{{feed_preview.feedform_feedback}}</span>
+            <span class="spinner" ng-show="feed_preview.sending_feedform"><%= image_tag('ajax-loader.gif') %></span>
+            <input type="button" ng-click="feedformSubmit()" ng-class="{active: feed_preview.page && feedform.$valid && !feed_preview.sending_feedform}" class="feedform_submit" name="feedform_submit" value="Save" hover-highlight></p>
+        </fieldset>
+      </form>
+  </div>
+
+  <div class="closebox" rdr-home></div>
+</div>

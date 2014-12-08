@@ -31,6 +31,15 @@ angular.module('sphericalIoApp', [
         url: '/sphere/invite',
         templateUrl: "/invite/card",
         controller: 'MainCtrl'
+    })
+    .state('tools', {
+        url: '/sphere/tools',
+        templateUrl: "/personal_settings/tools",
+        controller: 'MainCtrl'
+    })
+    .state('curate', {
+        url: '/curate',
+        controller: 'MainCtrl'
     });
 }])
 .config(['$locationProvider', function($locationProvider) {

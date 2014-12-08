@@ -186,4 +186,32 @@ angular.module('sphericalIoApp.MainControllers', [])
   }])
   .controller('AdminCtrl', ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
     $scope.adminuserdata = {};
+  }])
+  .controller('FeedCtrl', ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
+    $scope.feedformSubmit = function() {
+      if (!$scope.feedform.$valid || $scope.feed_preview.sending_feedform) {
+        return;
+      }
+      $scope.feed_preview.sending_feedform = true;
+      var data = {};
+      data.feed_sphere = $scope.feedform.feed_sphere.$modelValue;
+      data.headline = $scope.feedform.headline.$modelValue;
+      data.text = $scope.feedform.synopsis.$modelValue;
+      data.image = $scope.feed_preview.page.images[$scope.feedform.img_select.$modelValue];
+      $http.post('/curate/add_feed_item', data)
+      .success(function(res) {
+        if (res.success) {
+          $scope.feed_preview.fbk_error = false;
+        } else {
+          $scope.feed_preview.fbk_error = true;
+        }
+        $scope.feed_preview.feedform_feedback = res.message;
+        $scope.feed_preview.sending_feedform = false;
+      })
+      .error(function(res, status) {
+        $scope.feed_preview.fbk_error = true;
+        $scope.feed_preview.feedform_feedback = "Sorry, there was an error: " + status;
+        $scope.feed_preview.sending_feedform = false;
+      });
+    };
   }]);

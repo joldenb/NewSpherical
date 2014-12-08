@@ -107,4 +107,14 @@ angular.module('sphericalIoApp.UtilityDirectives', [])
       });
     }
   };
+}])
+.directive('rdrHome', ['$window', function($window) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        $window.location = '/';
+      });
+    }
+  };
 }]);
