@@ -187,7 +187,7 @@ angular.module('sphericalIoApp.MainControllers', [])
   .controller('AdminCtrl', ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
     $scope.adminuserdata = {};
   }])
-  .controller('FeedCtrl', ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
+  .controller('FeedCtrl', ['$scope', '$timeout', '$window',  '$http', function($scope, $timeout, $window, $http) {
     $scope.feedformSubmit = function() {
       if (!$scope.feedform.$valid || $scope.feed_preview.sending_feedform) {
         return;
@@ -207,6 +207,9 @@ angular.module('sphericalIoApp.MainControllers', [])
         }
         $scope.feed_preview.feedform_feedback = res.message;
         $scope.feed_preview.sending_feedform = false;
+        $timeout(function () {
+          $window.location.href = res.rdr;
+        }, 4000);
       })
       .error(function(res, status) {
         $scope.feed_preview.fbk_error = true;

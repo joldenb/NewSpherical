@@ -55,7 +55,9 @@ class CurateController < ApplicationController
     begin
       new_item = ItemAgent.new(feed_sphere.identifier, article).create_or_elevate_spherical_item
       if new_item.kind_of?(Item)
-        render :json => {"success" => true, "message" => "Added Article"} and return
+        rdr = session[:feed_doc_uri]
+        session[:feed_doc_uri] = nil
+        render :json => {"success" => true, "message" => "Added Article", "rdr" => rdr} and return
       else
         render :json => {"success" => false, "message" => "Failed to create item."} and return
       end
