@@ -82,6 +82,15 @@
                     max-width: 100%;
                 }
               }
+              a {
+                color: #0080c9;
+                &:link, &:visited {
+                  text-decoration: none;
+                }
+                &:hover {
+                  text-decoration: none;
+                }
+              }
             }
             &.invitation {
               background: transparent image-url('sharebl-icon.png') no-repeat 104px 6px;
