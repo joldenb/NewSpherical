@@ -220,7 +220,7 @@ class SphereController < ApplicationController
           :name => 'Bioneers',
           :spherelogo => 'Bioneers_sphere.png',
           :dashlogo => 'Bioneers-3x5.png',
-          :dashurl => 'http://bionmock.dev/#/sphere'}
+          :dashurl => 'http://sandbox2.planetwork.net/#/sphere'}
         spheres << {:ident => 'agu',
           :name => 'American Geophysical Union',
           :spherelogo => 'AGU1.png',
