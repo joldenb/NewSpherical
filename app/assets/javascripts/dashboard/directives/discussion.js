@@ -93,7 +93,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                 scope.$apply(function() {
                     ChooserData.thispostdata.citations.splice(scope.idx, 1);
                 });
-                $('#preview_text').find('p').last().append(' '); // reflow text
+                jQuery('#preview_text').find('p').last().append(' '); // reflow text
             });
         }
     };

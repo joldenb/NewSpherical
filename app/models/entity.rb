@@ -33,7 +33,7 @@ class Entity
   index({:email => 1}, {:unique => true})
   index({:handle => 1}, {:unique => true, :sparse => true})
   index({:remember_me_token => 1}, {:unique => true, :sparse => true})
-  index({:screen_name => 1}, {:unique => true, :sparse => true})
+  index({:screen_name => 1}, {:sparse => true})
   index({"idp.uid" => 1, "idp.provider" => 1})
   index({"role.context" => 1})
 

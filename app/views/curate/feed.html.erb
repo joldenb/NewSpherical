@@ -5,10 +5,11 @@
       <p class="feed_preview_notice feederror" ng-show="feed_preview.error">{{feed_preview.error}}</p>
 
       <form name="feedform" novalidate ng-show="!feed_preview.gathering_data">
+        <input type="hidden" name="feed_sphere" ng-model="feed_preview.feed_sphere">
         <fieldset>
           <p>
             <p class="label">Sphere</p>
-            <input type="text" placeholder="Drag Sphere Here" name="feed_sphere" ng-model="feed_preview.feed_sphere" drop-feed-sphere required />
+            <input type="text" placeholder="Drag Sphere Here" name="feed_sphere_name" ng-model="feed_preview.feed_sphere_name" drop-feed-sphere required />
           </p>
 
           <p>

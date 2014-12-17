@@ -100,9 +100,9 @@
     		numOfSlides = numOfSlides || $slides.length;
 
     		$.each($slides, function() {
-    		    $(this).width(sliderWidth).height(sliderHeight);
+    		    jQuery(this).width(sliderWidth).height(sliderHeight);
     		    if (params.onSlideInitialize) {
-                    params.onSlideInitialize(_this, $(this));
+                    params.onSlideInitialize(_this, jQuery(this));
                 }
     		});
 
@@ -124,7 +124,7 @@
     			if (i===0) addClass = ' ' + params.paginationActiveClass;
     			paginationHTML += '<span class="' + params.paginationClass + '' + addClass + '"></span>';
     		}
-    		$(params.pagination).html(paginationHTML);
+    		jQuery(params.pagination).html(paginationHTML);
     	}
 
     	//Window Resize Re-init
@@ -179,7 +179,7 @@
         $wrapper.on(touchEvents.touchStart, onTouchStart);
 
         //Mouse 'mousemove' and 'mouseup' events should be assigned to document
-        var listenEl = _this.isSupportTouch() ? $wrapper : $(document);
+        var listenEl = _this.isSupportTouch() ? $wrapper : jQuery(document);
         listenEl.on(touchEvents.touchMove, onTouchMove);
         listenEl.on(touchEvents.touchEnd, onTouchEnd);
 
@@ -531,14 +531,14 @@
 
     	_this.updatePagination = function() {
     		//var activeSwitch = dQ(params.pagination+' .'+params.paginationActiveClass).item(0)
-    		var $activeSwitch = $(params.pagination).find('.' + params.paginationActiveClass);
+    		var $activeSwitch = jQuery(params.pagination).find('.' + params.paginationActiveClass);
     		if (!$activeSwitch) {
     			return;
     		} else {
     			$activeSwitch.removeClass('active');
     		}
 
-    		$(params.pagination).find('.' + params.paginationClass).eq(_this.activeSlide).addClass(params.paginationActiveClass);
+    		jQuery(params.pagination).find('.' + params.paginationClass).eq(_this.activeSlide).addClass(params.paginationActiveClass);
     	}
     }
 
@@ -640,6 +640,6 @@
 
 
     $.fn.swiper = function(params) {
-        return new Swiper($(this), params);
+        return new Swiper(jQuery(this), params);
     }
 })(jQuery);

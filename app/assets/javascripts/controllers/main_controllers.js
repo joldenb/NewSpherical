@@ -15,8 +15,12 @@ angular.module('sphericalIoApp.MainControllers', [])
       $window.location.href = '/';
     };
 }])
-  .controller('UserCtrl', ['$scope', '$rootScope', 'UserInfo', function($scope, $rootScope, UserInfo) {
+  .controller('UserCtrl', ['$scope', '$rootScope', 'UserInfo', 'SphereCloud', 'IndexInWords', function($scope, $rootScope, UserInfo, SphereCloud, IndexInWords) {
     // spheres and menubox under this controller
+    SphereCloud.demospheres().then(function(d) {
+      $scope.demospheres = d.spheres;
+    });
+    $scope.in_words = IndexInWords;
   }])
   .controller('SignupCtrl', ['$scope', '$rootScope', '$http', '$state', '$window', '$timeout', 'UserInfo', function($scope, $rootScope, $http,  $state, $window, $timeout, UserInfo) {
     $scope.state = $state;

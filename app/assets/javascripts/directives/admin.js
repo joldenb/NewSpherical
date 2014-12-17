@@ -57,7 +57,7 @@ angular.module('sphericalIoApp.AdminDirectives', [])
         }
       )
       .on("drop", function() {
-          $('.dz-preview').remove();
+          jQuery('.dz-preview').remove();
       })
       .on("addedfile", function(file) {
         scope.$apply(function() {
@@ -69,10 +69,10 @@ angular.module('sphericalIoApp.AdminDirectives', [])
             scope.picture_error = true;
           });
           if ((typeof xhr !== 'undefined') && (xhr.status !== 200)) {
-              $("span[data-dz-errormessage]")
+              jQuery("span[data-dz-errormessage]")
               .html('Sorry, there was a server error: ' + xhr.statusText + '<br />Please cancel and try again.');
           } else {
-              $("span[data-dz-errormessage]")
+              jQuery("span[data-dz-errormessage]")
               .html('Sorry, there was an error: ' + err + '<br />Please cancel and try again.');
           }
       });

@@ -237,8 +237,10 @@ class ItemAgent
             items = context.item_contexts.where(:item_type.in => item_types).order_by(:context_id => "asc", :elevation => "desc", :sort_order => "desc").
             skip(skipto).limit(limit)
             items.map do |s|
-                if itm = Item.find(s.item_id)
-                    [itm, s.elevation]
+                if s.item_id #this should always exist but once it didn't
+                  if itm = Item.find(s.item_id)
+                      [itm, s.elevation]
+                  end
                 end
             end.compact
         end

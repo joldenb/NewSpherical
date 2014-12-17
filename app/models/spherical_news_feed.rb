@@ -9,7 +9,7 @@ class SphericalNewsFeed
     end
 
     def article
-      text = @params[:text].truncate(RecommendedItemChars, :omission => '...').gsub(/[\r\n]{2}/, '<br /><br />')
+      text = @params[:text].truncate(RecommendedItemChars, :omission => '...')
       Article.new( @params[:oid],
                     @f.sanitize(@params[:headline]),
                     @s.sanitize(text),

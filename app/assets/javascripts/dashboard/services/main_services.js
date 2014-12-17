@@ -14,9 +14,9 @@ angular.module('sphericalApp.MainServices', [])
         return sphereInfo;
     }])
     .service('TopicItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
-        this.get = function(topic, page) {
+        this.get = function(topic, is_channel, page) {
           return $http.get(SPHR_HST + 'dashboard/topic_items/' + topic, {
-            params: {page: page}
+            params: {is_channel: is_channel, page: page}
           }).then(function(response) {
             return response.data;
           });

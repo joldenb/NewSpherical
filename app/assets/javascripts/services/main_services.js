@@ -37,4 +37,32 @@ angular.module('sphericalIoApp.MainServices', [])
           return response.data;
         });
       };
+  }])
+  .service('SphereCloud', ['$http', function($http) {
+    this.userspheres = function() {
+      return $http.get('/sphere/cloud/user')
+      .then(function(response) {
+        return response.data;
+      });
+    };
+    this.dashboardsphere = function(dashname) {
+      return $http.get('/sphere/cloud/' + dashname)
+      .then(function(response) {
+        return response.data;
+      });
+    };
+    this.demospheres = function() {
+      return $http.get('/sphere/cloud/demo')
+      .then(function(response) {
+        return response.data;
+      });
+    };
+  }])
+  .service('IndexInWords', [function() {
+    return function(n) {
+      var words = ["one","two","three","four","five","six","seven","eight",
+      "nine","ten","eleven","twelve","thirteen","fourteen",
+      "fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+      return words[n];
+    };
   }]);

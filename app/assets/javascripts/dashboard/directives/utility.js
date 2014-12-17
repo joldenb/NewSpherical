@@ -21,7 +21,7 @@ angular.module('sphericalApp.UtilityDirectives', [])
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {
-            $('#spherical_dashboard_container').height($(document).height());
+            jQuery('#spherical_dashboard_container').height(jQuery(document).height());
         }
     };
 }])

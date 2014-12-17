@@ -13,16 +13,24 @@ class CurateController < ApplicationController
       Timeout.timeout(30) do
         @doc = Pismo::Document.new(@doc_uri, :image_extractor => true, :all_images => true)
       end
+      @images = @doc.images
+      @headline = @doc.title
+      @text = @doc.body.gsub(/\n/, "\n\n").truncate(RecommendedItemChars, :omission => '...')
     rescue Timeout::Error => e
       render(:text => "Unable to retrieve information.", :status => 400) and return
     rescue SocketError => e
       render(:text => "Apparently malformed URL.", :status => 400) and return
     rescue Exception => e
-      render(:text => "Sorry, something went wrong: #{e.message}", :status => 400) and return
-    else
-      @images = @doc.images
-      @headline = @doc.title
-      @text = @doc.body.gsub(/\n/, "\n\n").truncate(RecommendedItemChars, :omission => '...')
+      if Rails.env == "production"
+        message = "Unable to retrieve information from this site."
+      else
+        message = "Something went wrong: #{e.message}"
+      end
+      render(:text => message, :status => 400) and return
+    # else
+    #   @images = @doc.images
+    #   @headline = @doc.title
+    #   @text = @doc.body.gsub(/\n/, "\n\n").truncate(RecommendedItemChars, :omission => '...')
     end
   end
 

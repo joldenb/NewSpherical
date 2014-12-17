@@ -189,8 +189,94 @@ class SphereController < ApplicationController
       render(:json => {:curators => curators}) and return
     end
 
+    def cloud
+      if params[:mode] == 'user'
+        if spheres = current_user_spheres
+          thesespheres = []
+          spheres.each do |sphere|
+            thesespheres << {:ident => sphere.identifier,
+                              :name => sphere.display_identifier,
+                              :spherelogo => sphere.channel_info.sphere_logo,
+                              :dashlogo => sphere.channel_info.dashboard_logo,
+                              :dashurl => sphere.channel_info.dashboard_url}
+          end
+          render(:json => {:spheres => thesespheres})
+        else
+          render(:nothing => true, :status => 401) and return
+        end
+      elsif params[:mode] == 'demo'
+        spheres = []
+        spheres << {:ident => 'planetwork',
+                    :name => 'Buckminster Fuller Institute',
+                    :spherelogo => 'BFI_logo-sphere4.png',
+                    :dashlogo => 'BFI-3x5.png',
+                    :dashurl => 'http://sandbox.planetwork.net/#/sphere'}
+        spheres << {:ident => 'ran',
+          :name => 'Rainforest Action Network',
+          :spherelogo => 'RANLogo_sphere1.png',
+          :dashlogo => nil,
+          :dashurl => nil}
+        spheres << {:ident => 'bioneers',
+          :name => 'Bioneers',
+          :spherelogo => 'Bioneers_sphere.png',
+          :dashlogo => 'Bioneers-3x5.png',
+          :dashurl => 'http://bionmock.dev/#/sphere'}
+        spheres << {:ident => 'agu',
+          :name => 'American Geophysical Union',
+          :spherelogo => 'AGU1.png',
+          :dashlogo => nil,
+          :dashurl => nil}
+        spheres << {:ident => 'balle',
+          :name => 'BALLE',
+          :spherelogo => 'BALLE1.png',
+          :dashlogo => nil,
+          :dashurl => nil}
+        spheres << {:ident => 'pachamama',
+          :name => 'Pachamama Alliance',
+          :spherelogo => 'Pachamama1.png',
+          :dashlogo => nil,
+          :dashurl => nil}
+        spheres << {:ident => 'wiser',
+          :name => 'WiserEarth',
+          :spherelogo => 'WiserEarth2.png',
+          :dashlogo => nil,
+          :dashurl => nil}
+
+        render(:json => {:spheres => spheres})
+
+      else
+        if sphere = Context.find_by(:identifier => params[:mode].to_s)
+          thissphere = {:ident => sphere.identifier,
+                        :name => sphere.display_identifier,
+                        :spherelogo => sphere.channel_info.sphere_logo,
+                        :dashlogo => sphere.channel_info.dashboard_logo,
+                        :dashurl => sphere.channel_info.dashboard_url}
+          render(:json => {:spheres => [thissphere]})
+        else
+          render(:nothing => true, :status => 404) and return
+        end
+      end
+    end
+
     ##
     private
+
+    def current_user_spheres
+      if current_user
+        thisuser = current_user
+      elsif current_dashboard_user
+        thisuser = current_dashboard_user
+      else
+        return nil
+      end
+
+      spheres = []
+      thisuser.entity_contexts.each do |ec|
+        sphere = Context.find(ec.context_id)
+        spheres << sphere if sphere.context_types.include?("Channel")
+      end
+      spheres
+    end
 
     def valid_signin(passwd, user_query=nil)
         if user_query

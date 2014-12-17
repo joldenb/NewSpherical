@@ -11,42 +11,48 @@ angular.module('sphericalIoApp.UserSphereDirectives', [])
     }
   };
 }])
-.directive('usphereRevert', ['$rootScope', function($rootScope) {
+.directive('usphereRevert', ['$rootScope', '$timeout', '$window', function($rootScope, $timeout, $window) {
   return {
     restrict: 'A',
     controller: function($scope) {
-      var revertable_states = ['invite'];
-      $scope.should_revert = function(statename) {
+      var revertable_states = ['invite'],
+      revertable_paths = [/\/sphere\/invite/, /\/curate\/feed/];
+      $scope.should_revert = function(statename, arg) {
         var revert = false;
-        angular.forEach(revertable_states, function(rvstate) {
-          if (statename === rvstate) {
-            revert = true;
-          }
-        });
+        if (statename) {
+          angular.forEach(revertable_states, function(rvstate) {
+            if (statename === rvstate) {
+              revert = true;
+            }
+          });
+        } else {
+          angular.forEach(revertable_paths, function(rvpath) {
+            if (rvpath.test(arg)) {
+              revert = true;
+            }
+          });
+        }
         return revert;
       };
     },
     link: function(scope, elm, attrs) {
-      var revertable = false;
+      var rvpath = $window.location.pathname;
+      if (scope.should_revert(null, rvpath)) {
+        $timeout(function () {
+          elm.draggable("option", "revert", true);
+        }, 0);
+      } else {
+        $timeout(function () {
+          elm.draggable("option", "revert", false);
+        }, 0);
+      }
       $rootScope.$on('$stateChangeStart',
          function(event, toState, toParams, fromState, fromParams) {
              if (scope.should_revert(toState.name)) {
-               elm.children().draggable("option", "revert", true);
-               revertable = true;
+               elm.draggable("option", "revert", true);
              } else {
-               elm.children().draggable("option", "revert", false);
-               revertable = false;
+               elm.draggable("option", "revert", false);
              }
-         }
-      );
-      $rootScope.$on('$locationChangeStart',
-         function(listener, arg) {
-           if (/\/curate\/feed/.test(arg)) {
-             elm.children().draggable("option", "revert", true);
-           } else if (!revertable) {
-             // don't override $stateChangeStart above
-             elm.children().draggable("option", "revert", false);
-           }
          }
       );
     }
@@ -56,16 +62,17 @@ angular.module('sphericalIoApp.UserSphereDirectives', [])
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
-      var formname = elm.closest('form').attr('name'),
-      fldname = elm.attr('name');
       elm.droppable({
           accept: '.psphere',
           tolerance: 'touch',
           hoverClass: 'drop-hover',
           drop: function(event, ui) {
+            var fdsphere = ui.draggable.attr('data-sphere'),
+            fdspherename = ui.draggable.attr('data-spherename');
             scope.$apply(function() {
-              scope[fldname] = ui.draggable.attr('data-sphere');
-              scope[formname][fldname].$dirty = true;
+              scope.invite_sphere = fdsphere;
+              scope.invite_sphere_name = fdspherename;
+              scope.invitationform.invite_sphere.$dirty = true;
             });
           }
         });

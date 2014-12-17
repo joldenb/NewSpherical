@@ -15,7 +15,8 @@
 
       <p>
         <span class="fld label">Invite into</span>
-        <input type="text" placeholder="Drag Sphere Here" name="invite_sphere" ng-model="invite_sphere" drop-psphere required />
+        <input type="hidden" name="invite_sphere" ng-model="invite_sphere">
+        <input type="text" placeholder="Drag Sphere Here" name="invite_sphere_name" ng-model="invite_sphere_name" drop-psphere required />
         <span class="ok" ng-show="invitationform.invite_sphere.$dirty && invitationform.invite_sphere.$valid && !_focussed.invite_sphere && !checking_invitable"></span>
         <span class="error" ng-show="invitationform.invite_sphere.$dirty && invitationform.invite_sphere.$error.required && !_focussed.invite_sphere && !checking_invitable">required</span>
       </p>

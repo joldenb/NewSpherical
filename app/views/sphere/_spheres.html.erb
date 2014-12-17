@@ -1,14 +1,8 @@
 <div ng-controller="UserCtrl">
     <% if current_user && controller_name != "admin" %>
 
-      <div class="userspheres" usphere-revert>
-        <div class="usphere seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag('WiserEarth2.png') %></div>
-        <div class="usphere six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag('Pachamama1.png') %></div>
-        <div class="usphere five psphere" data-sphere="BALLE" user-sphere><%= image_tag('BALLE1.png') %></div>
-        <div class="usphere four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag('AGU1.png') %></div>
-        <div class="usphere three psphere" data-sphere="Bioneers" user-sphere><%= image_tag('Bioneers_sphere.png') %></div>
-        <div class="usphere two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag('RANLogo_sphere1.png') %></div>
-        <div class="usphere one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag('BFI_logo-sphere4.png') %></a></div>
+      <div class="userspheres" ng-repeat="sphere in demospheres">
+        <div class="usphere psphere" ng-class="in_words($index)" data-sphere="{{sphere.ident}}" data-spherename="{{sphere.name}}" user-sphere  usphere-revert><a href="{{sphere.dashurl || '#'}}"><img src="/assets/{{sphere.spherelogo}}"></a></div>
       </div>
 
       <% if controller_name != 'curate' %>

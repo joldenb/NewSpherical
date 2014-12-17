@@ -50,7 +50,11 @@ angular.module('sphericalApp.ItemSwiperDirectives', [])
                                'sphere.topic.story', {story: actv_slide_id}
                            );
                        } else {
-                            itemSwiperCtrl.parentController.slide_select(0, current_topic.id, actv_slide_id);
+                            //itemSwiperCtrl.parentController.slide_select(0, current_topic.id, actv_slide_id);
+                            itemSwiperCtrl.parentController.state.go(
+                              'sphere.topic.story', {topic: current_topic.name, story: actv_slide_id}
+                            );
+
                        }
                     }
                 });

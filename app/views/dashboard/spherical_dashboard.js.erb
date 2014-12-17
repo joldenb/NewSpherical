@@ -24,15 +24,15 @@ var Spherical = (function(window, undefined) {
             callback(params);
         },
         drawDashboard = function(params) {
-            $.ajax({
+            jQuery.ajax({
                 url: params.uri + params.page,
                 type: 'GET',
                 dataType: 'html',
                 success: function(response) {
-                    $('#dashboard_content').html(response);
-                    $('#spherical_open').css({color:'#fff'}).on('click', function(e) {
+                    jQuery('#dashboard_content').html(response);
+                    jQuery('#spherical_open').css({color:'#fff'}).on('click', function(e) {
                         e.preventDefault();
-                        $('#spherical_dashboard_container').show('blind', 1000);
+                        jQuery('#spherical_dashboard_container').show('blind', 1000);
                         if (!/sphere/.test(window.location.href)) {
                             window.location.href = '/#/sphere';
                         }

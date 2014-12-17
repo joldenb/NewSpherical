@@ -7,8 +7,8 @@
                         <img ng-src="{{slide[0].image_src}}" brkn-img />
                     </div>
                     <h3>{{slide[0].headline}}</h3>
-                    <p class="item_date">{{slide[0].created_at | date:"MMMM d, yyyy"}}</p>
-                    <p>{{slide[0].text}}</p>
+                    <p class="item_date">{{slide[0].created_at | date:"MMMM d, yyyy"}}<span class="article_uri"><a href="{{slide[0].article_uri}}" target="_blank">Original Article</a></span></p>
+                    <p btf-markdown="slide[0].text"></p>
                 </div>
 
 

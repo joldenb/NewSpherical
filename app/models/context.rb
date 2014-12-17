@@ -25,8 +25,8 @@ class Context
     index({:identifier => 1}, {:unique => true})
     index({:display_name => 1}, {:unique => true, :sparse => true})
     index({:context_types => 1})
-    index({"channel_info.ip_addresses" => 1}, {:unique => true, :sparse => true})
-    index({"channel_info.allowed_rdr_hosts" => 1})
+    index({"channel_info.ip_addresses" => 1})
+    index({"channel_info.allowed_rdr_hosts" => 1}, {:unique => true, :sparse => true})
 
     validates_uniqueness_of :identifier, :case_sensitive => false
     validates_format_of :identifier, :with => RContextRegex, :message => " may only contain letters/numbers/dashes."

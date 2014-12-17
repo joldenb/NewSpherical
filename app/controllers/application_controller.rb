@@ -24,6 +24,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def dashboard_origin
+    request.headers['Origin']
+  end
+
   def current_dashboard_session
     if matcher = /Bearer[\s]+token=\"([^"]+)\"/i.match(request.headers['HTTP_AUTHORIZATION'])
       sess_key = JWT.decode(matcher[1], ENV['JWT_HKEY'])

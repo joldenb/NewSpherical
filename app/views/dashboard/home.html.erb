@@ -1,13 +1,13 @@
 <div ng-controller="UserCtrl">
   <div id="user_area">
     <div class="userspheres">
-      <div ng-show="signedin" class="seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth2.png") %></div>
+      <div ng-show="signedin || spheredata.channelname == data-sphere" class="seven psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth2.png") %></div>
       <div ng-show="signedin" class="six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Pachamama1.png") %></div>
       <div ng-show="signedin" class="five psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE1.png") %></div>
       <div ng-show="signedin" class="four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/AGU1.png") %></div>
-      <div ng-show="signedin" class="three psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers_sphere.png") %></div>
+      <div ng-show="signedin || spheredata.channelname == 'Bioneers'" class="three psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers_sphere.png") %></div>
       <div ng-show="signedin" class="two psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo_sphere1.png") %></div>
-      <div ng-show="true" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></a></div>
+      <div ng-show="signedin || spheredata.channelname == 'Planetwork'" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><a href="http://sandbox.planetwork.net/#/sphere"><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></a></div>
     </div>
   </div>
 
@@ -46,15 +46,20 @@
 
   <div class="activity_window">
     <div class="topic_indicator" id="{{currentTopic.id}}">
-      <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !topicIndicatorVisible}">Planetwork</h4>
+      <h3 topic-cntrl-btn btntarget="channel" ng-class="{active: channelActive}">{{spheredata.channelname}}</h4>
 
-      <h3 ng-show="topicIndicatorVisible">{{currentTopic.name}}</h3>
-      <h4 ng-show="topicIndicatorVisible">Related</h4>
-      <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories && topicIndicatorVisible}" ng-show="topicIndicatorVisible">Stories</h4>
-      <!-- <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="state.includes('**.topic.**') && currentTopicDiscussions.length > 0">Discussions</h4> -->
+      <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !channelActive}" style="margin-bottom: 0;">Related</h4>
+
+      <h4 class="indented" ng-show="currentTopic.name && !channelActive" style="margin-top: 0;">{{currentTopic.name}}</h3>
+
+      <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories}">Stories</h4>
+
       <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="topicIndicatorVisible">Discussions</h4>
+
       <h4 ng-show="topicIndicatorVisible">Resources</h4>
+
       <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.curators}">Curators</h4>
+
       <h4 ng-click="activityShow('participants')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.participants}">Participants</h4>
     </div>
 

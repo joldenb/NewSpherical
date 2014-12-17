@@ -44,7 +44,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                     });
                     topicSwiperCtrl.parentController.topicSwiper.swipeTo(ChooserData.active_slide,0,false);
                     if (topicSwiperCtrl.parentController.openDash) {
-                        $('#spherical_dashboard_container').show('blind', 1500);
+                        jQuery('#spherical_dashboard_container').show('blind', 1500);
                     }
                 }
             }
@@ -57,9 +57,10 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
 		require: '^topicSwiper',
         link: function(scope, elm, attrs, topicSwiperCtrl) {
     			elm.on('click', function() {
-            var this_index = parseInt(scope.$index);
+            var this_index = parseInt(scope.$index),
+            current_topic = topicSwiperCtrl.parentController.currentTopic;
             ActivityVis.noslides = false;
-            $('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
+            jQuery('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
             scope.$apply(function() {
               ActivityVis.shareitem = false;
             });
@@ -71,9 +72,9 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
             } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'story') {
                 // itemSwiper is defined in the itemSwiperReady directive,
                 // on the parent controller of its and this controller, i.e. MainCtrl
-                topicSwiperCtrl.parentController.itemSwiper.swipeTo(this_index,500,false);
+                 topicSwiperCtrl.parentController.itemSwiper.swipeTo(this_index,500,false);
                 topicSwiperCtrl.parentController.state.go(
-                    'sphere.topic.story', {story: attrs.id}
+                    'sphere.topic.story', {topic: current_topic.name, story: attrs.id}
                 );
                 scope.$apply(function() {
                   ActivityVis.stories = true;
@@ -84,7 +85,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
                 ActivityVis.discussions = true;
               });
               topicSwiperCtrl.parentController.state.go(
-                  'sphere.topic.discussion', {discussion: attrs.id}
+                  'sphere.topic.discussion', {topic: current_topic.name, discussion: attrs.id}
               );
             } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'profile') {
               scope.$apply(function() {

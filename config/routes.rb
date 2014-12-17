@@ -23,6 +23,7 @@ Topical::Application.routes.draw do
   get "/sphere/signup" => 'sphere#signup'
   get "/sphere/entities(/:ctx_id)" => 'sphere#entities'
   get "/sphere/curators(/:ctx_id)" => 'sphere#curators'
+  get  "/sphere/cloud(/:mode)" => 'sphere#cloud'
 
   ## defer to angular routes
   get "/sphere(/*anything)" => 'sphere#index'

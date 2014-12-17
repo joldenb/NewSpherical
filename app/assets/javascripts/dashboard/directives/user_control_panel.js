@@ -19,7 +19,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
       },
       link: function(scope, elm, attrs) {
         var close = function() {
-            $('#spherical_dashboard_container').hide({effect: 'blind', easing: 'easeOutCirc', duration: 1000});
+            jQuery('#spherical_dashboard_container').hide({effect: 'blind', easing: 'easeOutCirc', duration: 1000});
         },
         signin = function() {
             /* first get a signin token, so that io remembers where to

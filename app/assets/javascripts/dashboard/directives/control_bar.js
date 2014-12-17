@@ -14,10 +14,10 @@ angular.module('sphericalApp.ControlBarDirectives', [])
             previous_topic_index,
             next_topic_index,
             all = function() {
-                var topic_index = activityController.currentTopicIdx;
-                //if (topic_index >= 0) {
-                    activityController.restore_topic_list();
-                //}
+              activityController.restore_topic_list();
+            },
+            channel = function() {
+              activityController.channeltopic();
             },
             previous = function() {
                 var topic_index = activityController.currentTopicIdx;
@@ -38,6 +38,9 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                     case 'all':
                         all();
                         break;
+                    case 'channel':
+                      channel();
+                      break;
                     case 'previous':
                         previous();
                         break;
@@ -87,10 +90,10 @@ angular.module('sphericalApp.ControlBarDirectives', [])
               }
               var item_index = activityController.get_item_index(activityController.topicItems, activityController.currentStory),
               is_discussion = ActivityVis.discussions;
-              $('.swiper-entity', '.topic-swiper').addClass('unhighlight');
-              $('#' + activityController.currentStory).removeClass('unhighlight');
+              jQuery('.swiper-entity', '.topic-swiper').addClass('unhighlight');
+              jQuery('#' + activityController.currentStory).removeClass('unhighlight');
               if (activityController.currentDiscussion) {
-                $('#' + activityController.currentDiscussion.id).removeClass('unhighlight');
+                jQuery('#' + activityController.currentDiscussion.id).removeClass('unhighlight');
               }
               if (ActivityVis.discussions) {
                 item_index = activityController.get_item_index(activityController.topicItems, activityController.currentDiscussion.id);

@@ -60,16 +60,16 @@ angular.module('sphericalIoApp.CurateDirectives', [])
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
-      // var formname = elm.closest('form').attr('name'),
-      // fldname = elm.attr('name');
       elm.droppable({
         accept: '.psphere',
         tolerance: 'touch',
         hoverClass: 'drop-hover',
         drop: function(event, ui) {
-          var fdsphere = ui.draggable.attr('data-sphere');
+          var fdsphere = ui.draggable.attr('data-sphere'),
+          fdspherename = ui.draggable.attr('data-spherename');
           scope.$apply(function() {
             scope.feed_preview.feed_sphere = fdsphere;
+            scope.feed_preview.feed_sphere_name = fdspherename;
           });
         }
       });
