@@ -75,6 +75,17 @@ angular.module('sphericalApp.MainControllers', [])
                     } else {
                       switch_topics(topic.id);
                       if ($state.includes('**.story')) {
+                        if ($scope.spheredata.channelname == topic.name) {
+                          switch_topics($scope.spheredata.channel_ctx_id, true)
+                          .then(function(x) {
+                            $scope.topicItems = $scope.spheredata.channelstories;
+                            $scope.currentTopic = $scope.main_topics[0];
+                            var storyidx = slide_to_channel_item($scope.spheredata.channelstories);
+                            $scope.topicSwiper.swipeTo(storyidx - 1, 0, false);
+                            ChooserData.active_slide = storyidx - 1;
+                            $scope.itemSwiper.swipeTo(storyidx, 0, false);
+                          });
+                        }
                         $scope.currentStory = $state.params.story;
                         ActivityVis.discussions_active = false;
                         ActivityVis.stories_active = true;
@@ -475,7 +486,7 @@ angular.module('sphericalApp.MainControllers', [])
         switch_topics = function(topic_ctx, is_channel) {
             // have to do this, else swiper.js thinks the length keeps growing
             $scope.spheredata.topics.length = 0;
-            get_topic_items(topic_ctx, is_channel).then(function(items) {
+            return get_topic_items(topic_ctx, is_channel).then(function(items) {
                 $scope.spheredata.topics = format_topic_items_simple(items);
             });
         },
@@ -541,6 +552,15 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.topicSwiper.swipeTo(0, 0, false);
               }, 0);
           });
+        },
+        slide_to_channel_item = function(items) {
+          var storyidx = 0;
+          angular.forEach(items, function(item, idx) {
+            if (item[0]['_id'] == $state.params.story) {
+              storyidx = idx;
+            }
+          });
+          return storyidx;
         },
         load_participants = function(ctx) {
           Participants.get(ctx).then(function(data) {
