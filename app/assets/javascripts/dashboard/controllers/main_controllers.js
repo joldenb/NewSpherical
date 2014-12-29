@@ -551,9 +551,10 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.spheredata.topics.length = 0;
                 var related_topics = angular.copy($scope.main_topics);
                 related_topics.shift();
-                angular.forEach(related_topics, function(topic) {
-                    $scope.spheredata.topics.push(topic);
-                });
+                // angular.forEach(related_topics, function(topic) {
+                //     $scope.spheredata.topics.push(topic);
+                // });
+                $scope.spheredata.topics = related_topics;
                 $scope.topicItems.length = 0;
                 $scope.currentTopic = $scope.spheredata.topics[0];
                 $scope.currentTopicIdx = -1;
