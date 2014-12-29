@@ -73,7 +73,7 @@ angular.module('sphericalApp.MainControllers', [])
                         $scope.topicSwiper.swipeTo(discussion_index - 1, 0, false);
                       },0);
                     } else {
-                      switch_topics(topic.id);
+                      switch_topics(topic.id, ($scope.spheredata.channelname == topic.name));
                       if ($state.includes('**.story')) {
                         if ($scope.spheredata.channelname == topic.name) {
                           switch_topics($scope.spheredata.channel_ctx_id, true)
@@ -151,20 +151,28 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories_active = false;
                 ActivityVis.curators = false;
                 ActivityVis.participants = false;
-                set_current_discussions($scope.currentTopic.id);
-                if ($scope.topic_discussions[$scope.currentTopic.id] && $scope.topic_discussions[$scope.currentTopic.id].length > 0) {
-                  $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
-                  ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
-                  $state.go('sphere.topic.discussion', {discussion: $scope.currentTopicDiscussions[0][0]['_id']});
-                  $timeout(function () {
-                    ActivityVis.discussions = true;
-                  }, 500); //otherwise flashes the previously loaded discussion
-                } else {
-                  if (ActivityVis.signedin) {
-                    ActivityVis.discussion_edit = true;
+                set_current_discussions($scope.currentTopic.id)
+                .then(function() {
+                  if ($scope.topic_discussions[$scope.currentTopic.id] && $scope.topic_discussions[$scope.currentTopic.id].length > 0) {
+                    $scope.current_discussion = $scope.topic_discussions[$scope.currentTopic.id][0];
+                    ForumData.change_context($scope.currentTopic.id, $scope.current_discussion[0]['_id']);
+
+                    if ($scope.currentTopicDiscussions) {
+                      $state.go(
+                        'sphere.topic.discussion', {topic: $scope.currentTopic.name, discussion: $scope.currentTopicDiscussions[0][0]['_id']}
+                      );
+                    }
+
+                    $timeout(function () {
+                      ActivityVis.discussions = true;
+                    }, 500); //otherwise flashes the previously loaded discussion
+                  } else {
+                    if (ActivityVis.signedin) {
+                      ActivityVis.discussion_edit = true;
+                    }
+                    ActivityVis.noslides = "No Discussions Yet";
                   }
-                  ActivityVis.noslides = "No Discussions Yet";
-                }
+                });
             } else if (show == 'stories') {
                 ActivityVis.stories = true;
                 ActivityVis.discussions = false;
@@ -173,7 +181,25 @@ angular.module('sphericalApp.MainControllers', [])
                 ActivityVis.stories_active = true;
                 ActivityVis.curators = false;
                 ActivityVis.participants = false;
-                switch_topics($scope.currentTopic.id);
+
+                if ($scope.spheredata.channelname == $scope.currentTopic.name) {
+                  switch_topics($scope.spheredata.channel_ctx_id, true)
+                  .then(function() {
+                    $scope.topicItems = $scope.spheredata.channelstories;
+                    console.log('l: ' + $scope.spheredata.channelstories.length);
+                    $scope.currentTopic = $scope.main_topics[0];
+                    $scope.currentTopicIdx = 0;
+                    update_current_topic(0, true);
+                    $scope.channelActive = true;
+                    $compile(ChooserData.tswiper)($scope);
+                    $compile($scope.itemSwiper)($scope);
+                    // $scope.topicSwiper is instantiated by the swiperReady directive
+                    $scope.topicSwiper.init();
+                    $scope.itemSwiper.init();
+                  });
+                } else {
+                  switch_topics($scope.currentTopic.id);
+                }
                 if ($scope.currentStory) {
                     $state.go(
                         'sphere.topic.story', {topic: $scope.currentTopic.name, story: $scope.currentStory}
@@ -204,9 +230,18 @@ angular.module('sphericalApp.MainControllers', [])
           $scope.topicItems = $scope.spheredata.channelstories;
           $scope.currentTopic = $scope.main_topics[0];
           $scope.currentTopicIdx = 0;
-          update_current_topic(0, false, true);
+          update_current_topic(0, true);
+          // ActivityVis.discussions_active = false;
+          // ActivityVis.stories_active = true;
+
+          ActivityVis.stories = true;
+          ActivityVis.discussions = false;
+          ActivityVis.discussion_edit = false;
           ActivityVis.discussions_active = false;
           ActivityVis.stories_active = true;
+          ActivityVis.curators = false;
+          ActivityVis.participants = false;
+
           ChooserData.active_slide = 0;
           $scope.topicIndicatorVisible = true;
           $scope.channelActive = true;
@@ -538,7 +573,7 @@ angular.module('sphericalApp.MainControllers', [])
         },
         set_current_discussions = function(topic) {
           $scope.spheredata.topics.length = 0;
-          get_discussion_items(topic).then(function(items) {
+          return get_discussion_items(topic).then(function(items) {
               if ($scope.topic_discussions[topic]) {
                 $scope.spheredata.topics = format_discussion_items_simple(items);
                 ChooserData.active_discussion = 0;

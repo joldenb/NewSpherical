@@ -79,7 +79,7 @@ class DashboardController < ApplicationController
       if params[:id] =~ RMongoIdRegex
         context = Context.find(params[:id])
         @items = ItemAgent.get_items(context)
-        if params[:is_channel]
+        if params[:is_channel] == "true"
           @items += ItemAgent.get_top_stories(context, {:initial => true})
         end
       else
