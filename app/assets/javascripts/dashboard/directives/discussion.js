@@ -35,6 +35,18 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         templateUrl: SPHR_HST + "tpls/discussion_edit.html"
     };
 }])
+.directive('discussionEditCloseBox', ['ActivityVis', function(ActivityVis) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        scope.$apply(function() {
+          ActivityVis.overlay = null;
+        });
+      });
+    }
+  };
+}])
 .directive('dragTarget', ['$compile', 'ActivityVis', 'ChooserData', function($compile, ActivityVis, ChooserData) {
     return {
         restrict: 'A',

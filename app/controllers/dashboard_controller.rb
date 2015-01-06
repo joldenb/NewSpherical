@@ -48,6 +48,7 @@ class DashboardController < ApplicationController
 
           @dashboard_logo = channelctx.channel_info.dashboard_logo
           @channelname = channelctx.display_identifier
+          @channel_identifier = channelctx.identifier
           @channelstories = ItemAgent.get_items(channelctx) + ItemAgent.get_top_stories(channelctx, {:initial => true})
           @channel_ctx_id = channelctx.id.to_s
           @topics.unshift(channelctx)

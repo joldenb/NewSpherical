@@ -11,6 +11,19 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
     templateUrl: SPHR_HST + "tpls/share_form.html"
   };
 }])
+.directive('shareCloseBox', ['ActivityVis', function(ActivityVis) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        scope.$apply(function() {
+          jQuery('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
+          ActivityVis.overlay = null;
+        });
+      });
+    }
+  };
+}])
 .directive('invitableEmail', ['SPHR_HST', '$http', function(SPHR_HST, $http) {
   return {
     restrict: 'A',

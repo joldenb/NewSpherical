@@ -71,7 +71,7 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                     if (d.signedin) {
                         ActivityVis.stories = false;
                         ActivityVis.discussions = false;
-                        ActivityVis.discussion_edit = true;
+                        ActivityVis.overlay = 'discussion_edit';
 
                         ActivityVis.show_drag_target = false;
                         ActivityVis.swipe_enable = true;
@@ -89,20 +89,20 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                 return;
               }
               var item_index = activityController.get_item_index(activityController.topicItems, activityController.currentStory),
-              is_discussion = ActivityVis.discussions;
+              is_discussion = (ActivityVis.activity_window == 'discussions');
               jQuery('.swiper-entity', '.topic-swiper').addClass('unhighlight');
               jQuery('#' + activityController.currentStory).removeClass('unhighlight');
               if (activityController.currentDiscussion) {
                 jQuery('#' + activityController.currentDiscussion.id).removeClass('unhighlight');
               }
-              if (ActivityVis.discussions) {
+              if (is_discussion) {
                 item_index = activityController.get_item_index(activityController.topicItems, activityController.currentDiscussion.id);
               }
               scope.$apply(function() {
                 ActivityVis.stories = false;
                 ActivityVis.discussions = false;
                 ActivityVis.discussion_edit = false;
-                ActivityVis.shareitem = true;
+                ActivityVis.overlay = 'shareitem';
                 ActivityVis.current_item_index = item_index;
                 activityController.share_message = '';
                 if (is_discussion) {

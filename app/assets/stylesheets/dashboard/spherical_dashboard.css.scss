@@ -360,10 +360,10 @@
                   right: 0;
                 }
                 &.discussion_slide {
-                  background: #fff;
-                  color: #222;
+                  /* background: #fff; */
+                  color: #fff;
                   h4 {
-                    color: #222;
+                    color: #fff;
                     text-shadow: none;
                     font-family: 'open_sanssemibold', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
                   }
@@ -373,7 +373,8 @@
                     left: 3px;
                     .author {
                         font-size: .8em;
-                        color: #222;
+                        line-height: 1.2em;
+                        color: #bbb;
                         position: absolute;
                         top: 0;
                         left: 35px;
@@ -518,7 +519,7 @@
             background: #fff;
             width: 421px;
             height: 499px;
-            margin: 0 1px 0 2px;
+            margin: 0 1px 0 3px;
             color: #222;
             overflow-x: hidden;
             overflow-y: auto;
@@ -552,7 +553,7 @@
             }
             .post_banner {
                 position: relative;
-                background: #073a70;
+                background: #333;
                 color: #fff;
                 width: 421px;
                 h3 {
@@ -635,7 +636,7 @@
             }
             &.preview {
                 float: right;
-                width: 419px;
+                width: 418px;
                 margin: 0;
             }
             .citations {
@@ -733,7 +734,7 @@
             background: #fff;
             margin: 0;
             color: #222;
-            width: 419px;
+            width: 418px;
             .present {
                 color: #299efa;
                 font-weight: bold;
@@ -744,7 +745,7 @@
                 background: #073a70;
             }
             .forum_banner {
-                background: #073a70;
+                background: #333;
                 color: #fff;
                 width: 419px;
                 h3 {
@@ -863,6 +864,7 @@
                     background: #fff;
                     border: 1px solid #e8e8e8;
                     height: 67px;
+                    width: 397px;
                 }
             }
         }
@@ -889,10 +891,12 @@
                     text-shadow: 1px 1px 1px #000;
                     text-align: left;
                     font-weight: 200;
-                    margin: 10px 0 10px 25px;
+                    margin: 10px 0 10px 15px;
+                    padding-left: 10px;
                     cursor: pointer;
                     &.active {
-                      color: #6e88aa;
+                      color: #0080c9;
+                      background: transparent image-url('activearrow.png') no-repeat -5px 2px;
                     }
                 }
                 h4 {
@@ -904,10 +908,12 @@
                     text-shadow: 1px 1px 1px #000;
                     text-align: left;
                     font-weight: 200;
-                    margin: 10px 0 10px 25px;
+                    margin: 10px 0 10px 15px;
+                    padding-left: 10px;
                     cursor: pointer;
                     &.active {
-                        color: #6e88aa;
+                        color: #0080c9;
+                        background: transparent image-url('activearrow.png') no-repeat -5px 2px;
                     }
                     &.inactive {
                       opacity: 0.2;
@@ -918,9 +924,26 @@
                 }
             }
             .item_display {
+                position: relative;
                 margin: 0 1px 0 164px;
                 height: 448px;
                 overflow: hidden;
+                .item-overlay {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  background: #222;
+                  .closebox {
+                    position: absolute;
+                    width: 63px;
+                    top: 5px;
+                    right: 5px;
+                    font: .9em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+                    background: transparent url(/assets/close-x.png) no-repeat 35px 0px;
+                    line-height: 1.65em;
+                    cursor: pointer;
+                  }
+                }
                 .item-swiper {
                     height: 448px;
                     margin: 0;
@@ -1128,6 +1151,7 @@
                   font-size: 1em;
                   .profdata {
                     height: 294px;
+                    width: 700px;
                     padding: 0 7px 0 0;
                     font: .905em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     line-height: 1.6em;
@@ -1145,9 +1169,6 @@
               }
             }
             .shareinvite {
-              position: absolute;
-              top: 0;
-              left: 167px;
               .share_form {
                 background: #222;
                 width: 810px;
@@ -1175,6 +1196,8 @@
                   font-family: 'open_sanslight';
                   font-size: 12px;
                   margin-top: 2px;
+                  background: #222;
+                  color: #fff;
                   &.fld {
                     margin-top: 5px;
                   }
@@ -1187,8 +1210,9 @@
                   position: absolute;
                   top: 1px;
                   right: 10px;
-                  font-family: 'open_sanslight_italic';
+                  font-family: 'open_sansitalic';
                   color: #d00;
+                  background: #222;
                   font-size: 1em;
                   &.multiline {
                     top: 0;
@@ -1208,8 +1232,9 @@
                   margin-bottom: 20px;
                   input {
                     margin: 0;
-                    width: 16em;
-                    font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    padding: 5px;
+                    width: 14.3em;
+                    font: .95em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
                     &.drop-hover {
                       background-color: #069;
                     }
@@ -1243,7 +1268,7 @@
                 }
                 .share_send_btn {
                   position: absolute;
-                  bottom: 30px;
+                  bottom: 10px;
                   left: 286px;
                   .feedback {
                     position: absolute;

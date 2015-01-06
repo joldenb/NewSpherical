@@ -29,17 +29,17 @@
   <div class="controls_bar">
     <div class="topic_controls">
       <div class="control_rt" cntrlbar-btn btntarget="new_discussion">
-        <span class="discussion" ng-class="{active: visible.topicctls() && !visible.shareitem}">New Discussion</span>
+        <span class="discussion" ng-class="{active: visible.topicctls() && !visible.shareitem && !visible.unshareable}">New Discussion</span>
       </div>
       <div class="control_rt" cntrlbar-btn btntarget="elevate">
-        <span class="elevate" ng-class="{active: visible.itemctls() && !visible.shareitem}">Elevate</span>
+        <span class="elevate" ng-class="{active: visible.itemctls() && !visible.shareitem && !visible.unshareable}">Elevate</span>
         <span class="elevate_fbk" ng-class="{error: !elevation_result.success}" ng-show="elevation_result.message">{{elevation_result.message}}</span>
       </div>
       <div class="control_rt" cntrlbar-btn btntarget="repost">
-        <span class="repost" ng-class="{active: visible.itemctls() && !visible.shareitem}">Repost</span>
+        <span class="repost" ng-class="{active: visible.itemctls() && !visible.shareitem && !visible.unshareable}">Repost</span>
       </div>
       <div class="control_rt" cntrlbar-btn btntarget="share">
-        <span class="share" ng-class="{active: visible.itemctls()}">Share / Invite</span>
+        <span class="share" ng-class="{active: visible.itemctls() && !visible.unshareable}">Share / Invite</span>
       </div>
     </div>
   </div>
@@ -50,25 +50,26 @@
 
       <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !channelActive}" style="margin-bottom: 0;">Related</h4>
 
-      <h4 class="indented" ng-show="currentTopic.name && !channelActive" style="margin-top: 0;">{{currentTopic.name}}</h3>
+      <h4 class="indented active" ng-show="currentTopicIdx >= 0 && !channelActive" style="margin-top: 0;">{{currentTopic.name}}</h3>
 
-      <h4 ng-click="activityShow('stories')" ng-class="{active: visible.stories}">Stories</h4>
+      <h4 ng-show="currentTopicIdx >= 0 || channelActive" ng-click="activityShow('stories')" ng-class="{active: visible.activity_window == 'stories'}">Stories</h4>
 
-      <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.discussions}" ng-show="topicIndicatorVisible">Discussions</h4>
+      <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.activity_window == 'discussions'}" ng-show="topicIndicatorVisible">Discussions</h4>
 
       <h4 ng-show="topicIndicatorVisible">Resources</h4>
 
-      <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.curators}">Curators</h4>
+      <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
 
-      <h4 ng-click="activityShow('participants')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.participants}">Participants</h4>
+      <h4 ng-click="activityShow('participants')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
     </div>
 
     <div class="item_display">
-      <div class="item-swiper" ng-show="visible.stories" item-swiper itemarray="topicItems"></div>
-      <div class="discussions" ng-show="visible.discussions" discussion-display></div>
-      <div class="new_discussion" ng-show="visible.discussion_edit" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
-      <div class="shareinvite" ng-show="visible.shareitem" shareform></div>
-      <div class="userprofile" ng-show="visible.curators || visible.participants" user-profile thisuser="thisuser" currentuser="visible.signedin"></div>
+      <div class="item-swiper" ng-show="visible.activity_window == 'stories'" item-swiper itemarray="topicItems"></div>
+      <div class="discussions" ng-show="visible.activity_window == 'discussions'" discussion-display></div>
+      <div class="userprofile" ng-show="visible.activity_window == 'curators' || visible.activity_window == 'participants'" user-profile thisuser="thisuser" currentuser="visible.signedin"></div>
+
+      <div class="new_discussion item-overlay" ng-show="visible.overlay == 'discussion_edit'" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
+      <div class="shareinvite item-overlay" ng-show="visible.overlay == 'shareitem'" shareform></div>
     </div>
   </div>
 </div>

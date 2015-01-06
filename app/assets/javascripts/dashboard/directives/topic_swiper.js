@@ -63,6 +63,7 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
             jQuery('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
             scope.$apply(function() {
               ActivityVis.shareitem = false;
+              ActivityVis.overlay = null;
             });
             if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'topic') {
                 topicSwiperCtrl.parentController.slide_select(this_index, attrs.id);
