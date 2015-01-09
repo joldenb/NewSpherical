@@ -19,7 +19,7 @@ Topical::Application.routes.draw do
   get "/sphere/user_ctlpanel_data"  => 'sphere#user_ctlpanel_data'
   post "/sphere/signout_submit" => 'sphere#signout_submit'
   get "/sphere/dashboard_signout" => 'sphere#dashboard_signout'
-  get "/sphere/signed_in" => 'sphere#signed_in'
+  get "/sphere/signed_in(/:ctx_id)" => 'sphere#signed_in'
   get "/sphere/signup" => 'sphere#signup'
   get "/sphere/entities(/:ctx_id)" => 'sphere#entities'
   get "/sphere/curators(/:ctx_id)" => 'sphere#curators'

@@ -59,13 +59,21 @@ module AdminChecks
     end
 
     def admin_in_any_ctx(role_required=[])
-      if session[:user_id]
-        role_required_plus_admin = ["admin", "founder"] | [role_required].flatten
-        if u = Entity.find(session[:user_id])
-          u.roles.map{|role| role.role}.any?{|r| role_required_plus_admin.include?(r)}
-        else
-          false
-        end
+      if current_user
+        u = current_user
+      elsif current_dashboard_user
+        u = current_dashboard_user
+      else
+        return false
       end
+
+      role_required_plus_admin = ["admin", "founder"] | [role_required].flatten
+      u.roles.map{|role| role.role}.any?{|r| role_required_plus_admin.include?(r)}
+        # if u = Entity.find(session[:user_id])
+        #   u.roles.map{|role| role.role}.any?{|r| role_required_plus_admin.include?(r)}
+        # else
+        #   false
+        # end
+      #end
     end
 end

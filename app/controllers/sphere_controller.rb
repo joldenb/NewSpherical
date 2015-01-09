@@ -1,5 +1,6 @@
 class SphereController < ApplicationController
     after_filter :add_cors_headers
+    include AdminChecks
 
     def index
       render :signin
@@ -100,21 +101,44 @@ class SphereController < ApplicationController
     end
 
     def signed_in
-        if current_dashboard_user
-            render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
-                                            "screenname" => current_dashboard_user.screenname,
-                                            "id" => current_dashboard_user.id.to_s,
-                                            "pic" => current_dashboard_user.profile_image('nopicdrk'),
-                                            "bigpic" => current_dashboard_user.profile_image('nopic58')}}
-        elsif current_user
-          render :json => {"signedin" => {"handle" => current_user.handle,
-                                          "screenname" => current_user.screenname,
-                                          "id" => current_user.id.to_s,
-                                          "pic" => current_user.profile_image('nopicdrk'),
-                                          "bigpic" => current_user.profile_image('nopic58')}}
-        else
-            render :json => {"signedin" => false}
-        end
+      if current_dashboard_user
+        user = current_dashboard_user
+      elsif current_user
+        user = current_user
+      else
+        render :json => {"signedin" => false} and return
+      end
+      is_curator = false
+      ctx_id = params[:ctx_id] ? params[:ctx_id].to_s : nil
+      if admin_in_any_ctx || valid_role(user.id, ctx_id, ['curator'])
+        is_curator = true
+      end
+      render :json => {"signedin" => {
+        "handle" => user.handle,
+        "screenname" => user.screenname,
+        "curator" => is_curator,
+        "id" => user.id.to_s,
+        "pic" => user.profile_image('nopicdrk'),
+        "bigpic" => user.profile_image('nopic58')}} and return
+
+
+
+
+        # if current_dashboard_user
+        #     render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
+        #                                     "screenname" => current_dashboard_user.screenname,
+        #                                     "id" => current_dashboard_user.id.to_s,
+        #                                     "pic" => current_dashboard_user.profile_image('nopicdrk'),
+        #                                     "bigpic" => current_dashboard_user.profile_image('nopic58')}}
+        # elsif current_user
+        #   render :json => {"signedin" => {"handle" => current_user.handle,
+        #                                   "screenname" => current_user.screenname,
+        #                                   "id" => current_user.id.to_s,
+        #                                   "pic" => current_user.profile_image('nopicdrk'),
+        #                                   "bigpic" => current_user.profile_image('nopic58')}}
+        # else
+        #     render :json => {"signedin" => false}
+        # end
     end
 
     def signout_submit

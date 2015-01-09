@@ -28,9 +28,9 @@
 
   <div class="controls_bar">
     <div class="topic_controls">
-      <div class="control_rt" cntrlbar-btn btntarget="new_discussion">
+      <!-- <div class="control_rt" cntrlbar-btn btntarget="new_discussion">
         <span class="discussion" ng-class="{active: visible.topicctls() && !visible.shareitem && !visible.unshareable}">New Discussion</span>
-      </div>
+      </div> -->
       <div class="control_rt" cntrlbar-btn btntarget="elevate">
         <span class="elevate" ng-class="{active: visible.itemctls() && !visible.shareitem && !visible.unshareable}">Elevate</span>
         <span class="elevate_fbk" ng-class="{error: !elevation_result.success}" ng-show="elevation_result.message">{{elevation_result.message}}</span>
@@ -61,6 +61,13 @@
       <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
 
       <h4 ng-click="activityShow('participants')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
+
+      <div class="newcreate" ng-show="visible.signedin.curator">
+        <h4 topic-cntrl-btn btntarget="new_discussion">Discussion</h4>
+        <h4>Resource</h4>
+        <h4>Sphere</h4>
+      </div>
+
     </div>
 
     <div class="item_display">
