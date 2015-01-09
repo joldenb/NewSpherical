@@ -49,6 +49,17 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                 }
               });
             },
+            newResource = function() {
+              if ((!$state.includes('**.topic.**') && !activityController.channelActive)  || ActivityVis.overlay == 'shareitem') {
+                return;
+              }
+              UserInfo.signedin().then(function(d) {
+                if (d.signedin) {
+                  ActivityVis.overlay = 'resource_edit';
+                  ActivityVis.new_edit_resource = 'New';
+                }
+              });
+            },
             btnAction = function(btntarget) {
                 switch(btntarget) {
                     case 'all':
@@ -65,6 +76,9 @@ angular.module('sphericalApp.ControlBarDirectives', [])
                         break;
                     case 'new_discussion':
                       newDiscussion();
+                      break;
+                    case 'new_resource':
+                      newResource();
                       break;
                 }
             };

@@ -8,5 +8,6 @@ angular.module('sphericalApp.directives', [
     'sphericalApp.DiscussionDirectives',
     'sphericalApp.ControlBarDirectives',
     'sphericalApp.ShareInviteDirectives',
-    'sphericalApp.EntityDirectives'
+    'sphericalApp.EntityDirectives',
+    'sphericalApp.ResourceDirectives'
 ]);

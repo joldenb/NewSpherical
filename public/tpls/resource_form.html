@@ -1,0 +1,33 @@
+<div class="resource_form">
+  <h3>{{visible.new_edit_resource}} Resource</h3>
+
+  <form name="resourceform" novalidate>
+    <!-- TODO: use config instead of these hidden fields -->
+    <input type="hidden" name="resource_ctx" ng-model="resource_ctx" ng-init="resource_ctx = spheredata.channel_ctx_id">
+    <input type="hidden" name="resource_sphere" ng-model="resource_sphere" ng-init="resource_sphere = spheredata.channel_identifier">
+
+    <fieldset>
+      <p class="fld">
+        <span class="label">Name</span>
+        <input type="text" placeholder="Resource Name" name="resource_name" ng-model="resource_name" is-focussed />
+        <span class="ok" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name"></span>
+        <span class="error" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$error.required && !_focussed.resource_name">required</span>
+        <span class="error" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$error.unavailable && !_focussed.resource_name && !resourceform.resource_name.$error.required">unavailable</span>
+        <span class="spinner" ng-show="checking_resource_name"><img src="{{sphr_hst}}assets/ajax-loader.gif" /></span>
+      </p>
+    </fieldset>
+
+    <fieldset class="offset">
+      <p class="fld">
+        <span class="label">List of URLs</span>
+      </p>
+      <p class="url_input">
+        <input type="text" placeholder="URL" name="url1" ng-model="url1" is-focussed />
+      </p>
+    </fieldset>
+  </form>
+
+  <form class="resource-dropzone dropzone" resource-dzone>
+    <div class="dz-message">Drop file here<br />(or click)<br />to upload.</div>
+  </form>
+</div>
