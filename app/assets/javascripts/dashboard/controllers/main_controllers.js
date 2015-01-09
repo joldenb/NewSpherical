@@ -106,7 +106,6 @@ angular.module('sphericalApp.MainControllers', [])
               //we're at the top level of the dashboard
               switch_topics($scope.spheredata.channel_ctx_id, true)
               .then(function(items) {
-                console.log(items);
                 $scope.topicItems = $scope.spheredata.channelstories;
                 $scope.currentTopic = $scope.main_topics[0];
                 ActivityVis.discussions_active = false;
@@ -474,12 +473,25 @@ angular.module('sphericalApp.MainControllers', [])
             if (res.success) {
               if (mode === 'discussions') {
                 set_current_discussions($scope.currentTopic.id);
+              } else if ($scope.spheredata.channelname == $scope.currentTopic.name) {
+                switch_topics($scope.spheredata.channel_ctx_id, true)
+                .then(function() {
+                  $scope.topicItems = $scope.spheredata.channelstories;
+                  $scope.currentTopic = $scope.main_topics[0];
+                  $scope.currentTopicIdx = 0;
+                  update_current_topic(0, true);
+                  $scope.channelActive = true;
+                  $compile(ChooserData.tswiper)($scope);
+                  $compile($scope.itemSwiper)($scope);
+                  // $scope.topicSwiper is instantiated by the swiperReady directive
+                  $scope.topicSwiper.init();
+                  $scope.itemSwiper.init();
+                });
               } else {
                 switch_topics($scope.currentTopic.id);
               }
               update_current_topic($scope.currentTopicIdx);
               set_current_discussions($scope.currentTopic);
-
             }
             $scope.elevation_result = res;
             $timeout(function () {
