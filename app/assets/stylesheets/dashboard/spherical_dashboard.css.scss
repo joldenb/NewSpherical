@@ -1198,8 +1198,11 @@
                   }
                   &.url_input {
                     margin-left: 50px;
-                    padding-left: 20px;
-                    background: transparent image-url('thinplus.png') no-repeat 0px 3px;
+                    span {
+                      background: transparent image-url('thinplus.png') no-repeat 0px 3px;
+                      padding: 2px 7px;
+                      cursor: pointer;
+                    }
                   }
                 }
                 h3 {

@@ -24,6 +24,25 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
+.directive('anotherUrl', ['$compile', function($compile) {
+  return {
+    restrict: 'A',
+    controller: function($scope) {
+      $scope.urlinc = 1;
+    },
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        scope.urlinc = scope.urlinc + 1;
+        var container = elm.parent(),
+        tpl = angular.element('<p class="url_input"><span class="anotherurl" another-url>&nbsp;</span>\n<input type="text" placeholder="URL" name="url_' + scope.urlinc + '" ng-model="url_' + scope.urlinc + '" is-focussed /></p>');
+        $compile(tpl)(scope);
+        container.after(tpl);
+        jQuery('.anotherurl').css({opacity: 0});
+        jQuery('.anotherurl').last().css({opacity: 1});
+      });
+    }
+  };
+}])
 .directive('resourceDzone', [function() {
   return {
     restrict: 'A',
