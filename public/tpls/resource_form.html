@@ -5,16 +5,16 @@
     <!-- TODO: use config instead of these hidden fields -->
     <input type="hidden" name="resource_ctx" ng-model="resource_ctx" ng-init="resource_ctx = spheredata.channel_ctx_id">
     <input type="hidden" name="resource_sphere" ng-model="resource_sphere" ng-init="resource_sphere = spheredata.channel_identifier">
-
+    <input type="hidden" name="resource_id" ng-model="newresource.id">
     <fieldset>
       <p class="fld">
         <span class="label">Name</span>
-        <input type="text" placeholder="Resource Name" name="resource_name" ng-model="resource_name" is-focussed />
-        <span class="ok" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name"></span>
+        <input type="text" placeholder="Enter Resource Name" name="resource_name" ng-model="resource_name" required is-focussed save-new-resource />
+        <span class="ok" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name && !newresource.checking"></span>
         <span class="error" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$error.required && !_focussed.resource_name">required</span>
-        <span class="error" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$error.unavailable && !_focussed.resource_name && !resourceform.resource_name.$error.required">unavailable</span>
-        <span class="spinner" ng-show="checking_resource_name"><img src="{{sphr_hst}}assets/ajax-loader.gif" /></span>
+        <span class="error" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$error.unique_rname && !_focussed.resource_name && !newresource.checking">already in use</span>
       </p>
+      <p class="rnamecaption" ng-show="!newresource || !newresource.id">After naming your new resource, you'll be able to upload files to it.</p>
     </fieldset>
 
     <fieldset class="offset">
@@ -28,9 +28,15 @@
     </fieldset>
   </form>
 
-  <form class="resource-dropzone dropzone" resource-dzone>
-    <div class="dz-message">Drop file here<br />(or click)<br />to upload.</div>
+  <form class="resource-dropzone dropzone" resource-dzone ng-show="newresource && newresource.id">
+    <input name="resrc_ctx" type="hidden" value="{{spheredata.channel_ctx_id}}" />
+    <input type="hidden" name="resource_id" value="{{newresource.id}}">
+    <div class="dz-message">To upload files,<br />drop here (or click).</div>
+    <div class="upload-preview dropzone-previews">
+      <div class="resource_list"></div>
+    </div>
   </form>
 
+  <div class="menu_item save" hover-highlight save-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Save</div>
   <div class="closebox" share-close-box>Close</div>
 </div>

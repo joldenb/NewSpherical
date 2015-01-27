@@ -5,6 +5,7 @@ class Item
     has_many :item_contexts
     has_many :item_elevators
     has_many :forum_messages
+    has_many :resource_files
 
     embeds_many :comments
 
@@ -24,10 +25,13 @@ class Item
     field :sort_order, :type => Integer
     field :submitter, :type => Moped::BSON::ObjectId
     field :citations, :type => Array
+    field :resource_name, :type => String
+    field :resource_urls, :type => Array
+    field :show_in_resources, :type => Boolean, :default => false
 
-    index({:name => 1})
     index({:oid => 1}, {:unique => true})
     index({:sort_order => -1})
+    index({:resource_name => 1}, {:sparse => true})
 
     validates_uniqueness_of :oid
     validates_inclusion_of :item_type, in: ItemTypes

@@ -112,6 +112,141 @@ class DashboardController < ApplicationController
       end
     end
 
+    def upload_resource_file
+      if current_user
+        user = current_user
+      elsif current_dashboard_user
+        user = current_dashboard_user
+      end
+      render(:json => {:success => false, :msg => "Please log in."}, :status => 401) and return unless user
+
+      if params[:resrc].is_a?(ActionDispatch::Http::UploadedFile)
+        if parent_item = Item.find(params[:resource_id])
+          if parent_item.resource_files.find_by(:filename =>  params[:resrc].original_filename)
+            render :json => {"success" => false, :msg => "File already exists."}, :status => 409 and return
+          end
+          rf = ResourceFile.new
+          rf.rfile = params[:resrc]
+          rf.filename = params[:resrc].original_filename
+          parent_item.resource_files << rf
+          resource_list = parent_item.resource_files.map{|rfile| [rfile.filename, rfile.id.to_s, parent_item.id.to_s]}
+          render :json => {"success" => true, :resource_list => resource_list} and return
+        else
+          render :json => {"success" => false, :msg => "No resource found."} and return
+        end
+        render(:text => result) and return
+      else
+        render(:nothing => true, :status => 400) and return
+      end
+    end
+
+    def remove_resource_file
+      if current_user
+        user = current_user
+      elsif current_dashboard_user
+        user = current_dashboard_user
+      end
+      render(:json => {:success => false, :msg => "Please log in."}, :status => 401) and return unless user
+
+      if params[:rsrc] =~ RMongoIdRegex
+        rsrc = params[:rsrc]
+      else
+        render(:json => {:success => false, :msg => "Resource not valid."}, :status => 404) and return
+      end
+      if params[:fileid] =~ RMongoIdRegex
+        fileid = params[:fileid]
+      else
+        render(:json => {:success => false, :msg => "File not valid."}, :status => 404) and return
+      end
+
+      if parent_resource = Item.find(rsrc)
+        if parent_resource.submitter == user.id
+          begin
+            FileUtils.rm_r("#{Rails.root}/public/uploads/resource_file/#{fileid}")
+          rescue
+            nil
+          end
+          if rf = parent_resource.resource_files.find(fileid)
+            rf.destroy
+          end
+          parent_resource.reload
+          resource_list = parent_resource.resource_files.map{|rfile| [rfile.filename, rfile.id.to_s, parent_resource.id.to_s]}
+          render :json => {"success" => true, :resource_list => resource_list} and return
+        else
+          render(:json => {:success => false, :msg => "You do not own this resource."}, :status => 401) and return
+        end
+      else
+        render(:json => {:success => false, :msg => "Resource not found."}, :status => 404) and return
+      end
+    end
+
+    def check_resource_name
+      if current_user
+        user = current_user
+      elsif current_dashboard_user
+        user = current_dashboard_user
+      end
+      render(:nothing => true, :status => 401) and return unless user
+
+      if params[:resource_ctx] =~ RMongoIdRegex
+        if params[:resource_name].present?
+          if item = Item.find_by(:resource_name => params[:resource_name])
+            if params[:resource_id] != item.id.to_s && item.item_contexts.find_by(:context_id => params[:resource_ctx])
+              render(:json => {:success => false, :msg => "Resource name already taken."}) and return
+            else
+              render(:json => {:success => true}) and return
+            end
+          end
+        else
+          render(:json => {:success => false, :msg => "Blank name"}) and return
+        end
+      else
+        render(:json => {:success => false, :msg => "Bad context"}) and return
+      end
+    end
+
+    def save_new_resource
+      if current_user
+        user = current_user
+      elsif current_dashboard_user
+        user = current_dashboard_user
+      end
+      render(:nothing => true, :status => 401) and return unless user
+      f = HTML::FullSanitizer.new
+
+      if params[:resource_ctx] =~ RMongoIdRegex
+        unless valid_role(user.id, params[:resource_ctx], ['curator']) || admin_in_any_ctx
+          render(:json => {:success => false, :msg => "Not a curator."}) and return
+        end
+        oid = SecureRandom.uuid
+        name = f.sanitize(params[:resource_name])
+        if params[:resource_urls].present?
+          urls = params[:resource_urls].map do |url|
+            f.sanitize(url) if url.present?
+          end.compact.uniq
+        else
+          urls = nil
+        end
+        begin
+          rsrc = ItemAgent.new(params[:resource_ctx], {
+            :oid => oid,
+            :resource_name => name,
+            :resource_urls => urls,
+            :submitter => user.id
+            }).create_or_update_resource_item
+        rescue Exception => e
+          render(:json => {:success => false, :msg => e.message}) and return
+        end
+        if rsrc.kind_of?(Item)
+          render(:json => {:success => true, :msg => "Created resource.", :rsrc_id => rsrc.id.to_s}) and return
+        else
+          render(:json => {:success => false, :msg => "Create resource failed."}) and return
+        end
+      else
+        render(:nothing => true, :status => 404) and return
+      end
+    end
+
     ##
     private
 
@@ -120,7 +255,7 @@ class DashboardController < ApplicationController
       response.headers["Access-Control-Allow-Origin"] = "*"
       response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
       response.headers["Access-Control-Allow-Credentials"] = "true"
-      response.headers["Access-Control-Allow-Headers"] = "x-csrf-token, authorization, accept, content-type"
+      response.headers["Access-Control-Allow-Headers"] = "x-csrf-token, authorization, accept, content-type, cache-control, x-requested-with"
     end
 
   end

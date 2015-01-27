@@ -113,6 +113,29 @@ class ItemAgent
         item
     end
 
+    def create_or_update_resource_item
+      raise ParamsError, "resource item must have oid" unless oid = @params.delete(:oid)
+      raise ParamsError, "resource item must have name" unless @params[:resource_name].present?
+      raise ContextError, "Context #{@context} cannot be found." unless ctx = Context.find(@context)
+      item_type = "resource"
+
+      if an_item = Item.find_by(:resource_name => @params[:resource_name])
+        if an_item.item_contexts.find_by(:context_id => ctx.id)
+          raise ParamsError, "Resource name already taken."
+        end
+      end
+
+      if item = Item.where(:oid => oid, :item_type => item_type).first
+        item.update_attributes(@params)
+      else
+        item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
+      end
+
+      add_or_update_item_context(item, ctx, item_type)
+
+      item
+    end
+
     # def create_or_update_topical_item
     #     raise ParamsError, "Topical item must have oid" unless oid = @params.delete(:oid)
     #     item_type = "topical"
@@ -359,6 +382,14 @@ class ItemAgent
             if item = Item.find(item_id)
                 ItemContext.where(:item_id => item_id).destroy_all
                 ItemElevator.where(:item_id => item_id).destroy_all
+                item.resource_files.each do |rf|
+                  begin
+                    FileUtils.rm_r("#{Rails.root}/public/uploads/resource_file/#{rf.id}")
+                  rescue
+                    nil
+                  end
+                  rf.destroy
+                end
                 item.destroy
             end
         end

@@ -1178,6 +1178,17 @@
               }
             }
             .resource_edit {
+              overflow-y: auto;
+              &::-webkit-scrollbar {
+                width: 10px;  /* for vertical scrollbars */
+                //height: 12px; /* for horizontal scrollbars */
+              }
+              &::-webkit-scrollbar-track {
+                background: #444;
+              }
+              &::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.5);
+              }
               .resource_form {
                 background: #222;
                 width: 810px;
@@ -1194,7 +1205,7 @@
                     font-weight: 400;
                   }
                   &.fld {
-                    width: 360px;
+                    width: 400px;
                   }
                   &.url_input {
                     margin-left: 50px;
@@ -1203,6 +1214,10 @@
                       padding: 2px 7px;
                       cursor: pointer;
                     }
+                  }
+                  &.rnamecaption {
+                    margin: -12px 0 0 115px;
+                    width: 190px;
                   }
                 }
                 h3 {
@@ -1236,7 +1251,7 @@
                 .error {
                   position: absolute;
                   top: 1px;
-                  right: 10px;
+                  left: 310px;
                   font-family: 'open_sansitalic';
                   color: #d00;
                   background: #222;
@@ -1247,10 +1262,36 @@
                     width: 60px;
                   }
                 }
+                .menu_item {
+                  position: absolute;
+                  height: 18px;
+                  font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                  cursor: pointer;
+                  padding: 7px 35px 2px 0;
+                  line-height: 1.1em;
+                  color: #fff;
+                  text-align: center;
+                  width: 50px;
+                  border: 1px solid #888;
+                  @include border-radius(16px);
+                  &.edit {
+                    bottom: 20px;
+                    left: 10px;
+                    background: transparent image-url('edit-icon.png') no-repeat 53px 3px;
+                  }
+                  &.save {
+                    bottom: 20px;
+                    left: 10px;
+                    background: transparent image-url('save-icon.png') no-repeat 53px 3px;
+                  }
+                  &.highlight {
+                    background-color: #222;
+                  }
+                }
                 .ok {
                   position: absolute;
                   top: 0;
-                  right: 36px;
+                  left: 310px;
                   width: 20px;
                   height: 20px;
                   background: transparent image-url('okcheck.png') no-repeat 0 1px;
@@ -1287,38 +1328,108 @@
                   }
                 }
                 .resource-dropzone {
-                  height: 136px;
-                  width: 114px;
+                  height: 36px;
+                  width: 300px;
                   padding: 5px;
-                  background: #eee;
-                  font-size: .95em;
+                  background: #222;
                   color: #777;
                   text-shadow: none;
-                  font-weight: 200;
+                  font: .95em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
                   margin-left: 115px;
-                }
-                .dz-error {
-                  .dz-error-message {
-                    overflow: hidden;
-                    opacity: 1;
-                    text-align: left;
-                    color: #d00;
-                    background: transparent;
+                  .upload-preview {
                     position: absolute;
-                    top: 0;
-                    left: 120px;
-                    width: 200px;
+                    top: 55px;
+                    left: 5px;
+                    .resource_list {
+                      p {
+                        margin: 0;
+                        span {
+                          background: transparent image-url('smgrnchk.png') no-repeat 0px 0px;
+                          width: 25px;
+                          height: 20px;
+                          position: absolute;
+                          top: 0;
+                          left: -25px;
+                        }
+                        span.trshcan {
+                          background: transparent image-url('smalltrashwt.png') no-repeat 0px 1px;
+                          width: 25px;
+                          height: 20px;
+                          position: absolute;
+                          top: 0;
+                          left: -50px;
+                          cursor: pointer;
+                        }
+                      }
+                    }
                   }
-                }
-                .dz-preview {
-                  margin: -62px 0 0 -6px;
-                  .dz-size {
-                    font-size: .8em;
+                  .dropzone .dz-default.dz-message {
+                    background-image: image-url("spritemap-small.png");
                   }
-                }
-                .dz-message {
-                  text-align: center;
-                  padding-top: 20px;
+                  .dropzone .dz-preview .dz-error-mark,
+                  .dropzone-previews .dz-preview .dz-error-mark {
+                    background-image: image-url("spritemap-small.png");
+                    right: 0;
+                    left: -30px;
+                    top: -21px;
+                  }
+                  .dropzone .dz-preview .dz-success-mark,
+                  .dropzone-previews .dz-preview .dz-success-mark {
+                    background-image: image-url("spritemap-small.png");
+                    right: 0;
+                    left: -30px;
+                    top: -5px;
+                  }
+                  .dz-error {
+                    .dz-error-message {
+                      overflow: hidden;
+                      opacity: 1;
+                      text-align: left;
+                      color: #d00;
+                      background: transparent;
+                      position: absolute;
+                      font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                      top: 25px;
+                      left: 55px;
+                      width: 280px;
+                    }
+                  }
+                  .dz-preview {
+                    margin: 0;
+                    width: 300px;
+                    height: 30px;
+                    background: transparent;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
+                    .dz-size {
+                      position: absolute;
+                      top: 15px;
+                      left: 0;
+                      font-size: .8em;
+                      color: #999;
+                    }
+                    .dz-details {
+                      position: relative;
+                      margin: 0;
+                      width: 300px;
+                      height: 30px;
+                      background: transparent;
+                      color: #ddd;
+                      font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    }
+                    .dz-progress {
+                      top: 18px;
+                      left: 46px;
+                      right: 0px;
+                    }
+                  }
+                  .dz-message {
+                    text-align: left;
+                    background: #eee;
+                    font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    width: 178px;
+                    padding: 5px;
+                  }
                 }
               }
             }
