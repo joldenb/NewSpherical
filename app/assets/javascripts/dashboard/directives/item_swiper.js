@@ -24,6 +24,7 @@ angular.module('sphericalApp.ItemSwiperDirectives', [])
         link: function(scope, elm, attrs, itemSwiperCtrl) {
             if (scope.$last) {
                 var $container = elm.closest('.swiper-container');
+                jQuery('.item_content').perfectScrollbar({suppressScrollX: true});
                 itemSwiperCtrl.parentController.itemSwiper = $container.swiper({
                     onTouchStart: function() {
                         itemSwiperCtrl.slideWasClicked = true;

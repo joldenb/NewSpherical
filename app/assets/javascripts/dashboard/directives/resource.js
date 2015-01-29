@@ -8,7 +8,10 @@ angular.module('sphericalApp.ResourceDirectives', [])
   return {
     restrict: 'A',
     controller: "ActivityCtrl",
-    templateUrl: SPHR_HST + "tpls/resource_form.html"
+    templateUrl: SPHR_HST + "tpls/resource_form.html",
+    link: function(scope, elm, attrs) {
+      jQuery('.resource_form').perfectScrollbar({suppressScrollX: true});
+    }
   };
 }])
 .directive('resourceCloseBox', ['ActivityVis', function(ActivityVis) {
@@ -125,7 +128,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
     },
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
-        if (scope.urlinc < 15) {
+        // if (scope.urlinc < 15) {
           var incr = scope.urlinc + 1;
           var container = elm.parent(),
           tpl = angular.element('<p class="url_input"><span class="anotherurl" another-url>&nbsp;</span>\n<input type="text" placeholder="URL" name="url_' + incr + '" ng-model="resourceform.url_' + incr + '" is-focussed /></p>');
@@ -133,12 +136,11 @@ angular.module('sphericalApp.ResourceDirectives', [])
           scope.urlinc = incr;
           container.after(tpl);
           jQuery('.anotherurl').css({opacity: 0});
-          if (incr < 15) {
-            jQuery('.anotherurl').last().css({opacity: 1});
+          jQuery('.anotherurl').last().css({opacity: 1});
+          if (incr > 10) {
+            jQuery('.resource_form').perfectScrollbar('update');
           }
-        } else {
-          jQuery('.anotherurl').css({opacity: 0});
-        }
+        // }
       });
     }
   };
@@ -173,6 +175,9 @@ angular.module('sphericalApp.ResourceDirectives', [])
           _rlist.append('<p><span>&nbsp;</span>' + item[0] + '<span class="trshcan"  fileid="' + item[1] + '" rsrc="' + item[2] +'" rfile-delete>&nbsp;</span></p>');
         });
         $compile(_rlist)(scope);
+        if (response.resource_list.length > 10) {
+          jQuery('.resource_form').perfectScrollbar('update');
+        }
       })
       .on("error", function(file, err, xhr) {
         scope.$apply(function() {
@@ -201,7 +206,6 @@ angular.module('sphericalApp.ResourceDirectives', [])
         var data = {};
         data.rsrc = scope.rsrc;
         data.fileid = scope.fileid;
-        console.log(data);
         $http.post(SPHR_HST + 'dashboard/remove_resource_file', data)
         .success(function(response) {
           var _rlist = jQuery('.resource_list');

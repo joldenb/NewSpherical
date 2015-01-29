@@ -979,19 +979,20 @@
                         position: relative;
                         padding: 0;
                         .item_content {
+                            position: relative;
                             height: 448px;
-                            overflow: auto;
+                            overflow: hidden;
                             padding-right: 20px;
-                            &::-webkit-scrollbar {
-                              width: 10px;  /* for vertical scrollbars */
-                              //height: 12px; /* for horizontal scrollbars */
+                            /* &::-webkit-scrollbar {
+                              width: 10px;  for vertical scrollbars
+                              //height: 12px; for horizontal scrollbars
                             }
                             &::-webkit-scrollbar-track {
                               background: #444;
                             }
                             &::-webkit-scrollbar-thumb {
                               background: rgba(0, 0, 0, 0.5);
-                            }
+                            } */
                         }
                         h3 {
                             font: 1.2em/1em 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
@@ -1050,17 +1051,17 @@
               .upagecontent {
                 position: relative;
                 background: #444;
-                overflow: auto;
+                overflow: hidden;
                 height: 380px;
-                &::-webkit-scrollbar {
-                  width: 10px;  /* for vertical scrollbars */
+                /* &::-webkit-scrollbar {
+                  width: 10px;  for vertical scrollbars
                 }
                 &::-webkit-scrollbar-track {
                   background: #000;
                 }
                 &::-webkit-scrollbar-thumb {
                   background: rgba(100, 100, 100, 0.5);
-                }
+                } */
                 h3 {
                     font: 1.2em/1em 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     text-transform: none;
@@ -1178,18 +1179,9 @@
               }
             }
             .resource_edit {
-              overflow-y: auto;
-              &::-webkit-scrollbar {
-                width: 10px;  /* for vertical scrollbars */
-                //height: 12px; /* for horizontal scrollbars */
-              }
-              &::-webkit-scrollbar-track {
-                background: #444;
-              }
-              &::-webkit-scrollbar-thumb {
-                background: rgba(0, 0, 0, 0.5);
-              }
               .resource_form {
+                position: relative;
+                overflow: hidden;
                 background: #222;
                 width: 810px;
                 height: 418px;

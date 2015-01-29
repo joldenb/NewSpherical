@@ -23,3 +23,4 @@
 //= require he
 //= require to-markdown
 //= require dropzone.min
+//= require perfect-scrollbar
