@@ -17,4 +17,4 @@
 //= require markdown
 //= require he
 //= require to-markdown
-//= require perfect-scrollbar
+//= require perfect-scrollbar.min
