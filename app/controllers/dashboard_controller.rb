@@ -247,6 +247,50 @@ class DashboardController < ApplicationController
       end
     end
 
+    def save_resource
+      if current_user
+        user = current_user
+      elsif current_dashboard_user
+        user = current_dashboard_user
+      end
+      render(:nothing => true, :status => 401) and return unless user
+      f = HTML::FullSanitizer.new
+
+      if resource = Item.find(params[:resource_id].to_s)
+        if resource.submitter != user.id
+          render(:json => {:success => false, :msg => "Not resource owner."}) and return
+        end
+        if params[:resource_ctx] =~ RMongoIdRegex
+          unless valid_role(user.id, params[:resource_ctx], ['curator']) || admin_in_any_ctx
+            render(:json => {:success => false, :msg => "Not a curator."}) and return
+          end
+          oid = resource.oid
+          name = f.sanitize(params[:resource_name])
+          if params[:resource_urls].present?
+            urls = params[:resource_urls].map do |url|
+              f.sanitize(url) if url.present?
+            end.compact.uniq
+          else
+            urls = nil
+          end
+          begin
+            rsrc = ItemAgent.new(params[:resource_ctx], {
+              :oid => oid,
+              :resource_name => name,
+              :resource_urls => urls,
+              :show_in_resources => true
+              }).create_or_update_resource_item
+          rescue Exception => e
+            render(:json => {:success => false, :msg => e.message}) and return
+          end
+
+          render(:json => {:success => true, :msg => "Resource saved!"}) and return
+        end
+      else
+        render(:nothing => true, :status => 404) and return
+      end
+    end
+
     ##
     private
 

@@ -1,0 +1,16 @@
+<div class="resource">
+  <h3>{{thisresource.description}}</h3>
+  <div class="filelist">
+    <h4>Downloads</h4>
+    <ul>
+      <li ng-repeat="file in thisresource.resource_files"><a ng-href="{{file.url}}" target="_blank">{{file.name}}</a></li>
+    </ul>
+  </div>
+  <div class="urllist">
+    <h4>Links</h4>
+    <ul>
+      <li ng-repeat="link in thisresource.resource_urls"><a ng-href="{{link}}" target="_blank">{{link}}</a></li>
+    </ul>
+  </div>
+
+</div>

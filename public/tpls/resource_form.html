@@ -37,6 +37,6 @@
     </div>
   </form>
 
-  <div class="menu_item save" hover-highlight save-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Save</div>
+  <div class="menu_item save" hover-highlight save-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Save<span class="resource_feedback" ng-class="{fbk_error: fbk_error}">{{resource_fbk}}</span></div>
   <div class="closebox" share-close-box>Close</div>
 </div>

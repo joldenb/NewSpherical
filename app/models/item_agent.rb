@@ -119,15 +119,14 @@ class ItemAgent
       raise ContextError, "Context #{@context} cannot be found." unless ctx = Context.find(@context)
       item_type = "resource"
 
-      if an_item = Item.find_by(:resource_name => @params[:resource_name])
-        if an_item.item_contexts.find_by(:context_id => ctx.id)
-          raise ParamsError, "Resource name already taken."
-        end
-      end
-
       if item = Item.where(:oid => oid, :item_type => item_type).first
         item.update_attributes(@params)
       else
+        if an_item = Item.find_by(:resource_name => @params[:resource_name])
+          if an_item.item_contexts.find_by(:context_id => ctx.id)
+            raise ParamsError, "Resource name already taken."
+          end
+        end
         item = Item.create(@params.merge(:oid => oid, :item_type => item_type))
       end
 

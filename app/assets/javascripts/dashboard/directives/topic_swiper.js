@@ -92,6 +92,10 @@ angular.module('sphericalApp.TopicSwiperDirectives', [])
               scope.$apply(function() {
                 topicSwiperCtrl.parentController.load_profile(this_index);
               });
+            } else if (topicSwiperCtrl.slideWasClicked && attrs.itemtype == 'resource') {
+              scope.$apply(function() {
+                topicSwiperCtrl.parentController.load_resource(this_index);
+              });
             }
     			});
       }

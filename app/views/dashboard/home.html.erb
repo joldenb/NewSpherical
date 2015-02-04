@@ -56,7 +56,7 @@
 
       <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.activity_window == 'discussions'}" ng-show="topicIndicatorVisible">Discussions</h4>
 
-      <h4 ng-show="topicIndicatorVisible">Resources</h4>
+      <h4 ng-click="activityShow('resources')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'resources'}">Resources</h4>
 
       <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
 
@@ -73,6 +73,7 @@
     <div class="item_display">
       <div class="item-swiper" ng-show="visible.activity_window == 'stories'" item-swiper itemarray="topicItems"></div>
       <div class="discussions" ng-show="visible.activity_window == 'discussions'" discussion-display></div>
+      <div class="resources" ng-show="visible.activity_window == 'resources'" resource-display></div>
       <div class="userprofile" ng-show="visible.activity_window == 'curators' || visible.activity_window == 'participants'" user-profile thisuser="thisuser" currentuser="visible.signedin"></div>
 
       <div class="new_discussion item-overlay" ng-show="visible.overlay == 'discussion_edit'" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>

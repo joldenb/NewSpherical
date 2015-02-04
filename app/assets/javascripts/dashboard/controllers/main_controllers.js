@@ -33,7 +33,7 @@ angular.module('sphericalApp.MainControllers', [])
         }
 
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'Participants', 'Curators', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, Participants, Curators, ActivityVis, ChooserData, DiscussionItems, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$compile', '$window', 'SphereInfo', 'TopicItems', 'UserInfo', 'Participants', 'Curators', 'ActivityVis', 'ChooserData', 'DiscussionItems', 'ForumData', 'Resources', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $compile, $window, SphereInfo, TopicItems, UserInfo, Participants, Curators, ActivityVis, ChooserData, DiscussionItems, ForumData, Resources, SPHR_HST) {
 
         // these run when page loads
         SphereInfo.sphereData.then(function(d) {
@@ -187,13 +187,13 @@ angular.module('sphericalApp.MainControllers', [])
                   }
                 });
             } else if (show == 'stories') {
-                ActivityVis.stories = true;
-                ActivityVis.discussions = false;
-                ActivityVis.discussion_edit = false;
-                ActivityVis.discussions_active = false;
-                ActivityVis.stories_active = true;
-                ActivityVis.curators = false;
-                ActivityVis.participants = false;
+                // ActivityVis.stories = true;
+                // ActivityVis.discussions = false;
+                // ActivityVis.discussion_edit = false;
+                // ActivityVis.discussions_active = false;
+                // ActivityVis.stories_active = true;
+                // ActivityVis.curators = false;
+                // ActivityVis.participants = false;
                 ActivityVis.activity_window = 'stories';
                 ActivityVis.unshareable = false;
 
@@ -246,6 +246,11 @@ angular.module('sphericalApp.MainControllers', [])
                ActivityVis.curators = true;
                ActivityVis.participants = false;
                ActivityVis.activity_window = 'curators';
+               ActivityVis.unshareable = true;
+               ActivityVis.overlay = null;
+            } else if (show == 'resources') {
+               load_resources($scope.currentTopic.id);
+               ActivityVis.activity_window = 'resources';
                ActivityVis.unshareable = true;
                ActivityVis.overlay = null;
             }
@@ -425,6 +430,9 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.load_profile = function(idx) {
           $scope.thisuser = $scope.spheredata.topics[idx];
         };
+        $scope.load_resource = function(idx) {
+          $scope.thisresource = format_resource_item($scope.resource_items[idx]);
+        };
         $scope.get_item_index = function(items, item_id) {
           return get_item_index(items, item_id);
         };
@@ -556,6 +564,39 @@ angular.module('sphericalApp.MainControllers', [])
           formatted.thumbnail = item[2]['thumb'];
           return formatted;
         },
+        format_resource_items_simple = function(items) {
+            var formatted = [];
+            angular.forEach(items, function(value) {
+                var item = {};
+                item.id = value[0]['_id'];
+                item.description = value[0]['resource_name'];
+                item.elevation = value[1];
+                item.itemtype = 'resource';
+                item.author = value[2]['author_handle'];
+                item.thumbnail = value[2]['thumb'];
+                item.pubdate = value[2]['pubdate'];
+                item.urlscount = value[3]['urlscount'];
+                item.filecount = value[3]['filecount'];
+                formatted.push(item);
+            });
+            return formatted;
+        },
+        format_resource_item = function(item) {
+            if (!angular.isArray(item)) {
+              return;
+            }
+            var formatted = {};
+            formatted.id = item[0]['_id'];
+            formatted.description = item[0]['resource_name'];
+            formatted.elevation = item[1];
+            formatted.itemtype = 'resource';
+            formatted.author = item[2]['author_handle'];
+            formatted.thumbnail = item[2]['thumb'];
+            formatted.pubdate = item[2]['pubdate'];
+            formatted.resource_urls = item[3]['resource_urls'];
+            formatted.resource_files = item[3]['resource_files'];
+            return formatted;
+        },
         get_topic_items = function(topic, is_channel) {
             return TopicItems.get(topic, is_channel).then(function(d) {
                 $scope.topics[topic] = d.items;
@@ -659,6 +700,18 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.spheredata.topics.length = 0;
             $scope.spheredata.topics = data.curators;
             $scope.thisuser = data.curators[0];
+            $timeout(function() {
+              ChooserData.active_slide = 0;
+              $compile(ChooserData.tswiper)($scope);
+            }, 0);
+          });
+        },
+        load_resources = function(ctx) {
+          Resources.get(ctx).then(function(data) {
+            $scope.spheredata.topics.length = 0;
+            $scope.resource_items = data.items;
+            $scope.spheredata.topics = format_resource_items_simple(data.items);
+            $scope.thisresource = format_resource_item(data.items[0]);
             $timeout(function() {
               ChooserData.active_slide = 0;
               $compile(ChooserData.tswiper)($scope);

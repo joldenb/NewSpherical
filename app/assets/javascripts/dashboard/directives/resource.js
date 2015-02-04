@@ -4,6 +4,15 @@
 'use strict';
 
 angular.module('sphericalApp.ResourceDirectives', [])
+.directive('resourceDisplay', ['SPHR_HST', function(SPHR_HST) {
+  return {
+    restrict: 'A',
+    templateUrl: SPHR_HST + "tpls/resource_display.html",
+    link: function(scope, elm, attrs) {
+      jQuery('.resource').perfectScrollbar({suppressScrollX: true});
+    }
+  };
+}])
 .directive('resourceform', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
@@ -32,6 +41,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
     restrict: 'A',
     link: function(scope, elm, attrs) {
       elm.on('blur', function() {
+        scope.resource_fbk = '';
         if (!scope.newresource || !scope.newresource.id) {
           scope.newresource = {};
           scope.newresource.checking = true;
@@ -85,14 +95,17 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
-.directive('saveResource', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+.directive('saveResource', ['$http', '$timeout', 'SPHR_HST', 'ActivityVis', function($http, $timeout, SPHR_HST, ActivityVis) {
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
-        scope.newresource = {};
+        if (!scope.resourceform.resource_id.$modelValue || !scope.resourceform.resource_name.$modelValue) {
+          return;
+        }
         var data = {};
         data.resource_urls = [];
+        data.resource_id = scope.resourceform.resource_id.$modelValue;
         data.resource_ctx = scope.resourceform.resource_ctx.$modelValue;
         data.resource_name = scope.resourceform.resource_name.$modelValue;
         data.resource_urls.push(scope.resourceform.url_1.$modelValue);
@@ -101,15 +114,20 @@ angular.module('sphericalApp.ResourceDirectives', [])
             data.resource_urls.push(v);
           }
         });
-        console.log(data);
-        $http.post(SPHR_HST + 'dashboard/save_new_resource', data)
+        $http.post(SPHR_HST + 'dashboard/save_resource', data)
         .success(function(response) {
           scope.resource_fbk = response.msg;
           if (!response.success) {
             scope.fbk_error = true;
           } else {
             scope.resource_fbk = response.msg;
-            scope.newresource.id = response.rsrc_id;
+            $timeout(function () {
+              scope.newresource = {};
+              scope.resource_fbk = '';
+              scope.fbk_error = false;
+              ActivityVis.overlay = null;
+              scope.activityShow('resources');
+            }, 2000);
           }
         })
         .error(function(response, status) {

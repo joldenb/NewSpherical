@@ -120,25 +120,6 @@ class SphereController < ApplicationController
         "id" => user.id.to_s,
         "pic" => user.profile_image('nopicdrk'),
         "bigpic" => user.profile_image('nopic58')}} and return
-
-
-
-
-        # if current_dashboard_user
-        #     render :json => {"signedin" => {"handle" => current_dashboard_user.handle,
-        #                                     "screenname" => current_dashboard_user.screenname,
-        #                                     "id" => current_dashboard_user.id.to_s,
-        #                                     "pic" => current_dashboard_user.profile_image('nopicdrk'),
-        #                                     "bigpic" => current_dashboard_user.profile_image('nopic58')}}
-        # elsif current_user
-        #   render :json => {"signedin" => {"handle" => current_user.handle,
-        #                                   "screenname" => current_user.screenname,
-        #                                   "id" => current_user.id.to_s,
-        #                                   "pic" => current_user.profile_image('nopicdrk'),
-        #                                   "bigpic" => current_user.profile_image('nopic58')}}
-        # else
-        #     render :json => {"signedin" => false}
-        # end
     end
 
     def signout_submit
@@ -211,6 +192,40 @@ class SphereController < ApplicationController
                       :profile_text => profile_text}
       end
       render(:json => {:curators => curators}) and return
+    end
+
+    def resources
+      if !current_user && !current_dashboard_user
+        render(:nothing => true, :status => 401) and return
+      end
+      ctx = params[:ctx_id].present? ? Context.find(params[:ctx_id].to_s) : Context.find_by(:identifier => "planetwork")
+
+
+
+        @items = ItemAgent.get_items(ctx, :types => ['resource'])
+        @items.each do |item|
+          if author = Entity.find(item[0].submitter)
+            t = item[0].updated_at
+            author_info = {"author_handle" => author.handle, "thumb" => author.profile_image, "pubdate" => t.strftime("%B #{t.day.ordinalize}, %Y")}
+            item << author_info
+          end
+          resource_urls = item[0].resource_urls
+          urlscount = item[0].resource_urls.count
+          resource_files = []
+          item[0].resource_files.each do |rf|
+            resource_files << {:name => rf.filename,
+                              :url => "#{ENV['FULLHOST_NO_SLSH']}#{rf.rfile.url}"}
+          end
+
+          filecount = item[0].resource_files.count
+          resource_info = { "resource_urls" => resource_urls,
+                            "urlscount" => urlscount,
+                            "resource_files" => resource_files,
+                            "filecount" => filecount}
+          item << resource_info
+        end
+        render :resource_items
+
     end
 
     def cloud

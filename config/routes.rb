@@ -24,6 +24,7 @@ Topical::Application.routes.draw do
   get "/sphere/entities(/:ctx_id)" => 'sphere#entities'
   get "/sphere/curators(/:ctx_id)" => 'sphere#curators'
   get  "/sphere/cloud(/:mode)" => 'sphere#cloud'
+  get "/sphere/resources(/:ctx_id)" => 'sphere#resources'
 
   ## defer to angular routes
   get "/sphere(/*anything)" => 'sphere#index'
@@ -37,6 +38,7 @@ Topical::Application.routes.draw do
   post "/dashboard/check_resource_name" => 'dashboard#check_resource_name'
   post "/dashboard/upload_resource_file" => 'dashboard#upload_resource_file'
   post "/dashboard/remove_resource_file" => 'dashboard#remove_resource_file'
+  post "/dashboard/save_resource" => 'dashboard#save_resource'
 
   get "/invite/invitations_form/:group_id" => 'invite#invitations_form'
   get "/invite/invite_with_article_form/:group_id/:article_id" => 'invite#invite_with_article_form'
