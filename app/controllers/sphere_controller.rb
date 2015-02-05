@@ -202,7 +202,7 @@ class SphereController < ApplicationController
 
 
 
-        @items = ItemAgent.get_items(ctx, :types => ['resource'])
+        @items = ItemAgent.get_resource_items(ctx)
         @items.each do |item|
           if author = Entity.find(item[0].submitter)
             t = item[0].updated_at

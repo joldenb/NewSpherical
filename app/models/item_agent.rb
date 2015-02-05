@@ -267,6 +267,25 @@ class ItemAgent
             end.compact
         end
 
+        def get_resource_items(context, options={})
+            page = options[:page] || 1
+            limit = options[:limit] || CarouselPerPage * CarouselInitialPages
+            skipto = (page - 1) * CarouselPerPage
+
+            raise ContextError, "Not a valid context." unless context.kind_of?(Context)
+            items = context.item_contexts.where(:item_type => 'resource').
+              order_by(:context_id => "asc", :elevation => "desc", :sort_order => "desc").
+              skip(skipto).limit(limit)
+            items.map do |s|
+                if s.item_id #this should always exist but once it didn't
+                  if itm = Item.where(:id => s.item_id).
+                    and(:show_in_resources => true).first
+                      [itm, s.elevation]
+                  end
+                end
+            end.compact
+        end
+
         def get_item_page(context, page)
             limit = CarouselPerPage
             skipto = (page - 1) * CarouselPerPage
