@@ -95,7 +95,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
-.directive('saveResource', ['$http', '$timeout', 'SPHR_HST', 'ActivityVis', function($http, $timeout, SPHR_HST, ActivityVis) {
+.directive('saveResource', ['$http', '$timeout', '$compile', 'SPHR_HST', 'ActivityVis', function($http, $timeout, $compile, SPHR_HST, ActivityVis) {
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
@@ -123,9 +123,22 @@ angular.module('sphericalApp.ResourceDirectives', [])
             scope.resource_fbk = response.msg;
             $timeout(function () {
               scope.newresource = {};
+              scope.newresource.id = '';
+              scope.resource_name = '';
+              scope.url_1 = '';
+              angular.forEach(scope.resourceform, function(v,k) {
+                if (/^url_[\d]?$/.test(k) && k != 'url_1') {
+                  scope.urlinc = 1;
+                  scope.resourceform[k] = '';
+                  jQuery('#' + k).remove();
+                  jQuery('.anotherurl').first().css({opacity: 1});
+                }
+              });
+              jQuery('.resource_list').html('');
               scope.resource_fbk = '';
               scope.fbk_error = false;
               ActivityVis.overlay = null;
+              scope.resourceform.$setPristine();
               scope.activityShow('resources');
             }, 2000);
           }
@@ -149,7 +162,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
         // if (scope.urlinc < 15) {
           var incr = scope.urlinc + 1;
           var container = elm.parent(),
-          tpl = angular.element('<p class="url_input"><span class="anotherurl" another-url>&nbsp;</span>\n<input type="text" placeholder="URL" name="url_' + incr + '" ng-model="resourceform.url_' + incr + '" is-focussed /></p>');
+          tpl = angular.element('<p class="url_input" id="url_' + incr + '"><span class="anotherurl" another-url>&nbsp;</span>\n<input type="text" placeholder="URL" name="url_' + incr + '" ng-model="resourceform.url_' + incr + '" is-focussed /></p>');
           $compile(tpl)(scope);
           scope.urlinc = incr;
           container.after(tpl);
