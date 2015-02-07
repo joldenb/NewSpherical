@@ -635,7 +635,8 @@ angular.module('sphericalApp.MainControllers', [])
         restore_topic_list = function() {
             $scope.$apply(function() {
                 $scope.spheredata.topics.length = 0;
-                var related_topics = angular.copy($scope.main_topics);
+                var related_topics = [];
+                related_topics = angular.copy($scope.main_topics);
                 related_topics.shift();
                 // angular.forEach(related_topics, function(topic) {
                 //     $scope.spheredata.topics.push(topic);
