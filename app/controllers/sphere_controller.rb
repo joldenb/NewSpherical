@@ -210,7 +210,7 @@ class SphereController < ApplicationController
             item << author_info
           end
           resource_urls = item[0].resource_urls
-          urlscount = item[0].resource_urls.count
+          urlscount = item[0].resource_urls ? item[0].resource_urls.count : 0
           resource_files = []
           item[0].resource_files.each do |rf|
             resource_files << {:name => rf.filename,
