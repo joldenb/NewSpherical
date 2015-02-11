@@ -647,7 +647,8 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.topicItems.length = 0;
                 $scope.currentTopic = $scope.spheredata.topics[0];
                 $scope.currentTopicIdx = -1;
-                get_topic_items($scope.spheredata.topics[0].id).then(function() {
+                get_topic_items($scope.spheredata.topics[0].id, true).then(function() {
+                    $scope.topicItems.length = 0;
                     $scope.topicItems = $scope.topics[$scope.currentTopic.id];
                     $scope.currentStory = null;
                 });
