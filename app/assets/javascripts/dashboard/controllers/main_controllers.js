@@ -340,27 +340,29 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.restore_topic_list = function() {
             restore_topic_list();
             $scope.visible.shareitem = false;
-            $scope.$apply(function() {
-                $scope.topicIndicatorVisible = false;
-                ActivityVis.noslides = false;
-                ActivityVis.stories = true;
-                ActivityVis.discussions = false;
-                ActivityVis.discussion_edit = false;
-                ActivityVis.activity_window = 'stories';
-                $scope.channelActive = false;
-                ActivityVis.overlay = null;
+            $timeout(function () {
+              $scope.$apply(function() {
+                  $scope.topicIndicatorVisible = false;
+                  ActivityVis.noslides = false;
+                  ActivityVis.stories = true;
+                  ActivityVis.discussions = false;
+                  ActivityVis.discussion_edit = false;
+                  ActivityVis.activity_window = 'stories';
+                  $scope.channelActive = false;
+                  ActivityVis.overlay = null;
 
-                ActivityVis.show_drag_target = false;
-                ActivityVis.swipe_enable = true;
-                ChooserData.thispost_disabled = false;
-                ChooserData.active_slide = 0;
-                $compile(ChooserData.tswiper)($scope);
-            });
-            // $scope.topicSwiper is instantiated by the swiperReady directive
-            $scope.topicSwiper.init();
-            $state.go(
-                'sphere'
-            );
+                  ActivityVis.show_drag_target = false;
+                  ActivityVis.swipe_enable = true;
+                  ChooserData.thispost_disabled = false;
+                  ChooserData.active_slide = 0;
+                  $compile(ChooserData.tswiper)($scope);
+              });
+              // $scope.topicSwiper is instantiated by the swiperReady directive
+              $scope.topicSwiper.init();
+              $state.go(
+                  'sphere'
+              );
+            }, 0);
         };
         $scope.adjacent_topic = function(adjacent_topic_index) {
             $scope.visible.shareitem = false;
