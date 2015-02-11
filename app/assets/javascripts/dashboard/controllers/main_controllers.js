@@ -362,7 +362,7 @@ angular.module('sphericalApp.MainControllers', [])
               $state.go(
                   'sphere'
               );
-            }, 0);
+            }, 100);
         };
         $scope.adjacent_topic = function(adjacent_topic_index) {
             $scope.visible.shareitem = false;
