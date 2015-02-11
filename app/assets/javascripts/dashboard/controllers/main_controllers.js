@@ -638,17 +638,17 @@ angular.module('sphericalApp.MainControllers', [])
             $scope.$apply(function() {
                 $scope.spheredata.topics.length = 0;
                 var related_topics = [];
-                related_topics = angular.copy($scope.main_topics);
-                related_topics.shift();
+                angular.copy($scope.main_topics, $scope.spheredata.topics);
+                //related_topics.shift();
                 // angular.forEach(related_topics, function(topic) {
                 //     $scope.spheredata.topics.push(topic);
                 // });
-                $scope.spheredata.topics = related_topics;
+                //$scope.spheredata.topics = related_topics;
+                $scope.spheredata.topics.shift();
                 $scope.topicItems.length = 0;
                 $scope.currentTopic = $scope.spheredata.topics[0];
                 $scope.currentTopicIdx = -1;
-                get_topic_items($scope.spheredata.topics[0].id, true).then(function() {
-                    $scope.topicItems.length = 0;
+                get_topic_items($scope.spheredata.topics[0].id).then(function() {
                     $scope.topicItems = $scope.topics[$scope.currentTopic.id];
                     $scope.currentStory = null;
                 });
