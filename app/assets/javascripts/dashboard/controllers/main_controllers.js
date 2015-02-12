@@ -49,6 +49,7 @@ angular.module('sphericalApp.MainControllers', [])
             angular.forEach(topics, function(topic, idx) {
                 $scope.main_topics.push(topic);
             });
+            console.log('mt: ' + $scope.main_topics.length);
             return topics;
         }).then(function(topics) {
             if ($state.params.topic) {
@@ -637,7 +638,7 @@ angular.module('sphericalApp.MainControllers', [])
         restore_topic_list = function() {
             $scope.$apply(function() {
                 $scope.spheredata.topics.length = 0;
-                var related_topics = [];
+                $scope.spheredata.topics = [];
                 angular.copy($scope.main_topics, $scope.spheredata.topics);
                 //related_topics.shift();
                 // angular.forEach(related_topics, function(topic) {
