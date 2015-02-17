@@ -214,7 +214,9 @@ class SphereController < ApplicationController
           resource_files = []
           item[0].resource_files.each do |rf|
             resource_files << {:name => rf.filename,
-                              :url => "#{ENV['FULLHOST_NO_SLSH']}#{rf.rfile.url}"}
+                                :fileid => rf.id.to_s,
+                                :rsrc => rf.item_id.to_s,
+                                :url => "#{ENV['FULLHOST_NO_SLSH']}#{rf.rfile.url}"}
           end
 
           filecount = item[0].resource_files.count

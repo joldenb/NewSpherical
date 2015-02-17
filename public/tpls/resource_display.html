@@ -1,5 +1,6 @@
 <div class="resource">
-  <h3>{{thisresource.description}}</h3>
+  <h3>{{thisresource.resource_name}}</h3>
+  <div class="headline">{{thisresource.headline}}</div>
   <div class="filelist">
     <h4>Downloads</h4>
     <ul>
@@ -13,4 +14,5 @@
     </ul>
   </div>
 
+  <div class="edit_btn" edit-resource ng-show="visible.signedin.id == thisresource.author_id">Edit</div>
 </div>

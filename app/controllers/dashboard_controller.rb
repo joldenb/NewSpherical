@@ -180,6 +180,14 @@ class DashboardController < ApplicationController
       end
     end
 
+    def delete_resource
+      if ItemAgent.destroy_item(params[:resourceid])
+        render :json => {"success" => true} and return
+      else
+        render :json => {"success" => false} and return
+      end
+    end
+
     def check_resource_name
       if current_user
         user = current_user
@@ -266,6 +274,7 @@ class DashboardController < ApplicationController
           end
           oid = resource.oid
           name = f.sanitize(params[:resource_name])
+          resource_description = f.sanitize(params[:resource_description])
           if params[:resource_urls].present?
             urls = params[:resource_urls].map do |url|
               f.sanitize(url) if url.present?
@@ -277,6 +286,7 @@ class DashboardController < ApplicationController
             rsrc = ItemAgent.new(params[:resource_ctx], {
               :oid => oid,
               :resource_name => name,
+              :headline => resource_description,
               :resource_urls => urls,
               :show_in_resources => true
               }).create_or_update_resource_item

@@ -39,6 +39,7 @@ Topical::Application.routes.draw do
   post "/dashboard/upload_resource_file" => 'dashboard#upload_resource_file'
   post "/dashboard/remove_resource_file" => 'dashboard#remove_resource_file'
   post "/dashboard/save_resource" => 'dashboard#save_resource'
+  post "/dashboard/delete_resource" => 'dashboard#delete_resource'
 
   get "/invite/invitations_form/:group_id" => 'invite#invitations_form'
   get "/invite/invite_with_article_form/:group_id/:article_id" => 'invite#invite_with_article_form'

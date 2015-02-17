@@ -938,7 +938,7 @@
                   }
                 }
                 h3 {
-                    font-size: .95em;
+                    font-size: 1.05em;
                     font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     text-transform: uppercase;
                     color: #fff;
@@ -950,11 +950,11 @@
                     cursor: pointer;
                     &.active {
                       color: #0080c9;
-                      background: transparent image-url('activearrow.png') no-repeat -5px 2px;
+                      /* background: transparent image-url('activearrow.png') no-repeat -5px 2px; */
                     }
                 }
                 h4 {
-                    font-size: .95em;
+                    font-size: 1.05em;
                     font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
                     text-transform: none;
                     margin: auto;
@@ -967,7 +967,7 @@
                     cursor: pointer;
                     &.active {
                         color: #0080c9;
-                        background: transparent image-url('activearrow.png') no-repeat -5px 2px;
+                        /* background: transparent image-url('activearrow.png') no-repeat -5px 2px; */
                     }
                     &.inactive {
                       opacity: 0.2;
@@ -991,9 +991,9 @@
                     position: absolute;
                     width: 63px;
                     top: 5px;
-                    right: 5px;
+                    right: 11px;
                     font: .9em 'open_sanslight', 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
-                    background: transparent url(/assets/close-x.png) no-repeat 35px 0px;
+                    background: transparent url(/assets/close-x.png) no-repeat 37px 0px;
                     line-height: 1.65em;
                     cursor: pointer;
                   }
@@ -1211,12 +1211,21 @@
               width: 812px;
               height: 418px;
               padding: 15px;
+              .headline {
+                text-align: center;
+                font-size: .9em;
+                color: #ddd;
+                height: 40px;
+                width: 600px;
+                margin: 0 auto;
+                overflow: hidden;
+              }
               .filelist {
                 position: absolute;
                 left: 50px;
-                top: 60px;
+                top: 90px;
                 width: 310px;
-                min-height: 330px;
+                min-height: 300px;
                 background: #333;
                 padding: 10px 20px;
                 a {
@@ -1234,9 +1243,9 @@
               .urllist {
                 position: absolute;
                 right: 50px;
-                top: 60px;
+                top: 90px;
                 width: 310px;
-                min-height: 330px;
+                min-height: 300px;
                 background: #333;
                 padding: 10px 20px;
                 a {
@@ -1250,6 +1259,20 @@
                       text-decoration: underline;
                     }
                 }
+              }
+              .edit_btn {
+                position: absolute;
+                height: 18px;
+                font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                cursor: pointer;
+                padding: 7px 35px 2px 0;
+                line-height: 1.1em;
+                color: #fff;
+                text-align: right;
+                width: 50px;
+                top: 10px;
+                right: 0px;
+                background: transparent image-url('edit-icon.png') no-repeat 56px 2px;
               }
               p {
                 position: relative;
@@ -1365,26 +1388,31 @@
                   padding: 7px 35px 2px 0;
                   line-height: 1.1em;
                   color: #fff;
-                  text-align: center;
+                  text-align: right;
                   width: 50px;
-                  border: 1px solid #888;
-                  @include border-radius(16px);
                   &.edit {
-                    bottom: 20px;
-                    left: 10px;
-                    background: transparent image-url('edit-icon.png') no-repeat 53px 3px;
+                    top: 20px;
+                    right: 7px;
+                    background: transparent image-url('edit-icon.png') no-repeat 56px 2px;
+                  }
+                  &.delete {
+                    top: 100px;
+                    right: 7px;
+                    background: transparent image-url('bigtrash.png') no-repeat 60px 2px;
                   }
                   &.save {
-                    top: 5px;
-                    left: 10px;
-                    background: transparent image-url('save-icon.png') no-repeat 53px 3px;
+                    top: 50px;
+                    right: 6px;
+                    background: transparent url(/assets/save-icon.png) no-repeat 58px 2px;
+                    text-align: right;
+                    margin-right: 2px;
                     .resource_feedback {
                       color: #8dc63e;
                       position: absolute;
-                      width: 250px;
-                      text-align: left;
-                      top: 6px;
-                      left: 100px;
+                      width: 125px;
+                      text-align: right;
+                      top: 30px;
+                      right: 5px;
                       &.fbk_error {
                         color: #d00;
                       }
@@ -1412,6 +1440,10 @@
                     &.drop-hover {
                       background-color: #069;
                     }
+                  }
+                  .resource_description {
+                    font: .95em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    margin: 0 0 0 115px;
                   }
                   .spinner {
                     position: absolute;
@@ -1441,7 +1473,7 @@
                   color: #777;
                   text-shadow: none;
                   font: .95em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
-                  margin-left: 115px;
+                  margin-left: 110px;
                   .upload-preview {
                     position: absolute;
                     top: 55px;

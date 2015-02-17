@@ -15,6 +15,10 @@
         <span class="error" ng-show="resourceform.resource_name.$dirty && resourceform.resource_name.$error.unique_rname && !_focussed.resource_name && !newresource.checking">already in use</span>
       </p>
       <p class="rnamecaption" ng-show="!newresource || !newresource.id">After naming your new resource, you'll be able to upload files to it.</p>
+
+      <p>
+        <textarea name="resource_description" class="resource_description" ng-model="resource_description" cols="30" rows="3" placeholder="Optional brief description of this resource" ng-show="newresource && newresource.id"></textarea>
+      </p>
     </fieldset>
 
     <fieldset class="offset">
@@ -38,5 +42,6 @@
   </form>
 
   <div class="menu_item save" hover-highlight save-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Save<span class="resource_feedback" ng-class="{fbk_error: fbk_error}">{{resource_fbk}}</span></div>
-  <div class="closebox" share-close-box>Close</div>
+  <div class="menu_item delete" hover-highlight delete-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Delete</div>
+  <div class="closebox" resource-close-box>Close</div>
 </div>

@@ -590,10 +590,12 @@ angular.module('sphericalApp.MainControllers', [])
             }
             var formatted = {};
             formatted.id = item[0]['_id'];
-            formatted.description = item[0]['resource_name'];
+            formatted.resource_name = item[0]['resource_name'];
+            formatted.headline = item[0]['headline'];
             formatted.elevation = item[1];
             formatted.itemtype = 'resource';
             formatted.author = item[2]['author_handle'];
+            formatted.author_id = item[0]['submitter'];
             formatted.thumbnail = item[2]['thumb'];
             formatted.pubdate = item[2]['pubdate'];
             formatted.resource_urls = item[3]['resource_urls'];
@@ -640,11 +642,6 @@ angular.module('sphericalApp.MainControllers', [])
                 $scope.spheredata.topics.length = 0;
                 $scope.spheredata.topics = [];
                 angular.copy($scope.main_topics, $scope.spheredata.topics);
-                //related_topics.shift();
-                // angular.forEach(related_topics, function(topic) {
-                //     $scope.spheredata.topics.push(topic);
-                // });
-                //$scope.spheredata.topics = related_topics;
                 $scope.spheredata.topics.shift();
                 $scope.topicItems.length = 0;
                 $scope.currentTopic = $scope.spheredata.topics[0];

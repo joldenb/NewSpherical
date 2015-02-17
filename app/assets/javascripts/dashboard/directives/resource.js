@@ -23,14 +23,73 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
+.directive('editResource', ['$compile', 'ActivityVis', function($compile, ActivityVis) {
+  return {
+    restrict: 'A',
+    controller: "ActivityCtrl",
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        scope.newresource = {};
+        scope.newresource.id = scope.thisresource.id;
+        scope.resource_name = scope.thisresource.resource_name;
+        scope.resource_description = scope.thisresource.headline;
+        //scope.url_1 = scope.thisresource.resource_urls.shift();
+        var urlcount = 1,
+        container = jQuery('.url_input'),
+        urls = angular.copy(scope.thisresource.resource_urls);
+        if (urls && urls.length > 0) {
+          scope.url_1 = urls.shift();
+        }
+        angular.forEach(urls, function(url) {
+          urlcount++;
+          var tpl = angular.element('<p class="url_input" id="url_' + urlcount + '"><span class="anotherurl" another-url>&nbsp;</span>\n<input type="text" placeholder="URL" name="url_' + urlcount + '" ng-model="resourceform.url_' + urlcount + '" is-focussed ng-init="resourceform.url_' + urlcount + ' = \'' + url + '\'" /></p>');
+          $compile(tpl)(scope);
+          container.after(tpl);
+          container = tpl;
+          scope.urlinc = urlcount;
+        });
+        jQuery('.anotherurl').css({opacity: 0});
+        jQuery('.anotherurl').last().css({opacity: 1});
+        scope.resourceform.resource_name.$dirty = true;
+        var _rlist = jQuery('.resource_list');
+        _rlist.html('');
+        angular.forEach(scope.thisresource.resource_files, function(item) {
+          _rlist.append('<p><span>&nbsp;</span>' + item.name + '<span class="trshcan"  fileid="' + item.fileid + '" rsrc="' + item.rsrc +'" rfile-delete>&nbsp;</span></p>');
+        });
+        $compile(_rlist)(scope);
+        scope.$apply(function() {
+          ActivityVis.overlay = 'resource_edit';
+          ActivityVis.new_edit_resource = 'Edit';
+        });
+      });
+    }
+  };
+}])
 .directive('resourceCloseBox', ['ActivityVis', function(ActivityVis) {
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
         scope.$apply(function() {
-          jQuery('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
+          scope.newresource = {};
+          scope.newresource.id = '';
+          scope.resource_name = '';
+          scope.resource_description = '';
+          scope.urlinc = 1;
+          scope.url_1 = '';
+          angular.forEach(scope.resourceform, function(v,k) {
+            if (/^url_[\d]?$/.test(k) && k != 'url_1') {
+              scope.resourceform[k] = '';
+              jQuery('#' + k).remove();
+            }
+          });
+          jQuery('.anotherurl').first().css({opacity: 1});
+          jQuery('.resource_list').html('');
+          scope.resource_fbk = '';
+          scope.fbk_error = false;
           ActivityVis.overlay = null;
+          scope.resourceform.$setPristine();
+          scope.activityShow('resources');
         });
       });
     }
@@ -95,6 +154,41 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
+.directive('deleteResource', ['$http', 'SPHR_HST', 'ActivityVis', function($http, SPHR_HST, ActivityVis) {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        var resourceid = scope.resourceform.resource_id.$modelValue,
+        data = {resourceid: resourceid};
+        $http.post(SPHR_HST + 'dashboard/delete_resource', data)
+        .success(function(response) {
+          if (response.success) {
+            scope.newresource = {};
+            scope.newresource.id = '';
+            scope.resource_name = '';
+            scope.resource_description = '';
+            scope.urlinc = 1;
+            scope.url_1 = '';
+            angular.forEach(scope.resourceform, function(v,k) {
+              if (/^url_[\d]?$/.test(k) && k != 'url_1') {
+                scope.resourceform[k] = '';
+                jQuery('#' + k).remove();
+              }
+            });
+            jQuery('.anotherurl').first().css({opacity: 1});
+            jQuery('.resource_list').html('');
+            scope.resource_fbk = '';
+            scope.fbk_error = false;
+            ActivityVis.overlay = null;
+            scope.resourceform.$setPristine();
+            scope.activityShow('resources');
+          }
+        });
+      });
+    }
+  };
+}])
 .directive('saveResource', ['$http', '$timeout', '$compile', 'SPHR_HST', 'ActivityVis', function($http, $timeout, $compile, SPHR_HST, ActivityVis) {
   return {
     restrict: 'A',
@@ -108,6 +202,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
         data.resource_id = scope.resourceform.resource_id.$modelValue;
         data.resource_ctx = scope.resourceform.resource_ctx.$modelValue;
         data.resource_name = scope.resourceform.resource_name.$modelValue;
+        data.resource_description = scope.resourceform.resource_description.$modelValue;
         data.resource_urls.push(scope.resourceform.url_1.$modelValue);
         angular.forEach(scope.resourceform, function(v,k) {
           if (/^url_[\d]?$/.test(k) && k != 'url_1') {
@@ -125,6 +220,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
               scope.newresource = {};
               scope.newresource.id = '';
               scope.resource_name = '';
+              scope.resource_description = '';
               scope.url_1 = '';
               angular.forEach(scope.resourceform, function(v,k) {
                 if (/^url_[\d]?$/.test(k) && k != 'url_1') {
