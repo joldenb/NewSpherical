@@ -1,0 +1,8 @@
+<div class="story_content">
+    <div class="item_img" ng-show="activestory.pic != '#'">
+        <img ng-src="{{activestory.pic}}" brkn-img />
+    </div>
+    <h3>{{activestory.description}}</h3>
+    <p class="item_date">{{activestory.created_at | date:"MMMM d, yyyy"}}<span class="article_uri"><a href="{{activestory.article_uri}}" target="_blank">Original Article</a></span></p>
+    <p btf-markdown="activestory.text"></p>
+</div>

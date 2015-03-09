@@ -13,23 +13,125 @@ angular.module('sphericalApp.MainServices', [])
         );
         return sphereInfo;
     }])
-    .service('TopicItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+    // .service('TopicItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+    //     this.get = function(topic, is_channel, page) {
+    //       return $http.get(SPHR_HST + 'dashboard/topic_items/' + topic, {
+    //         params: {is_channel: is_channel, page: page}
+    //       }).then(function(response) {
+    //         return response.data;
+    //       });
+    //     };
+    // }])
+    .service('FormattedStoryItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.get = function(topic, is_channel, page) {
-          return $http.get(SPHR_HST + 'dashboard/topic_items/' + topic, {
+          // topic is a context id
+          return $http.get(SPHR_HST + 'dashboard/story_items/' + topic, {
             params: {is_channel: is_channel, page: page}
           }).then(function(response) {
-            return response.data;
+            var formatted = [];
+            angular.forEach(response.data.items, function(value) {
+                var item = {};
+                item.id = value[0]._id;
+                if (value[0].image_src) {
+                  item.pic = value[0].image_src;
+                } else {
+                  item.pic = '#';
+                }
+                item.description = value[0].headline;
+                item.article_uri = value[0].article_uri;
+                item.created_at = value[0].created_at;
+                item.text = value[0].text;
+                item.elevation = value[1];
+                item.itemtype = 'story';
+                formatted.push(item);
+            });
+            return formatted;
           });
         };
     }])
-    .service('DiscussionItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+    // .service('DiscussionItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+    //     this.get = function(topic, page) {
+    //       return $http.get(SPHR_HST + 'dashboard/discussion_items/' + topic, {
+    //         params: {page: page}
+    //       }).then(function(response) {
+    //         return response.data;
+    //       });
+    //     };
+    // }])
+    .service('FormattedDiscussionItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.get = function(topic, page) {
           return $http.get(SPHR_HST + 'dashboard/discussion_items/' + topic, {
             params: {page: page}
           }).then(function(response) {
-            return response.data;
+            var formatted = [];
+            angular.forEach(response.data.items, function(value) {
+              var item = {};
+              item.id = value[0]._id;
+              item.description = value[0].headline;
+              item.text = value[0].text;
+              item.oid = value[0].oid;
+              item.citations = value[3];
+              item.pubdate = value[2].pubdate;
+              item.elevation = value[1];
+              item.itemtype = 'discussion';
+              item.author = value[2].author_handle;
+              item.author_id = value[0].submitter;
+              item.thumbnail = value[2].thumb;
+              formatted.push(item);
+            });
+            return formatted;
           });
         };
+    }])
+    .service('FormattedRelatedSpheres', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
+        this.get = function(sphere) {
+          return $http.get(SPHR_HST + 'dashboard/related_spheres/' + sphere)
+          .then(function(response) {
+            var formatted = [];
+            angular.forEach(response.data.related, function(value) {
+                var item = {};
+                item.id = value.id;
+                if (value.pic) {
+                  item.pic = value.pic;
+                } else {
+                  item.pic = '#';
+                }
+                item.description = value.name;
+                item.ctxname = value.name;
+                item.itemtype = value.itemtype;
+                formatted.push(item);
+            });
+            return formatted;
+          });
+        };
+    }])
+    .service('FormattedResources', ['$http', 'SPHR_HST', function($http, SPHR_HST ) {
+      this.get = function(ctx) {
+         var uri = SPHR_HST + 'sphere/resources';
+         if (ctx) {
+           uri = uri + '/' + ctx;
+         }
+         return $http.get(uri)
+         .then(function(response) {
+           var formatted = [];
+           angular.forEach(response.data.items, function(value) {
+             var item = {};
+             item.id = value[0]['_id'];
+             item.resource_name = value[0]['resource_name'];
+             item.headline = value[0]['headline'];
+             item.elevation = value[1];
+             item.itemtype = 'resource';
+             item.author = value[2]['author_handle'];
+             item.author_id = value[0]['submitter'];
+             item.thumbnail = value[2]['thumb'];
+             item.pubdate = value[2]['pubdate'];
+             item.resource_urls = value[3]['resource_urls'];
+             item.resource_files = value[3]['resource_files'];
+             formatted.push(item);
+           });
+           return formatted;
+         });
+      };
     }])
     .service('SigninVerify', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.get = function(token) {
@@ -87,18 +189,18 @@ angular.module('sphericalApp.MainServices', [])
          });
       };
     }])
-    .service('Resources', ['$http', 'SPHR_HST', function($http, SPHR_HST ) {
-      this.get = function(ctx) {
-         var uri = SPHR_HST + 'sphere/resources';
-         if (ctx) {
-           uri = uri + '/' + ctx;
-         }
-         return $http.get(uri)
-         .then(function(response) {
-           return response.data;
-         });
-      };
-    }])
+    // .service('Resources', ['$http', 'SPHR_HST', function($http, SPHR_HST ) {
+    //   this.get = function(ctx) {
+    //      var uri = SPHR_HST + 'sphere/resources';
+    //      if (ctx) {
+    //        uri = uri + '/' + ctx;
+    //      }
+    //      return $http.get(uri)
+    //      .then(function(response) {
+    //        return response.data;
+    //      });
+    //   };
+    // }])
     .factory('authInterceptor', ['$rootScope', '$q', '$window', function ($rootScope, $q, $window) {
       return {
         request: function (config) {

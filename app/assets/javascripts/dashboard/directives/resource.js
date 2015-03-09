@@ -16,7 +16,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
 .directive('resourceform', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
-    controller: "ActivityCtrl",
+    // controller: "ActivityCtrl",
     templateUrl: SPHR_HST + "tpls/resource_form.html",
     link: function(scope, elm, attrs) {
       jQuery('.resource_form').perfectScrollbar({suppressScrollX: true});
@@ -26,7 +26,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
 .directive('editResource', ['$compile', 'ActivityVis', function($compile, ActivityVis) {
   return {
     restrict: 'A',
-    controller: "ActivityCtrl",
+    // controller: "ActivityCtrl",
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
         scope.newresource = {};

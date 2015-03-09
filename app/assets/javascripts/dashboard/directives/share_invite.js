@@ -7,7 +7,7 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
 .directive('shareform', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
-    controller: "ActivityCtrl",
+    // controller: "ActivityCtrl",
     templateUrl: SPHR_HST + "tpls/share_form.html"
   };
 }])

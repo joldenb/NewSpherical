@@ -1,20 +1,20 @@
-<div class="post">
+<div class="post" ng-show="chooser.state.currentDiscussion">
     <div class="post_banner">
-        <div class="edit_btn" hover-highlight edit-post ng-show="visible.signedin.id == currentDiscussion.author_id">Edit</div>
+        <div class="edit_btn" hover-highlight edit-post ng-show="visible.signedin.id == chooser.state.currentDiscussion.author_id">Edit</div>
         <h3>Post</h3>
     </div>
-    <h3>{{currentDiscussion.description}}</h3>
+    <h3>{{chooser.state.currentDiscussion.description}}</h3>
     <div class="citations">
-        <div class="cite" ng-repeat="cite in currentDiscussion.citations">
+        <div class="cite" ng-repeat="cite in chooser.state.currentDiscussion.citations">
             <div class="swiper-entity">
                 <img src="{{cite.pic}}" brkn-img />
                 <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description}}</h4></a>
             </div>
         </div>
     </div>
-    <p ng-bind-html="currentDiscussion.text"></p>
+    <p ng-bind-html="chooser.state.currentDiscussion.text"></p>
 </div>
-<div class="forum">
+<div class="forum" ng-show="chooser.state.currentDiscussion">
     <div class="forum_banner">
         <h3>Discussion</h3>
         <div class="forum_posting">
@@ -43,4 +43,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="noitem" ng-show="!chooser.state.currentDiscussion">
+  <h3>No discussions yet in {{chooser.state.currentTopic}}.</h3>
 </div>

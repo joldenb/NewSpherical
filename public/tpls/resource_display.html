@@ -1,18 +1,22 @@
-<div class="resource">
-  <h3>{{thisresource.resource_name}}</h3>
-  <div class="headline">{{thisresource.headline}}</div>
+<div class="resource" ng-show="chooser.state.currentResource">
+  <h3>{{chooser.state.activeResource.resource_name}}</h3>
+  <div class="headline">{{chooser.state.activeResource.headline}}</div>
   <div class="filelist">
     <h4>Downloads</h4>
     <ul>
-      <li ng-repeat="file in thisresource.resource_files"><a ng-href="{{file.url}}" target="_blank">{{file.name}}</a></li>
+      <li ng-repeat="file in chooser.state.activeResource.resource_files"><a ng-href="{{file.url}}" target="_blank">{{file.name}}</a></li>
     </ul>
   </div>
   <div class="urllist">
     <h4>Links</h4>
     <ul>
-      <li ng-repeat="link in thisresource.resource_urls"><a ng-href="{{link}}" target="_blank">{{link}}</a></li>
+      <li ng-repeat="link in chooser.state.activeResource.resource_urls"><a ng-href="{{link}}" target="_blank">{{link}}</a></li>
     </ul>
   </div>
 
-  <div class="edit_btn" edit-resource ng-show="visible.signedin.id == thisresource.author_id">Edit</div>
+  <div class="edit_btn" edit-resource ng-show="visible.signedin.id == chooser.state.activeResource.author_id">Edit</div>
+</div>
+
+<div class="noitem" ng-show="!chooser.state.currentResource">
+  <h3>No resources yet in {{chooser.state.currentTopic}}.</h3>
 </div>

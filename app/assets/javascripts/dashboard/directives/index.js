@@ -6,8 +6,9 @@ angular.module('sphericalApp.directives', [
     'sphericalApp.ItemSwiperDirectives',
     'sphericalApp.UserControlPanelDirectives',
     'sphericalApp.DiscussionDirectives',
-    'sphericalApp.ControlBarDirectives',
+    'sphericalApp.ActivityMenusDirectives',
     'sphericalApp.ShareInviteDirectives',
     'sphericalApp.EntityDirectives',
-    'sphericalApp.ResourceDirectives'
+    'sphericalApp.ResourceDirectives',
+    'sphericalApp.ActivityDirectives'
 ]);

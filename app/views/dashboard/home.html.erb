@@ -24,7 +24,34 @@
 
 
 <div ng-controller="ActivityCtrl" class="activity_ctrl">
-  <div class="topic-swiper" topic-swiper slidearray="spheredata.topics"></div>
+
+  <ul class="chooser" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-duration="300" rn-carousel-easing="easeOutSine">
+    <li ng-repeat="slide in chooser.items">
+      <div class="slide" chooser-click data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
+
+          <img ng-src="{{slide.pic}}" brkn-img />
+
+          <div class="story" ng-show="slide.itemtype == 'story'">
+            <h4>{{slide.description}}</h4>
+            <div class="elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+          </div>
+
+          <div class="story" ng-show="slide.itemtype == 'discussion'">
+            <h4>{{slide.description}}</h4>
+            <div class="elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+          </div>
+
+          <div class="story" ng-show="slide.itemtype == 'related'">
+            <h4>{{slide.description}}</h4>
+          </div>
+
+          <div class="story" ng-show="slide.itemtype == 'resource'">
+            <h4>{{slide.resource_name}}</h4>
+          </div>
+
+      </div>
+    </li>
+  </ul>
 
   <div class="controls_bar">
     <div class="topic_controls">
@@ -45,24 +72,23 @@
   </div>
 
   <div class="activity_window">
-    <div class="topic_indicator" id="{{currentTopic.id}}">
-      <h3 topic-cntrl-btn btntarget="channel" ng-class="{active: channelActive}">{{spheredata.channelname}}</h4>
+    <div class="topic_indicator">
+      <h3 topic-cntrl-btn btntarget="channel" ng-class="{active: chooser.state.channelActive}">{{spheredata.channelname}}</h4>
 
-      <h4 topic-cntrl-btn btntarget="all" ng-class="{active: !channelActive}" style="margin-bottom: 0;">Related</h4>
+      <h4 topic-cntrl-btn btntarget="related" ng-class="{active: !chooser.state.channelActive}" style="margin-bottom: 0;">Related</h4>
+        <h4 class="indented active" ng-show="!chooser.state.channelActive && chooser.state.relatedActive" style="margin-top: 0;">{{chooser.state.currentTopic}}</h4>
 
-      <h4 class="indented active" ng-show="currentTopicIdx >= 0 && !channelActive" style="margin-top: 0;">{{currentTopic.name}}</h3>
+      <h4 ng-show="chooser.state.topicIndicatorVisible" topic-cntrl-btn btntarget="stories" ng-class="{active: visible.activity_window == 'story'}">Stories</h4>
 
-      <h4 ng-show="currentTopicIdx >= 0 || channelActive" ng-click="activityShow('stories')" ng-class="{active: visible.activity_window == 'stories'}">Stories</h4>
+      <h4 topic-cntrl-btn btntarget="discussions" ng-class="{active: visible.activity_window == 'discussions'}" ng-show="chooser.state.topicIndicatorVisible">Discussions</h4>
 
-      <h4 ng-click="activityShow('discussions')" ng-class="{active: visible.activity_window == 'discussions'}" ng-show="topicIndicatorVisible">Discussions</h4>
+      <h4 topic-cntrl-btn btntarget="resources" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'resources'}">Resources</h4>
 
-      <h4 ng-click="activityShow('resources')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'resources'}">Resources</h4>
+      <h4 ng-click="activityShow('curators')" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
 
-      <h4 ng-click="activityShow('curators')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
+      <h4 ng-click="activityShow('participants')" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
 
-      <h4 ng-click="activityShow('participants')" ng-show="topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
-
-      <div class="newcreate" ng-show="visible.signedin.curator">
+      <div class="newcreate" ng-show="visible.signedin.curator && chooser.state.channelActive">
         <h4 topic-cntrl-btn btntarget="new_discussion">Discussion</h4>
         <h4 topic-cntrl-btn btntarget="new_resource">Resource</h4>
         <h4>Sphere</h4>
@@ -70,14 +96,21 @@
 
     </div>
 
-    <div class="item_display">
-      <div class="item-swiper" ng-show="visible.activity_window == 'stories'" item-swiper itemarray="topicItems"></div>
+    <div class="item_display" ng-class="{inactive: !chooser.state.topicIndicatorVisible}">
+
+      <div class="storywindow" ng-show="visible.activity_window == 'story'" story-display activestory="chooser.state.activeStory"></div>
+
       <div class="discussions" ng-show="visible.activity_window == 'discussions'" discussion-display></div>
+
       <div class="resources" ng-show="visible.activity_window == 'resources'" resource-display></div>
+
       <div class="userprofile" ng-show="visible.activity_window == 'curators' || visible.activity_window == 'participants'" user-profile thisuser="thisuser" currentuser="visible.signedin"></div>
 
-      <div class="new_discussion item-overlay" ng-show="visible.overlay == 'discussion_edit'" discussion-edit currenttopic="currentTopic.id" visible="visible" chooserdata="chooserdata"></div>
+
+      <div class="new_discussion item-overlay" ng-show="visible.overlay == 'discussion_edit'" discussion-edit currenttopic="chooser.state.currentTopicId" visible="visible" chooserdata="chooserdata"></div>
+
       <div class="shareinvite item-overlay" ng-show="visible.overlay == 'shareitem'" shareform></div>
+
       <div class="resource_edit item-overlay" ng-show="visible.overlay == 'resource_edit'" resourceform></div>
     </div>
   </div>
