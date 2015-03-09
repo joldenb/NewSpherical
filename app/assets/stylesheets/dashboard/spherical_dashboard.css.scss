@@ -277,6 +277,7 @@
             -webkit-transform:translate3d(0,0,0);
         }
 
+        /* Chooser carousel styles */
         .chooser {
           height: 89px;
           margin: 2px 0 0;
@@ -308,6 +309,42 @@
                 overflow-wrap: break-word;
                 text-shadow: 1px 1px 1px #000;
               }
+            }
+            .author_data {
+              position: absolute;
+              bottom: 3px;
+              left: 3px;
+              .author {
+                  font-size: .8em;
+                  line-height: 1.2em;
+                  color: #bbb;
+                  position: absolute;
+                  top: 0;
+                  left: 35px;
+                  width: 120px;
+              }
+              .author_img {
+                  width: 30px;
+                  height: 30px;
+                  float: left;
+                  text-align: center;
+                  vertical-align: middle;
+                  border: 1px solid #d4d4d4;
+                  margin-right: 7px;
+                  img {
+                      max-width: 100%;
+                      opacity: 1;
+                  }
+              }
+            }
+            .resource_data {
+              position: absolute;
+              left: 50px;
+              top: 38px;
+              font-size: .8em;
+              line-height: 1.2em;
+              color: #ddd;
+              text-align: left;
             }
           }
         }

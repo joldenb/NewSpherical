@@ -127,6 +127,8 @@ angular.module('sphericalApp.MainServices', [])
              item.pubdate = value[2]['pubdate'];
              item.resource_urls = value[3]['resource_urls'];
              item.resource_files = value[3]['resource_files'];
+             item.urlscount = value[3]['urlscount'];
+             item.filecount = value[3]['filecount'];
              formatted.push(item);
            });
            return formatted;

@@ -1,4 +1,4 @@
-<div class="resource" ng-show="chooser.state.currentResource">
+<div class="resource" ng-show="chooser.state.activeResource">
   <h3>{{chooser.state.activeResource.resource_name}}</h3>
   <div class="headline">{{chooser.state.activeResource.headline}}</div>
   <div class="filelist">
@@ -17,6 +17,6 @@
   <div class="edit_btn" edit-resource ng-show="visible.signedin.id == chooser.state.activeResource.author_id">Edit</div>
 </div>
 
-<div class="noitem" ng-show="!chooser.state.currentResource">
+<div class="noitem" ng-show="!chooser.state.activeResource">
   <h3>No resources yet in {{chooser.state.currentTopic}}.</h3>
 </div>
