@@ -43,6 +43,10 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.spheredata = $scope.spheredata || {};
         $scope.currentTopic = $scope.currentTopic || {};
 
+        $scope.check_signin(function(signedin) {
+          ActivityVis.signedin = signedin;
+        });
+
         // next tick after page load
         $timeout(function () {
           $scope.chooser = {};
@@ -51,9 +55,14 @@ angular.module('sphericalApp.MainControllers', [])
           $scope.chooser.items = $scope.chooser.items || [];
           $scope.chooser.first_item = '';
 
-          $scope.check_signin(function(signedin) {
-            ActivityVis.signedin = signedin;
-          });
+          if (!$scope.spheredata.channelCtxId) {
+            SphereInfo.sphereData.then(function(d) {
+                $scope.spheredata.channelname = d.data.channelname;
+                $scope.spheredata.channelstories = d.data.channelstories;
+                $scope.spheredata.channelCtxId = d.data.channel_ctx_id;
+                $scope.spheredata.related_ids = d.data.related_ids;
+            });
+          }
 
           if ($state.includes('*.topic.**')) {
             $scope.chooser.state.currentTopic = $state.params.topic;
