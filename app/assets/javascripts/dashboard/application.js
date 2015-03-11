@@ -1,6 +1,4 @@
 //= require jquery-ui.min
-//= require jquery.ui.touch-punch.min
-//= require dashboard/jq.swiper-1.3
 //= require angular-1.3.13/angular.min
 //= require angular-1.3.13/angular-sanitize.min
 //= require angular-1.3.13/angular-animate.min
