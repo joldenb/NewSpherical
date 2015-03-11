@@ -7,7 +7,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
-      elm.draggable({ containment: "parent", stack: ".psphere"});
+      //elm.draggable({ containment: "parent", stack: ".psphere"});
     }
   };
 }])
@@ -19,7 +19,7 @@ angular.module('sphericalApp.UserControlPanelDirectives', [])
       },
       link: function(scope, elm, attrs) {
         var close = function() {
-            jQuery('#spherical_dashboard_container').hide({effect: 'blind', easing: 'easeOutCirc', duration: 1000});
+            jQuery('#spherical_dashboard_container').hide();
         },
         signin = function() {
             /* first get a signin token, so that io remembers where to

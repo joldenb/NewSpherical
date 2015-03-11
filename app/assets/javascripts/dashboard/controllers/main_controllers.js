@@ -14,7 +14,7 @@ angular.module('sphericalApp.MainControllers', [])
         });
         if ($state.includes('sphere')) {
             $scope.openDash = true;
-            jQuery('#spherical_dashboard_container').show({effect: 'blind', easing: 'easeOutCirc', duration: 1000});
+            jQuery('#spherical_dashboard_container').show();
         } else {
             $scope.openDash = false;
         }

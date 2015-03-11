@@ -32,7 +32,7 @@ var Spherical = (function(window, undefined) {
                     jQuery('#dashboard_content').html(response);
                     jQuery('#spherical_open').css({color:'#fff'}).on('click', function(e) {
                         e.preventDefault();
-                        jQuery('#spherical_dashboard_container').show('blind', 1000);
+                        jQuery('#spherical_dashboard_container').show();
                         if (!/sphere/.test(window.location.href)) {
                             window.location.href = '/#/sphere';
                         }

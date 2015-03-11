@@ -1,4 +1,4 @@
-//= require jquery-ui.min
+//= require jquery-1.11.0.min
 //= require angular-1.3.13/angular.min
 //= require angular-1.3.13/angular-sanitize.min
 //= require angular-1.3.13/angular-animate.min
