@@ -21,5 +21,5 @@
 //= require draganddrop
 //= require he
 //= require to-markdown
-//= require dropzone.min
+//= require dropzone
 //= require perfect-scrollbar
