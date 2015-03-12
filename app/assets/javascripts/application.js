@@ -1,4 +1,4 @@
-//= require jquery-1.11.0.min
+//= require jquery-1.11.2
 //= require jquery-ui.min
 //= require jquery.ui.touch-punch.min
 //= require angular-1.2.16/angular.min
