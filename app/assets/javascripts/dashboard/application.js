@@ -1,7 +1,7 @@
-//= require angular-1.3.13/angular
-//= require angular-1.3.13/angular-sanitize
-//= require angular-1.3.13/angular-animate
-//= require angular-1.3.13/angular-ui-router
+//= require angular-1.2.16/angular.min
+//= require angular-1.2.16/angular-sanitize.min
+//= require angular-1.2.16/angular-animate.min
+//= require angular-1.2.16/angular-ui-router
 //= require angular-touch
 //= require angular-carousel
 //= require dashboard/websocket/websocket_rails
@@ -21,4 +21,5 @@
 //= require draganddrop
 //= require he
 //= require to-markdown
+//= require dropzone
 //= require perfect-scrollbar
