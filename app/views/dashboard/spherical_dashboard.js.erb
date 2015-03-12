@@ -5,8 +5,8 @@
 var Spherical = (function(window, undefined) {
     var Spherical = {};
     yepnope({
-      //test: window.jQuery && (window.jQuery.fn.jquery.split('.')[0] == 1) && (window.jQuery.fn.jquery.split('.')[1] >= 7),
-      //nope: {'sphericalJQ': '<%= ENV['FULLHOST'] %>jq/jquery-1.11.0.min.js'},
+      test: window.jQuery && (window.jQuery.fn.jquery.split('.')[0] == 1) && (window.jQuery.fn.jquery.split('.')[1] >= 7),
+      nope: {'sphericalJQ': '<%= ENV['FULLHOST'] %>jq/jquery-1.11.0.min.js'},
       load: {
         'sphericalCss': '<%= ENV['FULLHOST'] %>assets/dashboard/application.css',
         'sphericalJs': '<%= ENV['FULLHOST'] %>assets/dashboard/application.js'
