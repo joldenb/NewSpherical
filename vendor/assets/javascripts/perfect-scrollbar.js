@@ -818,28 +818,28 @@
         $scrollbarYRail.remove();
 
         // clean all variables
-        $this =
-        $scrollbarXRail =
-        $scrollbarYRail =
-        $scrollbarX =
-        $scrollbarY =
-        scrollbarXActive =
-        scrollbarYActive =
-        containerWidth =
-        containerHeight =
-        contentWidth =
-        contentHeight =
-        scrollbarXWidth =
-        scrollbarXLeft =
-        scrollbarXBottom =
-        isScrollbarXUsingBottom =
-        scrollbarXTop =
-        scrollbarYHeight =
-        scrollbarYTop =
-        scrollbarYRight =
-        isScrollbarYUsingRight =
-        scrollbarYLeft =
-        isRtl =
+        $this = null;
+        $scrollbarXRail = null;
+        $scrollbarYRail = null;
+        $scrollbarX = null;
+        $scrollbarY = null;
+        scrollbarXActive = null;
+        scrollbarYActive = null;
+        containerWidth = null;
+        containerHeight = null;
+        contentWidth = null;
+        contentHeight = null;
+        scrollbarXWidth = null;
+        scrollbarXLeft = null;
+        scrollbarXBottom = null;
+        isScrollbarXUsingBottom = null;
+        scrollbarXTop = null;
+        scrollbarYHeight = null;
+        scrollbarYTop = null;
+        scrollbarYRight = null;
+        isScrollbarYUsingRight = null;
+        scrollbarYLeft = null;
+        isRtl = null;
         eventClass = null;
       }
 
