@@ -1,7 +1,6 @@
-//= require jquery-1.11.2
-//= require angular-1.3.13/angular.min
-//= require angular-1.3.13/angular-sanitize.min
-//= require angular-1.3.13/angular-animate.min
+//= require angular-1.3.13/angular
+//= require angular-1.3.13/angular-sanitize
+//= require angular-1.3.13/angular-animate
 //= require angular-1.3.13/angular-ui-router
 //= require angular-touch
 //= require angular-carousel

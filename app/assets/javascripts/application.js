@@ -1,9 +1,9 @@
 //= require jquery-1.11.2
 //= require jquery-ui.min
 //= require jquery.ui.touch-punch.min
-//= require angular-1.2.16/angular.min
-//= require angular-1.2.16/angular-sanitize.min
-//= require angular-1.2.16/angular-animate.min
+//= require angular-1.2.16/angular
+//= require angular-1.2.16/angular-sanitize
+//= require angular-1.2.16/angular-animate
 //= require angular-1.2.16/angular-ui-router
 //= require app
 //= require filters
