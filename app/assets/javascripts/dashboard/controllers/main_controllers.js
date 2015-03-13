@@ -72,7 +72,11 @@ angular.module('sphericalApp.MainControllers', [])
               $scope.chooser.state.relatedActive = false;
             } else {
               $scope.chooser.state.currentTopic = $state.params.topic;
-              $scope.chooser.state.currentTopicId = $scope.spheredata.related_ids[$state.params.topic];
+              try {
+                $scope.chooser.state.currentTopicId = $scope.spheredata.related_ids[$state.params.topic];
+              } catch (e) {
+                //we'll deal with it later
+              }
               $scope.chooser.state.channelActive = false;
               $scope.chooser.state.relatedActive = true;
             }
