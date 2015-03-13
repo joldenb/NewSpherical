@@ -22,4 +22,3 @@
 //= require he
 //= require to-markdown
 //= require dropzone
-//= require angular-uuid4

@@ -24,7 +24,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         templateUrl: SPHR_HST + "tpls/discussion_display.html"
     };
 }])
-.directive('discussionEdit', ['SPHR_HST', 'uuid4', 'ActivityVis', 'ChooserData', function(SPHR_HST, uuid4, ActivityVis, ChooserData) {
+.directive('discussionEdit', ['SPHR_HST', 'ActivityVis', 'ChooserData', function(SPHR_HST, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
         scope: {
@@ -110,7 +110,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         }
     };
 }])
-.directive('saveThispost', ['$http', '$timeout', 'uuid4', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, $timeout, uuid4,  SPHR_HST, ActivityVis, ChooserData) {
+.directive('saveThispost', ['$http', '$timeout', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, $timeout, SPHR_HST, ActivityVis, ChooserData) {
     return {
         restrict: 'A',
         link: function(scope, elm, attrs) {
@@ -125,7 +125,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
                         return cite.id;
                     });
                     data.topic = scope.currenttopic;
-                    data.oid = ChooserData.thispostdata.oid || uuid4.generate();
+                    //data.oid = ChooserData.thispostdata.oid || uuid4.generate();
                     data.post_id = ChooserData.thispostdata.id;
                     $http.post(SPHR_HST + "forum_persistence/save_conversation_post", angular.toJson(data))
                     .success(
@@ -151,7 +151,7 @@ angular.module('sphericalApp.DiscussionDirectives', [])
         }
     };
 }])
-.directive('editPost', ['$http', '$timeout', 'uuid4', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, $timeout, uuid4,  SPHR_HST, ActivityVis, ChooserData) {
+.directive('editPost', ['$http', '$timeout', 'SPHR_HST', 'ActivityVis', 'ChooserData', function($http, $timeout, SPHR_HST, ActivityVis, ChooserData) {
   return {
     restrict: 'A',
     link: function (scope, elm, attrs) {
