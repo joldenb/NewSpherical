@@ -10,11 +10,6 @@
 //= require dashboard/websocket/http_connection
 //= require dashboard/websocket/websocket
 //= require dashboard/websocket/websocket_connection
-//= require dashboard/app
-//= require dashboard/filters
-//= require dashboard/services
-//= require dashboard/directives
-//= require dashboard/controllers
 //= require showdown
 //= require markdown
 //= require angular-uuid4.min
@@ -23,3 +18,8 @@
 //= require to-markdown
 //= require dropzone
 //= require perfect-scrollbar
+//= require dashboard/app
+//= require dashboard/filters
+//= require dashboard/services
+//= require dashboard/directives
+//= require dashboard/controllers
