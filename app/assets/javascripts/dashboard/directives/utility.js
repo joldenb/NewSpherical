@@ -99,4 +99,12 @@ angular.module('sphericalApp.UtilityDirectives', [])
       });
     }
   };
+}])
+.directive('perfScrlbar', [function() {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.perfectScrollbar({suppressScrollX: true});
+    }
+  };
 }]);

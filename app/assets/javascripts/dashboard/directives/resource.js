@@ -7,20 +7,14 @@ angular.module('sphericalApp.ResourceDirectives', [])
 .directive('resourceDisplay', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
-    templateUrl: SPHR_HST + "tpls/resource_display.html",
-    link: function(scope, elm, attrs) {
-      jQuery('.resource').perfectScrollbar({suppressScrollX: true});
-    }
+    templateUrl: SPHR_HST + "tpls/resource_display.html"
   };
 }])
 .directive('resourceform', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
     // controller: "ActivityCtrl",
-    templateUrl: SPHR_HST + "tpls/resource_form.html",
-    link: function(scope, elm, attrs) {
-      jQuery('.resource_form').perfectScrollbar({suppressScrollX: true});
-    }
+    templateUrl: SPHR_HST + "tpls/resource_form.html"
   };
 }])
 .directive('editResource', ['$compile', 'ActivityVis', function($compile, ActivityVis) {

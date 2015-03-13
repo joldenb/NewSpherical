@@ -11,10 +11,7 @@ angular.module('sphericalApp.EntityDirectives', [])
         thisuser: '=',
         currentuser: '='
     },
-    templateUrl: SPHR_HST + "tpls/user_profile.html",
-    link: function(scope, elm, attrs) {
-      jQuery('.upagecontent').perfectScrollbar({suppressScrollX: true});
-    }
+    templateUrl: SPHR_HST + "tpls/user_profile.html"
   };
 }])
 .directive('editUserprof', [function() {

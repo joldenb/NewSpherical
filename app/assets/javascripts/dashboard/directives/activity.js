@@ -55,9 +55,6 @@ angular.module('sphericalApp.ActivityDirectives', [])
         scope: {
           activestory: '='
         },
-        link: function(scope, elm, attrs) {
-          jQuery('.story_content').perfectScrollbar({suppressScrollX: true});
-        },
         templateUrl: SPHR_HST + "tpls/story_display.html"
     };
 }]);
