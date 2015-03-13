@@ -18,8 +18,8 @@
 //= require dashboard/controllers
 //= require showdown
 //= require markdown
-//= require angular-uuid4.min
 //= require draganddrop
 //= require he
 //= require to-markdown
 //= require dropzone
+//= require angular-uuid4.min
