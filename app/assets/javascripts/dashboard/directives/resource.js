@@ -266,55 +266,55 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
-.directive('resourceDzone', ['$window', '$compile', 'SPHR_HST', function($window, $compile, SPHR_HST) {
-  return {
-    restrict: 'A',
-    link: function(scope, elm, attrs) {
-      scope.resourceDropzone = new Dropzone(elm[0],
-        {
-          url: SPHR_HST + "dashboard/upload_resource_file",
-          paramName: 'resrc',
-          clickable: true,
-          autoProcessQueue: true,
-          uploadMultiple: false,
-          maxFilesize: 2,
-          createImageThumbnails: false,
-          dictFileTooBig: "File cannot be larger than 2 MB.",
-          previewsContainer: '.upload-preview'
-        }
-      )
-      .on("sending", function(file, xhr, formData) {
-        if ($window.sessionStorage.spheretoken) {
-          xhr.setRequestHeader('Authorization', 'Bearer token="' + $window.sessionStorage.spheretoken + '"');
-        }
-      })
-      .on("success", function(file, response) {
-        this.removeAllFiles();
-        var _rlist = jQuery('.resource_list');
-        _rlist.html('');
-        angular.forEach(response.resource_list, function(item) {
-          _rlist.append('<p><span>&nbsp;</span>' + item[0] + '<span class="trshcan"  fileid="' + item[1] + '" rsrc="' + item[2] +'" rfile-delete>&nbsp;</span></p>');
-        });
-        $compile(_rlist)(scope);
-        if (response.resource_list.length > 10) {
-          jQuery('.resource_form').perfectScrollbar('update');
-        }
-      })
-      .on("error", function(file, err, xhr) {
-        scope.$apply(function() {
-          scope.resource_error = true;
-        });
-        console.log(err);
-        jQuery("span[data-dz-errormessage]").html('');
-        if (err.msg) {
-          jQuery("span[data-dz-errormessage]:last").html(err.msg);
-        } else {
-          jQuery("span[data-dz-errormessage]:last").html(err);
-        }
-      });
-    }
-  };
-}])
+// .directive('resourceDzone', ['$window', '$compile', 'SPHR_HST', function($window, $compile, SPHR_HST) {
+//   return {
+//     restrict: 'A',
+//     link: function(scope, elm, attrs) {
+//       scope.resourceDropzone = new Dropzone(elm[0],
+//         {
+//           url: SPHR_HST + "dashboard/upload_resource_file",
+//           paramName: 'resrc',
+//           clickable: true,
+//           autoProcessQueue: true,
+//           uploadMultiple: false,
+//           maxFilesize: 2,
+//           createImageThumbnails: false,
+//           dictFileTooBig: "File cannot be larger than 2 MB.",
+//           previewsContainer: '.upload-preview'
+//         }
+//       )
+//       .on("sending", function(file, xhr, formData) {
+//         if ($window.sessionStorage.spheretoken) {
+//           xhr.setRequestHeader('Authorization', 'Bearer token="' + $window.sessionStorage.spheretoken + '"');
+//         }
+//       })
+//       .on("success", function(file, response) {
+//         this.removeAllFiles();
+//         var _rlist = jQuery('.resource_list');
+//         _rlist.html('');
+//         angular.forEach(response.resource_list, function(item) {
+//           _rlist.append('<p><span>&nbsp;</span>' + item[0] + '<span class="trshcan"  fileid="' + item[1] + '" rsrc="' + item[2] +'" rfile-delete>&nbsp;</span></p>');
+//         });
+//         $compile(_rlist)(scope);
+//         if (response.resource_list.length > 10) {
+//           jQuery('.resource_form').perfectScrollbar('update');
+//         }
+//       })
+//       .on("error", function(file, err, xhr) {
+//         scope.$apply(function() {
+//           scope.resource_error = true;
+//         });
+//         console.log(err);
+//         jQuery("span[data-dz-errormessage]").html('');
+//         if (err.msg) {
+//           jQuery("span[data-dz-errormessage]:last").html(err.msg);
+//         } else {
+//           jQuery("span[data-dz-errormessage]:last").html(err);
+//         }
+//       });
+//     }
+//   };
+// }])
 .directive('rfileDelete', ['$window', '$compile', '$http', 'SPHR_HST', function($window, $compile, $http, SPHR_HST) {
   return {
     restrict: 'A',

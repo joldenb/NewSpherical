@@ -32,7 +32,7 @@
     </fieldset>
   </form>
 
-  <form class="resource-dropzone dropzone" resource-dzone ng-show="newresource && newresource.id">
+  <form class="resource-dropzone dropzone" ng-show="newresource && newresource.id">
     <input name="resrc_ctx" type="hidden" value="{{spheredata.channel_ctx_id}}" />
     <input type="hidden" name="resource_id" value="{{newresource.id}}">
     <div class="dz-message">To upload files,<br />drop here (or click).</div>
