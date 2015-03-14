@@ -21,4 +21,3 @@
 //= require draganddrop
 //= require he
 //= require to-markdown
-//= require angular-uuid4
