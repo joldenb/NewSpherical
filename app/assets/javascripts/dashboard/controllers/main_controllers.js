@@ -55,73 +55,69 @@ angular.module('sphericalApp.MainControllers', [])
           $scope.chooser.items = $scope.chooser.items || [];
           $scope.chooser.first_item = '';
 
-          if (!$scope.spheredata.channelCtxId) {
-            SphereInfo.sphereData.then(function(d) {
-                $scope.spheredata.channelname = d.data.channelname;
-                $scope.spheredata.channelstories = d.data.channelstories;
-                $scope.spheredata.channelCtxId = d.data.channel_ctx_id;
-                $scope.spheredata.related_ids = d.data.related_ids;
-            });
-          }
-
-          if ($state.includes('*.topic.**')) {
-            $scope.chooser.state.currentTopic = $state.params.topic;
-            if ($state.params.topic == $scope.spheredata.channelname) {
-              $scope.chooser.state.currentTopicId = $scope.spheredata.channelCtxId;
-              $scope.chooser.state.channelActive = true;
-              $scope.chooser.state.relatedActive = false;
-            } else {
+          SphereInfo.sphereData.then(function(d) {
+              $scope.spheredata.channelname = d.data.channelname;
+              $scope.spheredata.channelstories = d.data.channelstories;
+              $scope.spheredata.channelCtxId = d.data.channel_ctx_id;
+              $scope.spheredata.related_ids = d.data.related_ids;
+              return $scope.spheredata;
+          })
+          .then(function(spheredata) {
+            if ($state.includes('*.topic.**')) {
               $scope.chooser.state.currentTopic = $state.params.topic;
-              try {
-                $scope.chooser.state.currentTopicId = $scope.spheredata.related_ids[$state.params.topic];
-              } catch (e) {
-                //we'll deal with it later
+              if ($state.params.topic == spheredata.channelname) {
+                $scope.chooser.state.currentTopicId = spheredata.channelCtxId;
+                $scope.chooser.state.channelActive = true;
+                $scope.chooser.state.relatedActive = false;
+              } else {
+                $scope.chooser.state.currentTopic = $state.params.topic;
+                $scope.chooser.state.currentTopicId = spheredata.related_ids[$state.params.topic];
+                $scope.chooser.state.channelActive = false;
+                $scope.chooser.state.relatedActive = true;
               }
-              $scope.chooser.state.channelActive = false;
-              $scope.chooser.state.relatedActive = true;
+            } else {
+              // we're at the channel topic
+              $scope.chooser.state.currentTopic = spheredata.channelname;
+              $scope.chooser.state.currentTopicId = spheredata.channelCtxId;
+              $scope.chooser.state.channelActive = true;
             }
-          } else {
-            // we're at the channel topic
-            $scope.chooser.state.currentTopic = $scope.spheredata.channelname;
-            $scope.chooser.state.currentTopicId = $scope.spheredata.channelCtxId;
-            $scope.chooser.state.channelActive = true;
-          }
 
-          if (Object.getOwnPropertyNames($state.params).length === 0) {
-            // we're at the top level of the dashboard
-            $scope.get_formatted_story_items($scope.chooser.state.currentTopicId, true)
-            .then(function() {
-              $scope.set_activestory(0);
-              return $scope.chooser.first_item; // this is set to the story id via make_chooser_map()
-            })
-            .then(function(storyid) {
-              $scope.set_carousel_index(storyid);
-              $scope.chooser.state.topicIndicatorVisible = true;
-            });
-          } else if ($state.includes('**.story.**')) {
-            $scope.get_formatted_story_items($scope.chooser.state.currentTopicId, $scope.chooser.state.channelActive)
-            .then(function() {
-              var story_idx = $scope.chooser.mapping[$state.params.story];
-              $scope.set_activestory(story_idx);
-              return $state.params.story; // this is the story id
-            })
-            .then(function(storyid) {
-              $scope.set_carousel_index(storyid);
-              $scope.chooser.state.topicIndicatorVisible = true;
-            });
-          } else if ($state.includes('**.discussion.**')) {
-            $scope.get_formatted_discussion_items($scope.chooser.state.currentTopicId)
-            .then(function() {
-              var discussion_idx = $scope.chooser.mapping[$state.params.discussion];
-              $scope.set_active_discussion(discussion_idx);
-              return $state.params.discussion; // this is the story id
-            })
-            .then(function(discussionid) {
-              $scope.set_carousel_index(discussionid);
-              $scope.chooser.state.topicIndicatorVisible = true;
-              $scope.visible.activity_window = 'discussions';
-            });
-          }
+            if (Object.getOwnPropertyNames($state.params).length === 0) {
+              // we're at the top level of the dashboard
+              $scope.get_formatted_story_items($scope.chooser.state.currentTopicId, true)
+              .then(function() {
+                $scope.set_activestory(0);
+                return $scope.chooser.first_item; // this is set to the story id via make_chooser_map()
+              })
+              .then(function(storyid) {
+                $scope.set_carousel_index(storyid);
+                $scope.chooser.state.topicIndicatorVisible = true;
+              });
+            } else if ($state.includes('**.story.**')) {
+              $scope.get_formatted_story_items($scope.chooser.state.currentTopicId, $scope.chooser.state.channelActive)
+              .then(function() {
+                var story_idx = $scope.chooser.mapping[$state.params.story];
+                $scope.set_activestory(story_idx);
+                return $state.params.story; // this is the story id
+              })
+              .then(function(storyid) {
+                $scope.set_carousel_index(storyid);
+                $scope.chooser.state.topicIndicatorVisible = true;
+              });
+            } else if ($state.includes('**.discussion.**')) {
+              $scope.get_formatted_discussion_items($scope.chooser.state.currentTopicId)
+              .then(function() {
+                var discussion_idx = $scope.chooser.mapping[$state.params.discussion];
+                $scope.set_active_discussion(discussion_idx);
+                return $state.params.discussion; // this is the story id
+              })
+              .then(function(discussionid) {
+                $scope.set_carousel_index(discussionid);
+                $scope.chooser.state.topicIndicatorVisible = true;
+                $scope.visible.activity_window = 'discussions';
+              });
+            }
+          });
         }, 0);
 
         // $scope functions
