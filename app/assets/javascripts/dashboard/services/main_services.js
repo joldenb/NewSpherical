@@ -13,15 +13,6 @@ angular.module('sphericalApp.MainServices', [])
         );
         return sphereInfo;
     }])
-    // .service('TopicItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
-    //     this.get = function(topic, is_channel, page) {
-    //       return $http.get(SPHR_HST + 'dashboard/topic_items/' + topic, {
-    //         params: {is_channel: is_channel, page: page}
-    //       }).then(function(response) {
-    //         return response.data;
-    //       });
-    //     };
-    // }])
     .service('FormattedStoryItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.get = function(topic, is_channel, page) {
           // topic is a context id
@@ -49,15 +40,6 @@ angular.module('sphericalApp.MainServices', [])
           });
         };
     }])
-    // .service('DiscussionItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
-    //     this.get = function(topic, page) {
-    //       return $http.get(SPHR_HST + 'dashboard/discussion_items/' + topic, {
-    //         params: {page: page}
-    //       }).then(function(response) {
-    //         return response.data;
-    //       });
-    //     };
-    // }])
     .service('FormattedDiscussionItems', ['$http', 'SPHR_HST', function($http, SPHR_HST) {
         this.get = function(topic, page) {
           return $http.get(SPHR_HST + 'dashboard/discussion_items/' + topic, {
@@ -191,18 +173,6 @@ angular.module('sphericalApp.MainServices', [])
          });
       };
     }])
-    // .service('Resources', ['$http', 'SPHR_HST', function($http, SPHR_HST ) {
-    //   this.get = function(ctx) {
-    //      var uri = SPHR_HST + 'sphere/resources';
-    //      if (ctx) {
-    //        uri = uri + '/' + ctx;
-    //      }
-    //      return $http.get(uri)
-    //      .then(function(response) {
-    //        return response.data;
-    //      });
-    //   };
-    // }])
     .factory('authInterceptor', ['$rootScope', '$q', '$window', function ($rootScope, $q, $window) {
       return {
         request: function (config) {
