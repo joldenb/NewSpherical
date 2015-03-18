@@ -59,7 +59,16 @@
               <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
               <p class="author">from {{slide.author}}<br />{{slide.pubdate}}</p>
             </div>
+          </div>
 
+          <div class="profile" ng-show="slide.itemtype == 'profile'">
+            <div class="profile_image">
+              <img ng-src="{{slide.profile_image}}" brkn-img />
+            </div>
+
+            <div class="profile_data">
+              <h4>{{slide.screenname}}</h4>
+            </div>
           </div>
 
       </div>
@@ -97,9 +106,9 @@
 
       <h4 topic-cntrl-btn btntarget="resources" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'resources'}">Resources</h4>
 
-      <h4 ng-click="activityShow('curators')" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
+      <h4 topic-cntrl-btn btntarget="curators" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'curators'}">Curators</h4>
 
-      <h4 ng-click="activityShow('participants')" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
+      <h4 topic-cntrl-btn btntarget="participants" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
 
       <div class="newcreate" ng-show="visible.signedin.curator && chooser.state.channelActive">
         <h4 topic-cntrl-btn btntarget="new_discussion">Discussion</h4>
@@ -117,7 +126,9 @@
 
       <div class="resources" ng-show="visible.activity_window == 'resources'" resource-display></div>
 
-      <div class="userprofile" ng-show="visible.activity_window == 'curators' || visible.activity_window == 'participants'" user-profile thisuser="thisuser" currentuser="visible.signedin"></div>
+      <div class="userprofile" ng-show="visible.activity_window == 'curators'" user-profile thisuser="chooser.state.activeCurator" currentuser="visible.signedin"></div>
+
+      <div class="userprofile" ng-show="visible.activity_window == 'profiles'" user-profile thisuser="chooser.state.activeProfile" currentuser="visible.signedin"></div>
 
 
       <div class="new_discussion item-overlay" ng-show="visible.overlay == 'discussion_edit'" discussion-edit currenttopic="chooser.state.currentTopicId" visible="visible" chooserdata="chooserdata"></div>

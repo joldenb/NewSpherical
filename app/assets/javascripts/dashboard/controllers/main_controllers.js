@@ -36,7 +36,7 @@ angular.module('sphericalApp.MainControllers', [])
         }
 
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, ActivityVis, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, SPHR_HST) {
         // these all run at page load
         $scope.ctrlname = 'ActivityCtrl';
         $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
@@ -169,6 +169,30 @@ angular.module('sphericalApp.MainControllers', [])
         $scope.set_activeresource = function(resourceindex) {
           $scope.chooser.state.activeResource = $scope.chooser.items[resourceindex];
           ActivityVis.activity_window = 'resources';
+        };
+
+        $scope.get_curators = function(topic, page) {
+            return Curators.get(topic).then(function(response) {
+              $scope.chooser.items = response.curators;
+              make_chooser_map(response.curators);
+            });
+        };
+
+        $scope.set_activecurator = function(curatorindex) {
+          $scope.chooser.state.activeCurator = $scope.chooser.items[curatorindex];
+          ActivityVis.activity_window = 'curators';
+        };
+
+        $scope.get_participants = function(topic, page) {
+            return Participants.get(topic).then(function(response) {
+              $scope.chooser.items = response.participants;
+              make_chooser_map(response.participants);
+            });
+        };
+
+        $scope.set_activeprofile = function(profileindex) {
+          $scope.chooser.state.activeProfile = $scope.chooser.items[profileindex];
+          ActivityVis.activity_window = 'profiles';
         };
 
         $scope.switch_sphere = function(sphere_id, sphere_name, is_channel) {

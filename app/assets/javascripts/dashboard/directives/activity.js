@@ -44,6 +44,14 @@ angular.module('sphericalApp.ActivityDirectives', [])
             //     'sphere.topic.story', {topic: scope.chooser.state.currentTopic, story: itemid}
             // );
           });
+        } else if (attrs.itemtype == 'profile') {
+          scope.$apply(function() {
+            scope.set_activeprofile(slideidx);
+            scope.set_carousel_index(itemid);
+            // $state.go(
+            //     'sphere.topic.profiles', {topic: activityController.chooser.state.currentTopic, profile: itemid}
+            // );
+          });
         }
       });
     }

@@ -119,6 +119,56 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
                 });
               });
             },
+            curators = function() {
+              //var topic = activityController.chooser.state.currentTopicId;
+              // need to modify sphere_controller#curators to accept topicID
+              scope.$apply(function() {
+                activityController.get_curators()
+                .then(function() {
+                  var current_curatorid;
+                  if (activityController.chooser.state.activeCurator) {
+                    current_curatorid = activityController.chooser.state.activeCurator.id;
+                  } else {
+                    activityController.set_activecurator(0);
+                    current_curatorid = activityController.chooser.first_item;
+                  }
+                  return current_curatorid;
+                })
+                .then(function(curatorid) {
+                  activityController.set_carousel_index(curatorid);
+                  ActivityVis.activity_window = 'curators';
+                  activityController.chooser.state.topicIndicatorVisible = true;
+                  // $state.go(
+                  //     'sphere.topic.profiles', {topic: activityController.chooser.state.currentTopic, profile: curatorid}
+                  // );
+                });
+              });
+            },
+            participants = function() {
+              //var topic = activityController.chooser.state.currentTopicId;
+              // need to modify sphere_controller#entities to accept topicID
+              scope.$apply(function() {
+                activityController.get_participants()
+                .then(function() {
+                  var current_participantid;
+                  if (activityController.chooser.state.activeProfile) {
+                    current_participantid = activityController.chooser.state.activeProfile.id;
+                  } else {
+                    activityController.set_activeprofile(0);
+                    current_participantid = activityController.chooser.first_item;
+                  }
+                  return current_participantid;
+                })
+                .then(function(participantid) {
+                  activityController.set_carousel_index(participantid);
+                  ActivityVis.activity_window = 'profiles';
+                  activityController.chooser.state.topicIndicatorVisible = true;
+                  // $state.go(
+                  //     'sphere.topic.profiles', {topic: activityController.chooser.state.currentTopic, profile: participantid}
+                  // );
+                });
+              });
+            },
             newDiscussion = function() {
               if ((!$state.includes('**.topic.**') && !activityController.channelActive)  || ActivityVis.overlay == 'shareitem') {
                 return;
@@ -155,14 +205,20 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
                       related();
                       break;
                     case 'stories':
-                        stories();
-                        break;
+                      stories();
+                      break;
                     case 'discussions':
-                        discussions();
-                        break;
+                      discussions();
+                      break;
                     case 'resources':
-                        resources();
-                        break;
+                      resources();
+                      break;
+                    case 'curators':
+                      curators();
+                      break;
+                    case 'participants':
+                      participants();
+                      break;
                     case 'new_discussion':
                       newDiscussion();
                       break;

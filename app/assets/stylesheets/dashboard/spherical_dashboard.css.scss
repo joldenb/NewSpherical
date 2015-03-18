@@ -346,6 +346,31 @@
               color: #ddd;
               text-align: left;
             }
+            .profile {
+              position: relative;
+              .profile_image {
+                width: 58px;
+                text-align: center;
+                img {
+                  max-width: 100%;
+                  opacity: 1;
+                }
+              }
+              .profile_data {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 162px;
+                height: 89px;
+                cursor: pointer;
+                h4 {
+                  text-align: left;
+                  margin-left: 65px;
+                  font-size: .9em;
+                  overflow-wrap: break-word;
+                }
+              }
+            }
           }
         }
         /* Story in Activity window */
@@ -1227,13 +1252,14 @@
                 }
             }
             .userprofilepage {
+              position: relative;
               background: #222;
               height: 448px;
-              margin-top: -20px;
-              padding: 50px 35px 35px;
+              margin-top: 0;
+              padding: 35px;
               .upagecontent {
-                position: relative;
                 background: #444;
+                position: relative;
                 overflow: hidden;
                 height: 380px;
                 h3 {
@@ -1327,9 +1353,11 @@
                   }
                 }
                 .edit_prof {
-                  position: absolute;
+                  position: relative;
+                  overflow: hidden;
                   top: 65px;
                   left: 0;
+                  height: 294px;
                   width: 700px;
                   padding: 15px 0px 5px 40px;
                   font-size: 1em;
@@ -1342,7 +1370,6 @@
                     background: #444;
                     color: #fff;
                     border: none;
-                    overflow: auto;
                     resize: none;
                     &:focus {
                       -webkit-box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
