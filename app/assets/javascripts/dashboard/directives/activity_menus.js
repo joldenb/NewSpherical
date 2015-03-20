@@ -189,9 +189,9 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
               });
             },
             newResource = function() {
-              if ((!$state.includes('**.topic.**') && !activityController.channelActive)  || ActivityVis.overlay == 'shareitem') {
-                return;
-              }
+              // if ((!$state.includes('**.topic.**') && !activityController.channelActive)  || ActivityVis.overlay == 'shareitem') {
+              //   return;
+              // }
               UserInfo.signedin().then(function(d) {
                 if (d.signedin) {
                   ActivityVis.overlay = 'resource_edit';
