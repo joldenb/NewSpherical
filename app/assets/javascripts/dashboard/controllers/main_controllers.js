@@ -57,6 +57,7 @@ angular.module('sphericalApp.MainControllers', [])
 
           SphereInfo.sphereData.then(function(d) {
               $scope.spheredata.channelname = d.data.channelname;
+              $scope.spheredata.channelIdentifier = d.data.channel_identifier;
               $scope.spheredata.channelstories = d.data.channelstories;
               $scope.spheredata.channelCtxId = d.data.channel_ctx_id;
               $scope.spheredata.related_ids = d.data.related_ids;
@@ -211,6 +212,30 @@ angular.module('sphericalApp.MainControllers', [])
             $state.go(
               'sphere.topic.story', {topic: sphere_name, story: storyid}
             );
+          });
+        };
+
+        $scope.load_resources = function() {
+          var topic = $scope.chooser.state.currentTopicId;
+          return $scope.get_formatted_resource_items(topic)
+          .then(function() {
+            var current_resourceid;
+            if ($scope.chooser.state.activeResource) {
+              current_resourceid = $scope.chooser.state.activeResource.id;
+            } else {
+              $scope.set_activeresource(0);
+              current_resourceid = $scope.chooser.first_item;
+            }
+            return current_resourceid;
+          })
+          .then(function(resourceid) {
+            $scope.set_carousel_index(resourceid);
+            ActivityVis.activity_window = 'resources';
+            $scope.chooser.state.topicIndicatorVisible = true;
+            // $state.go(
+            //     'sphere.topic.resource', {topic: activityController.chooser.state.currentTopic, resource: resourceid}
+            // );
+            return $scope.chooser.first_item;
           });
         };
 

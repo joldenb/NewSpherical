@@ -13,24 +13,21 @@ angular.module('sphericalApp.ResourceDirectives', [])
 .directive('resourceform', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
-    // controller: "ActivityCtrl",
     templateUrl: SPHR_HST + "tpls/resource_form.html"
   };
 }])
 .directive('editResource', ['$compile', 'ActivityVis', function($compile, ActivityVis) {
   return {
     restrict: 'A',
-    // controller: "ActivityCtrl",
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
         scope.newresource = {};
-        scope.newresource.id = scope.thisresource.id;
-        scope.resource_name = scope.thisresource.resource_name;
-        scope.resource_description = scope.thisresource.headline;
-        //scope.url_1 = scope.thisresource.resource_urls.shift();
+        scope.newresource.id = scope.chooser.state.activeResource.id;
+        scope.resource_name = scope.chooser.state.activeResource.resource_name;
+        scope.resource_description = scope.chooser.state.activeResource.headline;
         var urlcount = 1,
         container = jQuery('.url_input'),
-        urls = angular.copy(scope.thisresource.resource_urls);
+        urls = angular.copy(scope.chooser.state.activeResource.resource_urls);
         if (urls && urls.length > 0) {
           scope.url_1 = urls.shift();
         }
@@ -47,11 +44,12 @@ angular.module('sphericalApp.ResourceDirectives', [])
         scope.resourceform.resource_name.$dirty = true;
         var _rlist = jQuery('.resource_list');
         _rlist.html('');
-        angular.forEach(scope.thisresource.resource_files, function(item) {
+        angular.forEach(scope.chooser.state.activeResource.resource_files, function(item) {
           _rlist.append('<p><span>&nbsp;</span>' + item.name + '<span class="trshcan"  fileid="' + item.fileid + '" rsrc="' + item.rsrc +'" rfile-delete>&nbsp;</span></p>');
         });
         $compile(_rlist)(scope);
         scope.$apply(function() {
+          scope.get_formatted_resource_items(scope.chooser.state.currentTopicId);
           ActivityVis.overlay = 'resource_edit';
           ActivityVis.new_edit_resource = 'Edit';
         });
@@ -64,6 +62,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
     restrict: 'A',
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
+        scope.load_resources();
         scope.$apply(function() {
           scope.newresource = {};
           scope.newresource.id = '';
@@ -83,7 +82,6 @@ angular.module('sphericalApp.ResourceDirectives', [])
           scope.fbk_error = false;
           ActivityVis.overlay = null;
           scope.resourceform.$setPristine();
-          scope.activityShow('resources');
         });
       });
     }
@@ -148,7 +146,7 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
-.directive('deleteResource', ['$http', 'SPHR_HST', 'ActivityVis', function($http, SPHR_HST, ActivityVis) {
+.directive('deleteResource', ['$http', '$timeout', 'SPHR_HST', 'ActivityVis', function($http, $timeout, SPHR_HST, ActivityVis) {
   return {
     restrict: 'A',
     link: function(scope, elm, attrs) {
@@ -174,9 +172,13 @@ angular.module('sphericalApp.ResourceDirectives', [])
             jQuery('.resource_list').html('');
             scope.resource_fbk = '';
             scope.fbk_error = false;
-            ActivityVis.overlay = null;
             scope.resourceform.$setPristine();
-            scope.activityShow('resources');
+            scope.chooser.state.activeResource = null;
+            scope.load_resources().then(function(first_resourceid) {
+              scope.set_activeresource(0);
+              scope.set_carousel_index(first_resourceid);
+              scope.visible.overlay = null;
+            });
           }
         });
       });
@@ -229,7 +231,29 @@ angular.module('sphericalApp.ResourceDirectives', [])
               scope.fbk_error = false;
               ActivityVis.overlay = null;
               scope.resourceform.$setPristine();
-              scope.activityShow('resources');
+
+              var topic = scope.chooser.state.currentTopicId,
+              current_resourceid;
+              scope.get_formatted_resource_items(topic)
+              .then(function() {
+                var current_resourceid;
+                if (scope.chooser.state.activeResource) {
+                  current_resourceid = scope.chooser.state.activeResource.id;
+                } else {
+                  scope.set_activeresource(0);
+                  current_resourceid = scope.chooser.first_item;
+                }
+                return current_resourceid;
+              })
+              .then(function(resourceid) {
+                scope.chooser.state.activeResource = null;
+                scope.load_resources();
+                ActivityVis.activity_window = 'resources';
+                scope.chooser.state.topicIndicatorVisible = true;
+                // $state.go(
+                //     'sphere.topic.resource', {topic: scope.chooser.state.currentTopic, resource: resourceid}
+                // );
+              });
             }, 2000);
           }
         })

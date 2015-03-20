@@ -96,27 +96,30 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
               });
             },
             resources = function() {
-              var topic = activityController.chooser.state.currentTopicId;
+              // var topic = activityController.chooser.state.currentTopicId;
+              // scope.$apply(function() {
+              //   activityController.get_formatted_resource_items(topic)
+              //   .then(function() {
+              //     var current_resourceid;
+              //     if (activityController.chooser.state.activeResource) {
+              //       current_resourceid = activityController.chooser.state.activeResource.id;
+              //     } else {
+              //       activityController.set_activeresource(0);
+              //       current_resourceid = activityController.chooser.first_item;
+              //     }
+              //     return current_resourceid;
+              //   })
+              //   .then(function(resourceid) {
+              //     activityController.set_carousel_index(resourceid);
+              //     ActivityVis.activity_window = 'resources';
+              //     activityController.chooser.state.topicIndicatorVisible = true;
+              //     // $state.go(
+              //     //     'sphere.topic.resource', {topic: activityController.chooser.state.currentTopic, resource: resourceid}
+              //     // );
+              //   });
+              // });
               scope.$apply(function() {
-                activityController.get_formatted_resource_items(topic)
-                .then(function() {
-                  var current_resourceid;
-                  if (activityController.chooser.state.activeResource) {
-                    current_resourceid = activityController.chooser.state.activeResource.id;
-                  } else {
-                    activityController.set_activeresource(0);
-                    current_resourceid = activityController.chooser.first_item;
-                  }
-                  return current_resourceid;
-                })
-                .then(function(resourceid) {
-                  activityController.set_carousel_index(resourceid);
-                  ActivityVis.activity_window = 'resources';
-                  activityController.chooser.state.topicIndicatorVisible = true;
-                  // $state.go(
-                  //     'sphere.topic.resource', {topic: activityController.chooser.state.currentTopic, resource: resourceid}
-                  // );
-                });
+                activityController.load_resources();
               });
             },
             curators = function() {
