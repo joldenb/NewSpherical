@@ -306,9 +306,9 @@ angular.module('sphericalApp.ResourceDirectives', [])
               file: file
           }).progress(function (evt) {
               var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-              console.log('progress: ' + progressPercentage + '% ' + angular.toJson(evt.config.file));
+              //console.log('progress: ' + progressPercentage + '% ' + angular.toJson(evt.config.file));
           }).success(function (data, status, headers, config) {
-              console.log('file ' + angular.toJson(config.file) + 'uploaded. Response: ' + angular.toJson(data));
+              //console.log('file ' + angular.toJson(config.file) + 'uploaded. Response: ' + angular.toJson(data));
               var _rlist = jQuery('.resource_list');
               _rlist.html('');
               angular.forEach(data.resource_list, function(item) {
