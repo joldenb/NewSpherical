@@ -1684,6 +1684,9 @@
                     font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
                     width: 178px;
                     padding: 5px;
+                    &.dragover {
+                      background: #6af;
+                    }
                   }
                 }
 
