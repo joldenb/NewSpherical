@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+logfile = "#{Rails.root}/log/resource_sweeper.log"
+log = File.new(logfile, 'a')
+
+now = Time.now.to_i
+
+begin
+    # remove new resources that haven't been saved after 12 hours
+    items_to_delete = Item.where(:item_type => "resource", :show_in_resources => false, :updated_at.lt => 12.hours.ago).to_ary
+    items_count = items_to_delete.length
+    if items_count > 0
+      items_to_delete.each {|item| ItemAgent.destroy_item(item.id)}
+    end
+
+    log.write("#{Time.now.utc}: deleted #{items_count} stale resources\n")
+rescue => e
+    log.write("#{Time.now.utc}: #{e.class} #{e.message}\n")
+end
+
+
+log.close
+exit

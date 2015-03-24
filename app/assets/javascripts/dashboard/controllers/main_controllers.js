@@ -36,7 +36,7 @@ angular.module('sphericalApp.MainControllers', [])
         }
 
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$upload', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $upload, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, SPHR_HST) {
         // these all run at page load
         $scope.ctrlname = 'ActivityCtrl';
         $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
@@ -239,6 +239,11 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
 
+        // $scope.fileSelected = function($file, $event) {
+        //   console.log($scope.resourceFile);
+        //   upload($scope.resourceFile);
+        // };
+
         // utility methods
         var make_chooser_map = function(items) {
           $scope.chooser.mapping = {};
@@ -249,6 +254,22 @@ angular.module('sphericalApp.MainControllers', [])
           angular.forEach(items, function(item, idx) {
             $scope.chooser.mapping[item.id] = idx;
           });
+        };
+
+        var upload = function (file) {
+        if (file && file.length) {
+            $upload.upload({
+                url: SPHR_HST + 'dashboard/upload_resource_file',
+                fields: {'resource_id': $scope.newresource.id,
+                'ctx_id': $scope.spheredata.channel_ctx_id},
+                file: file
+            }).progress(function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + angular.toJson(evt.config.file));
+            }).success(function (data, status, headers, config) {
+                console.log('file ' + angular.toJson(config.file) + 'uploaded. Response: ' + angular.toJson(data));
+            });
+          }
         };
 
         // .then(function(topics) {

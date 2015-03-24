@@ -1640,6 +1640,54 @@
                     right: 0px;
                   }
                 }
+                .fileupload {
+                  position: relative;
+                  height: 36px;
+                  width: 300px;
+                  padding: 5px;
+                  background: #222;
+                  color: #777;
+                  text-shadow: none;
+                  font: .95em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                  margin-left: 110px;
+                  cursor: pointer;
+                  .upload-preview {
+                    position: absolute;
+                    top: 55px;
+                    left: 5px;
+                    .resource_list {
+                      p {
+                        margin: 0;
+                        span {
+                          background: transparent image-url('smgrnchk.png') no-repeat 0px 0px;
+                          width: 25px;
+                          height: 20px;
+                          position: absolute;
+                          top: 0;
+                          left: -25px;
+                        }
+                        span.trshcan {
+                          background: transparent image-url('smalltrashwt.png') no-repeat 0px 1px;
+                          width: 25px;
+                          height: 20px;
+                          position: absolute;
+                          top: 0;
+                          left: -50px;
+                          cursor: pointer;
+                        }
+                      }
+                    }
+                  }
+                  .drop-box {
+                    text-align: left;
+                    background: #eee;
+                    font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                    width: 178px;
+                    padding: 5px;
+                  }
+                }
+
+
                 .resource-dropzone {
                   height: 36px;
                   width: 300px;

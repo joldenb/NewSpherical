@@ -106,14 +106,14 @@ class DashboardController < ApplicationController
       end
       render(:json => {:success => false, :msg => "Please log in."}, :status => 401) and return unless user
 
-      if params[:resrc].is_a?(ActionDispatch::Http::UploadedFile)
+      if params[:file].is_a?(ActionDispatch::Http::UploadedFile)
         if parent_item = Item.find(params[:resource_id])
-          if parent_item.resource_files.find_by(:filename =>  params[:resrc].original_filename)
+          if parent_item.resource_files.find_by(:filename =>  params[:file].original_filename)
             render :json => {"success" => false, :msg => "File already exists."}, :status => 409 and return
           end
           rf = ResourceFile.new
-          rf.rfile = params[:resrc]
-          rf.filename = params[:resrc].original_filename
+          rf.rfile = params[:file]
+          rf.filename = params[:file].original_filename
           parent_item.resource_files << rf
           resource_list = parent_item.resource_files.map{|rfile| [rfile.filename, rfile.id.to_s, parent_item.id.to_s]}
           render :json => {"success" => true, :resource_list => resource_list} and return

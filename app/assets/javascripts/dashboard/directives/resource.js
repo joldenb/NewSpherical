@@ -290,55 +290,45 @@ angular.module('sphericalApp.ResourceDirectives', [])
     }
   };
 }])
-// .directive('resourceDzone', ['$window', '$compile', 'SPHR_HST', function($window, $compile, SPHR_HST) {
-//   return {
-//     restrict: 'A',
-//     link: function(scope, elm, attrs) {
-//       scope.resourceDropzone = new Dropzone(elm[0],
-//         {
-//           url: SPHR_HST + "dashboard/upload_resource_file",
-//           paramName: 'resrc',
-//           clickable: true,
-//           autoProcessQueue: true,
-//           uploadMultiple: false,
-//           maxFilesize: 2,
-//           createImageThumbnails: false,
-//           dictFileTooBig: "File cannot be larger than 2 MB.",
-//           previewsContainer: '.upload-preview'
-//         }
-//       )
-//       .on("sending", function(file, xhr, formData) {
-//         if ($window.sessionStorage.spheretoken) {
-//           xhr.setRequestHeader('Authorization', 'Bearer token="' + $window.sessionStorage.spheretoken + '"');
-//         }
-//       })
-//       .on("success", function(file, response) {
-//         this.removeAllFiles();
-//         var _rlist = jQuery('.resource_list');
-//         _rlist.html('');
-//         angular.forEach(response.resource_list, function(item) {
-//           _rlist.append('<p><span>&nbsp;</span>' + item[0] + '<span class="trshcan"  fileid="' + item[1] + '" rsrc="' + item[2] +'" rfile-delete>&nbsp;</span></p>');
-//         });
-//         $compile(_rlist)(scope);
-//         if (response.resource_list.length > 10) {
-//           jQuery('.resource_form').perfectScrollbar('update');
-//         }
-//       })
-//       .on("error", function(file, err, xhr) {
-//         scope.$apply(function() {
-//           scope.resource_error = true;
-//         });
-//         console.log(err);
-//         jQuery("span[data-dz-errormessage]").html('');
-//         if (err.msg) {
-//           jQuery("span[data-dz-errormessage]:last").html(err.msg);
-//         } else {
-//           jQuery("span[data-dz-errormessage]:last").html(err);
-//         }
-//       });
-//     }
-//   };
-// }])
+.directive('resourceFiledrop', ['$compile', '$upload', 'SPHR_HST',  function($compile, $upload, SPHR_HST) {
+  return {
+    restrict: 'A',
+    controller: function($scope) {
+      $scope.fileSelected = function() {
+        upload($scope.resourceFile);
+      };
+      function upload(file) {
+      if (file && file.length) {
+          $upload.upload({
+              url: SPHR_HST + 'dashboard/upload_resource_file',
+              fields: {'resource_id': $scope.newresource.id,
+              'ctx_id': $scope.spheredata.channelCtxId},
+              file: file
+          }).progress(function (evt) {
+              var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+              console.log('progress: ' + progressPercentage + '% ' + angular.toJson(evt.config.file));
+          }).success(function (data, status, headers, config) {
+              console.log('file ' + angular.toJson(config.file) + 'uploaded. Response: ' + angular.toJson(data));
+              var _rlist = jQuery('.resource_list');
+              _rlist.html('');
+              angular.forEach(data.resource_list, function(item) {
+                _rlist.append('<p><span>&nbsp;</span>' + item[0] + '<span class="trshcan"  fileid="' + item[1] + '" rsrc="' + item[2] +'" rfile-delete>&nbsp;</span></p>');
+              });
+              $compile(_rlist)($scope);
+              if (data.resource_list.length > 10) {
+                jQuery('.resource_form').perfectScrollbar('update');
+              }
+          });
+        }
+      }
+    },
+    link: function(scope, elm, attrs) {
+      elm.on('change', function() {
+        scope.fileSelected();
+      });
+    }
+  };
+}])
 .directive('rfileDelete', ['$window', '$compile', '$http', 'SPHR_HST', function($window, $compile, $http, SPHR_HST) {
   return {
     restrict: 'A',
