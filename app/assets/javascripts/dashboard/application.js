@@ -18,7 +18,6 @@
 //= require dashboard/controllers
 //= require showdown
 //= require markdown
-//= require draganddrop
 //= require he
 //= require to-markdown
 //= require angular-file-upload
