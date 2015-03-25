@@ -21,4 +21,4 @@
 //= require draganddrop
 //= require he
 //= require to-markdown
-//= require angular-file-upload.min
+//= require angular-file-upload

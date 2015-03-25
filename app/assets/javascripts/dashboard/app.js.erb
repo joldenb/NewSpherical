@@ -7,11 +7,11 @@ angular.module('sphericalApp', [
   'btford.markdown',
   'ngDragDrop',
   'angular-carousel',
-  'angularFileUpload',
   'sphericalApp.filters',
   'sphericalApp.services',
   'sphericalApp.directives',
-  'sphericalApp.controllers'
+  'sphericalApp.controllers',
+  'angularFileUpload'
 ]).constant('SPHR_HST', "<%= ENV['FULLHOST'] %>")
 .constant('WEBSOCKETS_URL', "<%= ENV['WEBSOCKETS_URL'] %>")
 .config(function($provide) {
