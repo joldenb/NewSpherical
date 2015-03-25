@@ -3,14 +3,15 @@
 angular.module('sphericalApp', [
   'ngSanitize',
   'ngAnimate',
+  'ngFileUpload',
   'ui.router',
   'btford.markdown',
   'angular-carousel',
   'sphericalApp.filters',
   'sphericalApp.services',
   'sphericalApp.directives',
-  'sphericalApp.controllers',
-  'ngFileUpload'
+  'sphericalApp.controllers'
+
 ]).constant('SPHR_HST', "<%= ENV['FULLHOST'] %>")
 .constant('WEBSOCKETS_URL', "<%= ENV['WEBSOCKETS_URL'] %>")
 .config(function($provide) {
