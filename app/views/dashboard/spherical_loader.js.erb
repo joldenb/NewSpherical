@@ -5,6 +5,11 @@
     var entry=document.getElementsByTagName('script')[0];
     entry.parentNode.insertBefore(script,entry);
 
+    var element = document.getElementById("spherical_dashboard_container");
+    if (element) {
+      element.parentNode.removeChild(element);
+    }
+
     var sphere = document.createElement('div');
     sphere.id = 'spherical_dashboard_container';
 
