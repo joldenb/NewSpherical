@@ -4,6 +4,7 @@
 //= require angular-1.3.13/angular-ui-router
 //= require angular-touch
 //= require angular-carousel
+//= require angular-file-upload
 //= require perfect-scrollbar
 //= require dashboard/websocket/websocket_rails
 //= require dashboard/websocket/channel
@@ -20,4 +21,3 @@
 //= require markdown
 //= require he
 //= require to-markdown
-//= require angular-file-upload
