@@ -309,6 +309,17 @@
                 overflow-wrap: break-word;
                 text-shadow: 1px 1px 1px #000;
               }
+              .elevation {
+                position: absolute;
+                height: 15px;
+                padding: 0 3px 0 5px;
+                font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                text-align: center;
+                background: #000;
+                color: #fff;
+                bottom: 0;
+                right: -2px;
+              }
             }
             .author_data {
               position: absolute;
@@ -337,14 +348,46 @@
                   }
               }
             }
-            .resource_data {
-              position: absolute;
-              left: 50px;
-              top: 38px;
-              font-size: .8em;
-              line-height: 1.2em;
-              color: #ddd;
-              text-align: left;
+            .resource {
+              border-right: solid 1px #666;
+              .resource_data {
+                position: absolute;
+                left: 50px;
+                top: 38px;
+                font-size: .8em;
+                line-height: 1.2em;
+                color: #ddd;
+                text-align: left;
+              }
+              .resource_elevation {
+                position: absolute;
+                height: 15px;
+                padding: 0 3px 0 5px;
+                font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                text-align: center;
+                background: #555;
+                color: #fff;
+                top: 0;
+                left: -1px;
+              }
+            }
+            .discussion {
+              border-right: solid 1px #666;
+              h4 {
+                margin: 17px 0 0;
+                line-height: 1.1em;
+              }
+              .discussion_elevation {
+                position: absolute;
+                height: 15px;
+                padding: 0 3px 0 5px;
+                font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+                text-align: center;
+                background: #555;
+                color: #fff;
+                top: 0;
+                left: -1px;
+              }
             }
             .profile {
               position: relative;
@@ -708,7 +751,7 @@
                 .share {
                     position: absolute;
                     top: -1px;
-                    left: 94px;
+                    left: 51px;
                     opacity: 0.2;
                     background: #000 image-url('share-icon.png') no-repeat 93px 4px;
                     width: 100px;
@@ -1800,7 +1843,7 @@
             .shareinvite {
               .share_form {
                 background: #222;
-                width: 810px;
+                width: 813px;
                 height: 418px;
                 padding: 15px;
                 p {

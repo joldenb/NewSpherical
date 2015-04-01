@@ -37,9 +37,9 @@
 
           </div>
 
-          <div class="story" ng-show="slide.itemtype == 'discussion'">
+          <div class="story discussion" ng-show="slide.itemtype == 'discussion'">
             <h4>{{slide.description}}</h4>
-            <div class="elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+            <div class="discussion_elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
 
             <div class="author_data" ng-if="slide.itemtype == 'discussion'">
               <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
@@ -51,10 +51,10 @@
             <h4>{{slide.description}}</h4>
           </div>
 
-          <div class="story" ng-show="slide.itemtype == 'resource'">
+          <div class="story resource" ng-show="slide.itemtype == 'resource'">
             <h4>{{slide.resource_name}}</h4>
             <div class="resource_data"><span ng-pluralize count="slide.filecount" when="{'0': 'No files', 'one': '1 file', 'other': '{} files'}"></span>, <span ng-pluralize count="slide.urlscount" when="{'0': 'no URLs', 'one': '1 URL', 'other': '{} URLs'}"></span></div>
-            <div class="elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+            <div class="resource_elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
             <div class="author_data">
               <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
               <p class="author">from {{slide.author}}<br />{{slide.pubdate}}</p>
@@ -77,24 +77,21 @@
 
   <div class="controls_bar">
     <div class="topic_controls">
-      <!-- <div class="control_rt" cntrlbar-btn btntarget="new_discussion">
-        <span class="discussion" ng-class="{active: visible.topicctls() && !visible.shareitem && !visible.unshareable}">New Discussion</span>
-      </div> -->
       <div class="control_rt" cntrlbar-btn btntarget="elevate">
-        <span class="elevate" ng-class="{active: visible.itemctls() && !visible.shareitem && !visible.unshareable}">Elevate</span>
+        <span class="elevate" ng-class="{active: itemctls()}">Elevate</span>
         <span class="elevate_fbk" ng-class="{error: !elevation_result.success}" ng-show="elevation_result.message">{{elevation_result.message}}</span>
       </div>
-      <div class="control_rt" cntrlbar-btn btntarget="repost">
-        <span class="repost" ng-class="{active: visible.itemctls() && !visible.shareitem && !visible.unshareable}">Repost</span>
-      </div>
+      <!-- <div class="control_rt" cntrlbar-btn btntarget="repost">
+        <span class="repost" ng-class="{active: itemctls(}">Repost</span>
+      </div> -->
       <div class="control_rt" cntrlbar-btn btntarget="share">
-        <span class="share" ng-class="{active: visible.itemctls() && !visible.unshareable}">Share / Invite</span>
+        <span class="share" ng-class="{active: itemctls()}">Share / Invite</span>
       </div>
     </div>
   </div>
 
   <div class="activity_window">
-    <div class="topic_indicator">
+    <div class="topic_indicator" ng-show="chooser.state.menuVisible">
       <h3 topic-cntrl-btn btntarget="channel" ng-class="{active: chooser.state.channelActive}">{{spheredata.channelname}}</h4>
 
       <h4 topic-cntrl-btn btntarget="related" ng-class="{active: !chooser.state.channelActive}" style="margin-bottom: 0;">Related</h4>
@@ -110,7 +107,7 @@
 
       <h4 topic-cntrl-btn btntarget="participants" ng-show="chooser.state.topicIndicatorVisible" ng-class="{inactive: !visible.signedin, active: visible.activity_window == 'participants'}">Participants</h4>
 
-      <div class="newcreate" ng-show="visible.signedin.curator && chooser.state.channelActive">
+      <div class="newcreate" ng-show="visible.signedin.curator && chooser.state.channelActive && !chooser.state.relatedActive && chooser.state.topicIndicatorVisible">
         <h4 topic-cntrl-btn btntarget="new_discussion">Discussion</h4>
         <h4 topic-cntrl-btn btntarget="new_resource">Resource</h4>
         <h4>Sphere</h4>

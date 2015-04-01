@@ -39,18 +39,6 @@
     </div>
   </div>
 
-
-  <!-- <form class="resource-dropzone" ng-show="newresource && newresource.id">
-    <input name="resrc_ctx" type="hidden" value="{{spheredata.channel_ctx_id}}" />
-    <input type="hidden" name="resource_id" value="{{newresource.id}}">
-    <div class="dz-message">To upload files,<br />drop here (or click).</div>
-    <div class="upload-preview dropzone-previews">
-      <div class="resource_list"></div>
-    </div>
-  </form> -->
-
-
-
   <div class="menu_item save" hover-highlight save-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Save<span class="resource_feedback" ng-class="{fbk_error: fbk_error}">{{resource_fbk}}</span></div>
   <div class="menu_item delete" hover-highlight delete-resource ng-show="newresource && newresource.id && resourceform.resource_name.$dirty && resourceform.resource_name.$valid && !_focussed.resource_name">Delete</div>
   <div class="closebox" resource-close-box>Close</div>

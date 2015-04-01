@@ -36,12 +36,13 @@ angular.module('sphericalApp.MainControllers', [])
         }
 
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$upload', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $upload, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$window', '$upload', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $window, $upload, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, SPHR_HST) {
         // these all run at page load
         $scope.ctrlname = 'ActivityCtrl';
         $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
         $scope.spheredata = $scope.spheredata || {};
         $scope.currentTopic = $scope.currentTopic || {};
+        $scope.thiswindow = $window;
 
         $scope.check_signin(function(signedin) {
           ActivityVis.signedin = signedin;
@@ -54,6 +55,7 @@ angular.module('sphericalApp.MainControllers', [])
           $scope.carouselIndex = 0;
           $scope.chooser.items = $scope.chooser.items || [];
           $scope.chooser.first_item = '';
+          $scope.chooser.state.menuVisible = true;
 
           SphereInfo.sphereData.then(function(d) {
               $scope.spheredata.channelname = d.data.channelname;
@@ -93,6 +95,7 @@ angular.module('sphericalApp.MainControllers', [])
               .then(function(storyid) {
                 $scope.set_carousel_index(storyid);
                 $scope.chooser.state.topicIndicatorVisible = true;
+                $scope.chooser.state.itemVisible = true;
               });
             } else if ($state.includes('**.story.**')) {
               $scope.get_formatted_story_items($scope.chooser.state.currentTopicId, $scope.chooser.state.channelActive)
@@ -104,6 +107,7 @@ angular.module('sphericalApp.MainControllers', [])
               .then(function(storyid) {
                 $scope.set_carousel_index(storyid);
                 $scope.chooser.state.topicIndicatorVisible = true;
+                $scope.chooser.state.itemVisible = true;
               });
             } else if ($state.includes('**.discussion.**')) {
               $scope.get_formatted_discussion_items($scope.chooser.state.currentTopicId)
@@ -115,6 +119,7 @@ angular.module('sphericalApp.MainControllers', [])
               .then(function(discussionid) {
                 $scope.set_carousel_index(discussionid);
                 $scope.chooser.state.topicIndicatorVisible = true;
+                $scope.chooser.state.itemVisible = true;
                 $scope.visible.activity_window = 'discussions';
               });
             }
@@ -215,6 +220,58 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
 
+        // chooser reload functions
+        $scope.load_stories = function() {
+          var topic = $scope.chooser.state.currentTopicId,
+          is_channel = $scope.chooser.state.channelActive;
+          $scope.get_formatted_story_items(topic, is_channel)
+          .then(function() {
+            var current_storyid;
+            if ($scope.chooser.state.activeStory) {
+              current_storyid = $scope.chooser.state.activeStory.id;
+            } else {
+              $scope.set_activestory(0);
+              current_storyid = $scope.chooser.first_item;
+            }
+            return current_storyid;
+          })
+          .then(function(storyid) {
+            $scope.set_carousel_index(storyid);
+            ActivityVis.activity_window = 'story';
+            $scope.chooser.state.topicIndicatorVisible = true;
+            $scope.chooser.state.itemVisible = true;
+            $state.go(
+                'sphere.topic.story', {topic: $scope.chooser.state.currentTopic, story: storyid}
+            );
+          });
+        };
+
+        $scope.load_discussions = function() {
+          var topic = $scope.chooser.state.currentTopicId;
+          $scope.get_formatted_discussion_items(topic)
+          .then(function() {
+            var current_discussionid;
+            if ($scope.chooser.state.currentDiscussion) {
+              current_discussionid = $scope.chooser.state.currentDiscussion.id;
+            } else {
+              current_discussionid = $scope.chooser.first_item;
+            }
+            return current_discussionid;
+          })
+          .then(function(discussionid) {
+            var idx = $scope.set_carousel_index(discussionid);
+            $scope.set_active_discussion(idx);
+            ActivityVis.activity_window = 'discussions';
+            $scope.chooser.state.topicIndicatorVisible = true;
+            $scope.chooser.state.itemVisible = true;
+            ForumData.forum_ctx_id = $scope.chooser.state.currentTopicId;
+            ForumData.post_id = discussionid;
+            $state.go(
+                'sphere.topic.discussion', {topic: $scope.chooser.state.currentTopic, discussion: discussionid}
+            );
+          });
+        };
+
         $scope.load_resources = function() {
           var topic = $scope.chooser.state.currentTopicId;
           return $scope.get_formatted_resource_items(topic)
@@ -239,12 +296,79 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
 
-        // $scope.fileSelected = function($file, $event) {
-        //   console.log($scope.resourceFile);
-        //   upload($scope.resourceFile);
-        // };
+        // functions called by certain directives
+        $scope.itemctls = function() {
+          return  !$scope.visible.overlay && $scope.visible.signedin && $scope.chooser.state.itemVisible && $scope.chooser.state.topicIndicatorVisible;
+        };
 
-        // utility methods
+        $scope.elevateItem = function(item_id, mode) {
+          var data = {item_id: item_id},
+          idx = 0;
+          $http.post(SPHR_HST + 'topics/elevate_item', data)
+          .success(function(res, status) {
+            $scope.elevation_result = res;
+            if (res.success) {
+              if (mode === 'discussions') {
+                $scope.load_discussions();
+              } else if (mode === 'stories') {
+                $scope.load_stories();
+              } else if (mode === 'resources') {
+                $scope.load_resources();
+              }
+            }
+            $timeout(function () {
+              $scope.elevation_result.message = null;
+            }, 3000);
+          });
+        };
+
+        $scope.getItemHeadline = function(item_type) {
+          if (item_type === 'story') {
+            return $scope.chooser.state.activeStory;
+          } else if (item_type === 'discussion') {
+            return $scope.chooser.state.currentDiscussion;
+          } else if (item_type === 'resource') {
+            return $scope.chooser.state.activeResource;
+          }
+        };
+
+        $scope.shareInviteSubmit = function() {
+          if ($scope.shareinviteform.$valid && $scope.shareinviteform.$dirty) {
+            var data = {};
+            data.invite_ctx = $scope.invite_ctx;
+            data.invite_sphere = $scope.invite_sphere;
+            data.share_url = $window.location.href;
+            data.headline = $scope.current_headline;
+            data.invite_email = $scope.invite_email;
+            data.also_invite = $scope.also_invite;
+            data.role = $scope.invite_role;
+            data.email_ps = $scope.email_ps;
+            data.statename = $state.current.name;
+            data.stateparams = $state.params;
+
+            $scope.shareinviteform.$setPristine();
+            $scope.show_share_feedback = false;
+            $scope.show_share_spinner = true;
+            $scope.invite_email = '';
+            $scope.email_ps = '';
+
+            $http.post(SPHR_HST + 'invite/with_share', data)
+            .success(function(res, status) {
+              $scope.show_share_spinner = false;
+              $scope.share_error = false;
+              $scope.show_share_feedback = true;
+              $scope.share_message = res.msg;
+            })
+            .error(function(res, status) {
+              $scope.show_share_spinner = false;
+              $scope.show_share_feedback = true;
+              $scope.share_error = true;
+              $scope.share_message = res.msg;
+            });
+          }
+        };
+
+        // private methods
         var make_chooser_map = function(items) {
           $scope.chooser.mapping = {};
           if (items.length < 1) {

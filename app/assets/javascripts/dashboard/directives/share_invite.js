@@ -7,7 +7,6 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
 .directive('shareform', ['SPHR_HST', function(SPHR_HST) {
   return {
     restrict: 'A',
-    // controller: "ActivityCtrl",
     templateUrl: SPHR_HST + "tpls/share_form.html"
   };
 }])
@@ -19,6 +18,7 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
         scope.$apply(function() {
           jQuery('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
           ActivityVis.overlay = null;
+          scope.chooser.state.menuVisible = true;
         });
       });
     }
@@ -29,7 +29,7 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
     restrict: 'A',
     link: function(scope, elm, attrs) {
       var email_to_check = scope.shareinviteform.invite_email,
-      check_invitable_url = SPHR_HST + '/invite/invitable';
+      check_invitable_url = SPHR_HST + 'invite/invitable';
       elm.on('blur', function() {
         scope.is_invitable = false;
         if (email_to_check.$pristine) {
