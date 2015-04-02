@@ -194,7 +194,7 @@
             }
         }
 
-        .tooltip_above {
+        /* .tooltip_above {
             display: none;
             position: absolute;
             width: 130px;
@@ -221,7 +221,7 @@
                     top: 40px;
                 }
             }
-        }
+        } */
         .menu {
             position: absolute;
             top: 5px;
@@ -238,7 +238,7 @@
             margin: 0;
             padding: 0;
         }
-        .swiper-container {
+        /* .swiper-container {
             margin:0 auto;
             position:relative;
             overflow:hidden;
@@ -275,7 +275,7 @@
         .swiper-slide {
             float:left;
             -webkit-transform:translate3d(0,0,0);
-        }
+        } */
 
         /* Chooser carousel styles */
         .chooser {
@@ -290,6 +290,9 @@
               height: 100%;
               margin: 0 2px;
               color: #fff;
+              &.lowlight {
+                opacity: 0.3;
+              }
               img {
                 max-width: 100%;
                 opacity: 0.7;

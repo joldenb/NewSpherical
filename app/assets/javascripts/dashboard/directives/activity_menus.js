@@ -252,7 +252,8 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
                 current_item = activityController.chooser.state.activeResource;
                 headline = current_item.resource_name;
               }
-              console.log('headline: ' + headline);
+              jQuery('.slide', '.chooser').addClass('lowlight');
+              jQuery('#' + current_item.id).removeClass('lowlight');
               scope.$apply(function() {
                 activityController.current_headline = headline;
                 ActivityVis.overlay = 'shareitem';

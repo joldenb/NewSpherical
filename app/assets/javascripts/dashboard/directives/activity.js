@@ -11,6 +11,9 @@ angular.module('sphericalApp.ActivityDirectives', [])
       itemid = attrs.itemid,
       ctxname = attrs.ctxname;
       elm.on('click', function() {
+        if (!scope.chooser.state.menuVisible) {
+            return;
+        }
         if (attrs.itemtype == 'story') {
           scope.$apply(function() {
             scope.set_activestory(slideidx);

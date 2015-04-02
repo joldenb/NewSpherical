@@ -27,7 +27,7 @@
 
   <ul class="chooser" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-duration="300" rn-carousel-easing="easeOutSine">
     <li ng-repeat="slide in chooser.items">
-      <div class="slide" chooser-click data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
+      <div class="slide" chooser-click id="{{slide.id}}" data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
 
           <img ng-src="{{slide.pic}}" brkn-img />
 

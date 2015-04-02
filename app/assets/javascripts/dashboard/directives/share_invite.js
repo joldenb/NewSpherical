@@ -16,7 +16,7 @@ angular.module('sphericalApp.ShareInviteDirectives', [])
     link: function(scope, elm, attrs) {
       elm.on('click', function() {
         scope.$apply(function() {
-          jQuery('.swiper-entity', '.topic-swiper').removeClass('unhighlight');
+          jQuery('.slide', '.chooser').removeClass('lowlight');
           ActivityVis.overlay = null;
           scope.chooser.state.menuVisible = true;
         });
