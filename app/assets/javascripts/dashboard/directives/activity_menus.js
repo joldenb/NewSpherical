@@ -35,60 +35,11 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
               });
             },
             stories = function() {
-              // var topic = activityController.chooser.state.currentTopicId,
-              // is_channel = activityController.chooser.state.channelActive;
-              // scope.$apply(function() {
-              //   activityController.get_formatted_story_items(topic, is_channel)
-              //   .then(function() {
-              //     var current_storyid;
-              //     if (activityController.chooser.state.activeStory) {
-              //       current_storyid = activityController.chooser.state.activeStory.id;
-              //     } else {
-              //       activityController.set_activestory(0);
-              //       current_storyid = activityController.chooser.first_item;
-              //     }
-              //     return current_storyid;
-              //   })
-              //   .then(function(storyid) {
-              //     activityController.set_carousel_index(storyid);
-              //     ActivityVis.activity_window = 'story';
-              //     activityController.chooser.state.topicIndicatorVisible = true;
-              //     activityController.chooser.state.itemVisible = true;
-              //     $state.go(
-              //         'sphere.topic.story', {topic: activityController.chooser.state.currentTopic, story: storyid}
-              //     );
-              //   });
-              // });
               scope.$apply(function() {
                 activityController.load_stories();
               });
             },
             discussions = function() {
-              // var topic = activityController.chooser.state.currentTopicId;
-              // scope.$apply(function() {
-              //   activityController.get_formatted_discussion_items(topic)
-              //   .then(function() {
-              //     var current_discussionid;
-              //     if (activityController.chooser.state.currentDiscussion) {
-              //       current_discussionid = activityController.chooser.state.currentDiscussion.id;
-              //     } else {
-              //       current_discussionid = activityController.chooser.first_item;
-              //     }
-              //     return current_discussionid;
-              //   })
-              //   .then(function(discussionid) {
-              //     var idx = activityController.set_carousel_index(discussionid);
-              //     activityController.set_active_discussion(idx);
-              //     ActivityVis.activity_window = 'discussions';
-              //     activityController.chooser.state.topicIndicatorVisible = true;
-              //     activityController.chooser.state.itemVisible = true;
-              //     ForumData.forum_ctx_id = activityController.chooser.state.currentTopicId;
-              //     ForumData.post_id = discussionid;
-              //     $state.go(
-              //         'sphere.topic.discussion', {topic: activityController.chooser.state.currentTopic, discussion: discussionid}
-              //     );
-              //   });
-              // });
               scope.$apply(function() {
                 activityController.load_discussions();
               });
@@ -182,9 +133,6 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
               });
             },
             newResource = function() {
-              // if ((!$state.includes('**.topic.**') && !activityController.channelActive)  || ActivityVis.overlay == 'shareitem') {
-              //   return;
-              // }
               UserInfo.signedin().then(function(d) {
                 if (d.signedin) {
                   ActivityVis.overlay = 'resource_edit';
@@ -260,31 +208,6 @@ angular.module('sphericalApp.ActivityMenusDirectives', [])
                 activityController.share_message = '';
                 activityController.chooser.state.menuVisible = false;
               });
-
-
-              // var item_index = activityController.get_item_index(activityController.topicItems, activityController.currentStory),
-              // is_discussion = (ActivityVis.activity_window == 'discussions');
-              // jQuery('.swiper-entity', '.topic-swiper').addClass('unhighlight');
-              // jQuery('#' + activityController.currentStory).removeClass('unhighlight');
-              // if (activityController.currentDiscussion) {
-              //   jQuery('#' + activityController.currentDiscussion.id).removeClass('unhighlight');
-              // }
-              // if (is_discussion) {
-              //   item_index = activityController.get_item_index(activityController.topicItems, activityController.currentDiscussion.id);
-              // }
-              // scope.$apply(function() {
-              //   ActivityVis.stories = false;
-              //   ActivityVis.discussions = false;
-              //   ActivityVis.discussion_edit = false;
-              //   ActivityVis.overlay = 'shareitem';
-              //   ActivityVis.current_item_index = item_index;
-              //   activityController.share_message = '';
-              //   if (is_discussion) {
-              //     activityController.current_headline = activityController.current_discussion[0].headline;
-              //   } else
-              //   activityController.current_headline = activityController.topicItems[ActivityVis.current_item_index][0].headline;
-              // });
-              // activityController.topicSwiper.swipeTo(item_index - 1, 300, false);
             },
             elevate = function() {
               if (!activityController.itemctls()) {
