@@ -27,49 +27,49 @@
 
   <ul class="chooser" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-duration="300" rn-carousel-easing="easeOutSine">
     <li ng-repeat="slide in chooser.items">
-      <div class="slide" chooser-click id="{{slide.id}}" data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
+      <div class="slide" chooser-click add-citation id="{{slide.id}}" data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
 
-          <img ng-src="{{slide.pic}}" brkn-img />
+        <img ng-src="{{slide.pic}}" brkn-img />
 
-          <div class="story" ng-show="slide.itemtype == 'story'">
-            <h4>{{slide.description}}</h4>
-            <div class="elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+        <div class="story" ng-show="slide.itemtype == 'story'">
+          <h4>{{slide.description}}</h4>
+          <div class="elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
 
+        </div>
+
+        <div class="story discussion" ng-show="slide.itemtype == 'discussion'">
+          <h4>{{slide.description}}</h4>
+          <div class="discussion_elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+
+          <div class="author_data" ng-if="slide.itemtype == 'discussion'">
+            <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
+            <p class="author">by {{slide.author}}<br />{{slide.pubdate}}</p>
+          </div>
+        </div>
+
+        <div class="story" ng-show="slide.itemtype == 'related'">
+          <h4>{{slide.description}}</h4>
+        </div>
+
+        <div class="story resource" ng-show="slide.itemtype == 'resource'">
+          <h4>{{slide.resource_name}}</h4>
+          <div class="resource_data"><span ng-pluralize count="slide.filecount" when="{'0': 'No files', 'one': '1 file', 'other': '{} files'}"></span>, <span ng-pluralize count="slide.urlscount" when="{'0': 'no URLs', 'one': '1 URL', 'other': '{} URLs'}"></span></div>
+          <div class="resource_elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
+          <div class="author_data">
+            <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
+            <p class="author">from {{slide.author}}<br />{{slide.pubdate}}</p>
+          </div>
+        </div>
+
+        <div class="profile" ng-show="slide.itemtype == 'profile'">
+          <div class="profile_image">
+            <img ng-src="{{slide.profile_image}}" brkn-img />
           </div>
 
-          <div class="story discussion" ng-show="slide.itemtype == 'discussion'">
-            <h4>{{slide.description}}</h4>
-            <div class="discussion_elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
-
-            <div class="author_data" ng-if="slide.itemtype == 'discussion'">
-              <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
-              <p class="author">by {{slide.author}}<br />{{slide.pubdate}}</p>
-            </div>
+          <div class="profile_data">
+            <h4>{{slide.screenname}}</h4>
           </div>
-
-          <div class="story" ng-show="slide.itemtype == 'related'">
-            <h4>{{slide.description}}</h4>
-          </div>
-
-          <div class="story resource" ng-show="slide.itemtype == 'resource'">
-            <h4>{{slide.resource_name}}</h4>
-            <div class="resource_data"><span ng-pluralize count="slide.filecount" when="{'0': 'No files', 'one': '1 file', 'other': '{} files'}"></span>, <span ng-pluralize count="slide.urlscount" when="{'0': 'no URLs', 'one': '1 URL', 'other': '{} URLs'}"></span></div>
-            <div class="resource_elevation" ng-show="slide.elevation > 0">{{slide.elevation}}</div>
-            <div class="author_data">
-              <div class="author_img" post-author-image imgaddr="slide.thumbnail"></div>
-              <p class="author">from {{slide.author}}<br />{{slide.pubdate}}</p>
-            </div>
-          </div>
-
-          <div class="profile" ng-show="slide.itemtype == 'profile'">
-            <div class="profile_image">
-              <img ng-src="{{slide.profile_image}}" brkn-img />
-            </div>
-
-            <div class="profile_data">
-              <h4>{{slide.screenname}}</h4>
-            </div>
-          </div>
+        </div>
 
       </div>
     </li>

@@ -9,7 +9,8 @@ angular.module('sphericalApp.ActivityDirectives', [])
     link: function(scope, elm, attrs) {
       var slideidx = parseInt(attrs.index),
       itemid = attrs.itemid,
-      ctxname = attrs.ctxname;
+      ctxname = attrs.ctxname,
+      itemtype = attrs.itemtype;
       elm.on('click', function() {
         if (!scope.chooser.state.menuVisible) {
             return;
@@ -55,6 +56,17 @@ angular.module('sphericalApp.ActivityDirectives', [])
             //     'sphere.topic.profiles', {topic: activityController.chooser.state.currentTopic, profile: itemid}
             // );
           });
+        }
+      });
+      elm.on('dblclick', function() {
+        if (ActivityVis.overlay == 'discussion_edit') {
+          if ((itemtype == 'story') || (itemtype == 'discussion') || (itemtype == 'resource')) {
+            scope.discussion_citation_add(itemid);
+          } else {
+            return;
+          }
+        } else {
+          return;
         }
       });
     }

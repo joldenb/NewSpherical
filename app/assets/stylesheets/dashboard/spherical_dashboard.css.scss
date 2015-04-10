@@ -419,6 +419,161 @@
             }
           }
         }
+        /* Items in discussion citations */
+
+        .slide {
+          margin: 0;
+          background: #000;
+          overflow: hidden;
+          width: 160px;
+          height: 92px;
+          cursor: pointer;
+          position: relative;
+          h4 {
+              position: absolute;
+              font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
+              text-transform: none;
+              margin: auto;
+              width: 150px;
+              height: 79px;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              color: #fff;
+              text-shadow: 1px 1px 1px #000;
+              text-align: center;
+              font-weight: 200;
+          }
+          img {
+              max-width: 100%;
+              min-height: 100%;
+              border: none;
+              opacity: 0.7;
+          }
+          .story {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 162px;
+            height: 89px;
+            cursor: pointer;
+            h4 {
+              margin: 5px 0 0;
+              text-align: center;
+              font-size: .9em;
+              overflow-wrap: break-word;
+              color: #fff;
+              text-shadow: 1px 1px 1px #000;
+            }
+            .elevation {
+              position: absolute;
+              height: 15px;
+              padding: 0 3px 0 5px;
+              font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+              text-align: center;
+              background: #000;
+              color: #fff;
+              bottom: 0;
+              right: -2px;
+            }
+          }
+          .author_data {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            .author {
+                font-size: .8em;
+                line-height: 1.2em;
+                color: #bbb;
+                position: absolute;
+                top: 0;
+                left: 35px;
+                width: 120px;
+            }
+            .author_img {
+                width: 30px;
+                height: 30px;
+                float: left;
+                text-align: center;
+                vertical-align: middle;
+                border: 1px solid #d4d4d4;
+                margin-right: 7px;
+                img {
+                    max-width: 100%;
+                    opacity: 1;
+                }
+            }
+          }
+          .resource {
+            border-right: solid 1px #666;
+            .resource_data {
+              position: absolute;
+              left: 50px;
+              top: 38px;
+              font-size: .8em;
+              line-height: 1.2em;
+              color: #ddd;
+              text-align: left;
+            }
+            .resource_elevation {
+              position: absolute;
+              height: 15px;
+              padding: 0 3px 0 5px;
+              font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+              text-align: center;
+              background: #555;
+              color: #fff;
+              top: 0;
+              left: -1px;
+            }
+          }
+          .discussion {
+            border-right: solid 1px #666;
+            h4 {
+              margin: 17px 0 0;
+              line-height: 1.1em;
+            }
+            .discussion_elevation {
+              position: absolute;
+              height: 15px;
+              padding: 0 3px 0 5px;
+              font: .9em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+              text-align: center;
+              background: #555;
+              color: #fff;
+              top: 0;
+              left: -1px;
+            }
+          }
+          .profile {
+            position: relative;
+            .profile_image {
+              width: 58px;
+              text-align: center;
+              img {
+                max-width: 100%;
+                opacity: 1;
+              }
+            }
+            .profile_data {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 162px;
+              height: 89px;
+              cursor: pointer;
+              h4 {
+                text-align: left;
+                margin-left: 65px;
+                font-size: .9em;
+                overflow-wrap: break-word;
+              }
+            }
+          }
+        }
+
+
         /* Story in Activity window */
         .storywindow {
           background: #444;
@@ -477,9 +632,12 @@
               }
           }
         }
-
+        .discussions {
+          position: relative;
+          overflow: hidden;
+        }
         /* Specify Swiper's Size: */
-        .topic-swiper {
+        /* .topic-swiper {
             height: 89px;
             margin: 2px 0 0;
             .noslides {
@@ -511,7 +669,7 @@
                 width: 162px;
                 height: 89px;
                 cursor: pointer;
-				        position: relative;
+                        position: relative;
                 &.unhighlight {
                   opacity: 0.4;
                 }
@@ -532,8 +690,8 @@
                 }
                 h4 {
                     position: absolute;
-                    /* font: .95em 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
-                    -webkit-font-smoothing: antialiased; */
+                    font: .95em 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, Arial, Verdana, sans-serif;
+                    -webkit-font-smoothing: antialiased;
                     font-size: .95em;
                     font-family: 'open_sansregular', 'Lucida Grande', 'Lucida Sans Unicode', Arial, sans-serif;
                     text-transform: none;
@@ -547,7 +705,7 @@
                     color: #fff;
                     text-shadow: 1px 1px 1px #000;
                     text-align: center;
-                    /* font-weight: bold; */
+                    font-weight: bold;
                 }
                 img {
                     max-width: 100%;
@@ -567,7 +725,7 @@
                   right: 0;
                 }
                 &.discussion_slide {
-                  /* background: #fff; */
+                  background: #fff;
                   color: #fff;
                   h4 {
                     color: #fff;
@@ -661,7 +819,7 @@
                   }
                 }
             }
-        }
+        } */
         .controls_bar {
             height: 30px;
             background: #222;
@@ -855,37 +1013,6 @@
                     }
                 }
             }
-            .swiper-entity {
-                margin: 0;
-                background: #000;
-                overflow: hidden;
-                width: 160px;
-                height: 92px;
-                cursor: pointer;
-                position: relative;
-                h4 {
-                    position: absolute;
-                    font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
-                    text-transform: none;
-                    margin: auto;
-                    width: 150px;
-                    height: 79px;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    color: #fff;
-                    text-shadow: 1px 1px 1px #000;
-                    text-align: center;
-                    font-weight: 200;
-                }
-                img {
-                    max-width: 100%;
-                    min-height: 100%;
-                    border: none;
-                    opacity: 0.7;
-                }
-            }
             &.preview {
                 float: right;
                 width: 418px;
@@ -898,6 +1025,97 @@
                     height: 92px;
                     margin: 10px 10px 10px 20px;
                     overflow: hidden;
+                    .slide {
+                        margin: 0;
+                        background: #000;
+                        overflow: hidden;
+                        width: 160px;
+                        height: 92px;
+                        cursor: pointer;
+                        position: relative;
+                        h4 {
+                            position: absolute;
+                            font: .95em "Helvetica Neue",Helvetica,Arial,sans-serif;
+                            text-transform: none;
+                            margin: auto;
+                            width: 150px;
+                            height: 79px;
+                            top: 0;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            color: #fff;
+                            text-shadow: 1px 1px 1px #000;
+                            text-align: center;
+                            font-weight: 200;
+                        }
+                        img {
+                            max-width: 100%;
+                            min-height: 100%;
+                            border: none;
+                            opacity: 0.7;
+                        }
+                    }
+                    .story {
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      width: 162px;
+                      height: 89px;
+                      cursor: pointer;
+                      h4 {
+                        margin: 5px 0 0;
+                        text-align: center;
+                        font-size: .9em;
+                        overflow-wrap: break-word;
+                        color: #fff;
+                        text-shadow: 1px 1px 1px #000;
+                      }
+                    }
+                    .author_data {
+                      position: absolute;
+                      bottom: 3px;
+                      left: 3px;
+                      .author {
+                          font-size: .8em;
+                          line-height: 1.2em;
+                          color: #bbb;
+                          position: absolute;
+                          top: 0;
+                          left: 35px;
+                          width: 120px;
+                      }
+                      .author_img {
+                          width: 30px;
+                          height: 30px;
+                          float: left;
+                          text-align: center;
+                          vertical-align: middle;
+                          border: 1px solid #d4d4d4;
+                          margin-right: 7px;
+                          img {
+                              max-width: 100%;
+                              opacity: 1;
+                          }
+                      }
+                    }
+                    .cite_resource {
+                      .resource_data {
+                        position: absolute;
+                        left: 50px;
+                        top: 38px;
+                        font-size: .8em;
+                        line-height: 1.2em;
+                        color: #ddd;
+                        text-align: left;
+                      }
+                    }
+                    .discussion {
+                      h4 {
+                        margin: 17px 0 0;
+                        line-height: 1.1em;
+                      }
+                    }
                 }
             }
             #thispost {

@@ -6,9 +6,33 @@
     <h3>{{chooser.state.currentDiscussion.description}}</h3>
     <div class="citations">
         <div class="cite" ng-repeat="cite in chooser.state.currentDiscussion.citations">
-            <div class="swiper-entity">
-                <img src="{{cite.pic}}" brkn-img />
-                <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description}}</h4></a>
+            <div class="slide">
+                <!-- <img src="{{cite.pic}}" brkn-img />
+                <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description || cite.resource_name}}</h4></a> -->
+
+                <img ng-src="{{cite.pic}}" brkn-img />
+
+                <div class="story" ng-show="cite.itemtype == 'story'">
+                  <h4>{{cite.description}}</h4>
+                </div>
+
+                <div class="story discussion" ng-show="cite.itemtype == 'discussion'">
+                  <h4>{{cite.description}}</h4>
+
+                  <div class="author_data" ng-show="cite.author">
+                    <div class="author_img" post-author-image imgaddr="cite.thumbnail"></div>
+                    <p class="author">by {{cite.author}}<br />{{cite.pubdate}}</p>
+                  </div>
+                </div>
+
+                <div class="story cite_resource" ng-show="cite.itemtype == 'resource'">
+                  <h4>{{cite.description}}</h4>
+                  <div class="resource_data"><span ng-pluralize count="cite.filecount" when="{'0': 'No files', 'one': '1 file', 'other': '{} files'}"></span>, <span ng-pluralize count="cite.urlscount" when="{'0': 'no URLs', 'one': '1 URL', 'other': '{} URLs'}"></span></div>
+                  <div class="author_data">
+                    <div class="author_img" post-author-image imgaddr="cite.thumbnail"></div>
+                    <p class="author">from {{cite.author}}<br />{{cite.pubdate}}</p>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -44,7 +68,7 @@
         </div>
     </div>
 </div>
-
+<div style="clear:both;"></div>
 <div class="noitem" ng-show="!chooser.state.currentDiscussion">
   <h3>No discussions yet in {{chooser.state.currentTopic}}.</h3>
 </div>

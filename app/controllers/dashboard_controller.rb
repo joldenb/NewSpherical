@@ -84,10 +84,44 @@ class DashboardController < ApplicationController
             author_info = {"author_handle" => author.handle, "thumb" => author.profile_image, "pubdate" => t.strftime("%B #{t.day.ordinalize}, %Y")}
             item << author_info
           end
+
           citations_info = []
           item[0].citations.each do |cite_id|
             if cite = Item.find(cite_id)
-              citations_info << {"id" => cite_id, "pic" => cite.image_src, "article_uri" => cite.article_uri, "description" => cite.headline}
+              if %w{discussion resource}.include?(cite.item_type)
+                cite_itemtype = cite.item_type
+                if cite_author = Entity.find(cite.submitter)
+                  cite_t = cite.updated_at
+                  cite_t_formatted = cite_t.strftime("%B #{cite_t.day.ordinalize}, %Y")
+                  cite_author_handle = cite_author.handle
+                  cite_author_profile_image = cite_author.profile_image
+                end
+                if cite.item_type == "resource"
+                  cite_filecount = cite.resource_files.count rescue 0
+                  cite_urlscount = cite.resource_urls.count rescue 0
+                  cite_headline = cite.resource_name
+                else
+                  cite_headline = cite.headline
+                end
+              else
+                cite_author_handle = nil
+                cite_author_profile_image = nil
+                cite_t_formatted = nil
+                cite_filecount = nil
+                cite_urlscount = nil
+                cite_itemtype = 'story'
+                cite_headline = cite.headline
+              end
+              citations_info << {"id" => cite_id,
+                                  "pic" => cite.image_src,
+                                  "article_uri" => cite.article_uri,
+                                  "description" => cite_headline,
+                                  "itemtype" => cite_itemtype,
+                                  "author"=> cite_author_handle,
+                                  "pubdate"=> cite_t_formatted,
+                                  "thumbnail" => cite_author_profile_image,
+                                  "filecount" => cite_filecount,
+                                  "urlscount" => cite_urlscount}
             end
           end
           item << citations_info
@@ -96,6 +130,52 @@ class DashboardController < ApplicationController
       else
         render :nothing => true, :status => 404
       end
+    end
+
+    def citation_item
+      if params[:id] =~ RMongoIdRegex
+        if cite = Item.find(params[:id])
+          if %w{discussion resource}.include?(cite.item_type)
+            cite_itemtype = cite.item_type
+            if cite_author = Entity.find(cite.submitter)
+              cite_t = cite.updated_at
+              cite_t_formatted = cite_t.strftime("%B #{cite_t.day.ordinalize}, %Y")
+              cite_author_handle = cite_author.handle
+              cite_author_profile_image = cite_author.profile_image
+            end
+            if cite.item_type == "resource"
+              cite_filecount = cite.resource_files.count rescue 0
+              cite_urlscount = cite.resource_urls.count rescue 0
+              cite_headline = cite.resource_name
+            else
+              cite_headline = cite.headline
+            end
+          else
+            cite_author_handle = nil
+            cite_author_profile_image = nil
+            cite_t_formatted = nil
+            cite_filecount = nil
+            cite_urlscount = nil
+            cite_itemtype = 'story'
+            cite_headline = cite.headline
+          end
+          citations_info = {"id" => cite.id.to_s,
+                            "pic" => cite.image_src,
+                            "article_uri" => cite.article_uri,
+                            "description" => cite_headline,
+                            "itemtype" => cite_itemtype,
+                            "author"=> cite_author_handle,
+                            "pubdate"=> cite_t_formatted,
+                            "thumbnail" => cite_author_profile_image,
+                            "filecount" => cite_filecount,
+                            "urlscount" => cite_urlscount}
+          render :json => {:citation => citations_info} and return
+        else
+          render :nothing => true, :status => 404
+        end # if cite
+      else
+        render :nothing => true, :status => 400
+      end # if params
     end
 
     def upload_resource_file

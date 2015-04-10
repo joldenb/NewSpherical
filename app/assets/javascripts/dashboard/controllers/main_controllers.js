@@ -36,10 +36,11 @@ angular.module('sphericalApp.MainControllers', [])
         }
 
     }])
-    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$window', '$upload', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $window, $upload, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, SPHR_HST) {
+    .controller('ActivityCtrl', ['$scope', '$rootScope', '$http', '$state', '$timeout', '$window', '$upload', 'SphereInfo', 'FormattedStoryItems', 'FormattedDiscussionItems', 'FormattedRelatedSpheres', 'FormattedResources', 'Curators', 'Participants', 'ActivityVis', 'ForumData', 'ChooserData', 'SPHR_HST', function($scope, $rootScope, $http, $state, $timeout, $window, $upload, SphereInfo, FormattedStoryItems, FormattedDiscussionItems, FormattedRelatedSpheres, FormattedResources, Curators, Participants, ActivityVis, ForumData, ChooserData, SPHR_HST) {
         // these all run at page load
         $scope.ctrlname = 'ActivityCtrl';
         $scope.visible = ActivityVis; //used in home.html for ng-show and ng-class
+        $scope.chooserdata = ChooserData;
         $scope.spheredata = $scope.spheredata || {};
         $scope.currentTopic = $scope.currentTopic || {};
         $scope.thiswindow = $window;
@@ -299,6 +300,29 @@ angular.module('sphericalApp.MainControllers', [])
         // functions called by certain directives
         $scope.itemctls = function() {
           return  !$scope.visible.overlay && $scope.visible.signedin && $scope.chooser.state.itemVisible && $scope.chooser.state.topicIndicatorVisible;
+        };
+
+        $scope.discussion_citation_add = function() {
+          var dup = false,
+          itemid;
+          if (ActivityVis.activity_window == 'discussions') {
+            itemid = $scope.chooser.state.currentDiscussion.id;
+          } else if (ActivityVis.activity_window == 'story') {
+            itemid = $scope.chooser.state.activeStory.id;
+          } else if (ActivityVis.activity_window == 'resources') {
+            itemid = $scope.chooser.state.activeResource.id;
+          }
+          angular.forEach(ChooserData.thispostdata.citations, function(citation) {
+              if (citation.id == itemid) {
+                  dup = true;
+              }
+          });
+          if (!dup) {
+            $http.get(SPHR_HST + 'dashboard/citation_item/' + itemid)
+            .success(function(response) {
+              ChooserData.thispostdata.citations.push(response.citation);
+            });
+          }
         };
 
         $scope.elevateItem = function(item_id, mode) {

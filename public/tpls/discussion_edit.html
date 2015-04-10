@@ -8,15 +8,15 @@
             <fieldset>
                 <input type="text" class="post_title" placeholder="Title" name="post_title" ng-model="chooserdata.thispostdata.description" ng-disabled="chooserdata.thispost_disabled" />
 
-                <div ng-show="!visible.show_drag_target">
-                  <div class="cite_btn" drag-target>Cite an Article</div>
-                  <div class="chooserstate">
-                    <input type="radio" name="chooserstate" ng-checked="visible.stories_active" value="stories" chsr-state> Stories
-                    <input type="radio" name="chooserstate" ng-checked="visible.discussions_active" value="discussions" chsr-state> Discussions
+              <!--   <div ng-show="!visible.show_drag_target">
+                <div class="cite_btn" drag-target>Cite an Article</div>
+                <div class="chooserstate">
+                  <input type="radio" name="chooserstate" ng-checked="visible.stories_active" value="stories" chsr-state> Stories
+                  <input type="radio" name="chooserstate" ng-checked="visible.discussions_active" value="discussions" chsr-state> Discussions
 
-                  </div>
                 </div>
-                <div class="cite_btn target" ng-show="visible.show_drag_target" ui-on-drop="handle_dragdrop($event, $data)" drop-channel="chooser">Drag Article Here<span class="close" drag-target>&nbsp;</span></div>
+              </div>
+              <div class="cite_btn target" ng-show="visible.show_drag_target" ui-on-drop="handle_dragdrop($event, $data)" drop-channel="chooser">Drag Article Here<span class="close" drag-target>&nbsp;</span></div> -->
 
                 <div class="citation_container" ng-repeat="cite in chooserdata.thispostdata.citations">
                     <div class="description">{{cite.description}}<div class="del-btn" cite-delete idx="$index">&nbsp;</div></div>
@@ -36,10 +36,34 @@
     <h3>{{chooserdata.thispostdata.description}}</h3>
     <div class="citations">
         <div class="cite" ng-repeat="cite in chooserdata.thispostdata.citations">
-            <div class="swiper-entity">
-                <img src="{{cite.pic}}" brkn-img />
-                <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description}}</h4></a>
-            </div>
+          <div class="slide">
+              <!-- <img src="{{cite.pic}}" brkn-img />
+              <a href="{{cite.article_uri}}" target="_blank"><h4>{{cite.description || cite.resource_name}}</h4></a> -->
+
+              <img ng-src="{{cite.pic}}" brkn-img />
+
+              <div class="story" ng-show="cite.itemtype == 'story'">
+                <h4>{{cite.description}}</h4>
+              </div>
+
+              <div class="story discussion" ng-show="cite.itemtype == 'discussion'">
+                <h4>{{cite.description}}</h4>
+
+                <div class="author_data" ng-show="cite.author">
+                  <div class="author_img" post-author-image imgaddr="cite.thumbnail"></div>
+                  <p class="author">by {{cite.author}}<br />{{cite.pubdate}}</p>
+                </div>
+              </div>
+
+              <div class="story cite_resource" ng-show="cite.itemtype == 'resource'">
+                <h4>{{cite.description}}</h4>
+                <div class="resource_data"><span ng-pluralize count="cite.filecount" when="{'0': 'No files', 'one': '1 file', 'other': '{} files'}"></span>, <span ng-pluralize count="cite.urlscount" when="{'0': 'no URLs', 'one': '1 URL', 'other': '{} URLs'}"></span></div>
+                <div class="author_data">
+                  <div class="author_img" post-author-image imgaddr="cite.thumbnail"></div>
+                  <p class="author">from {{cite.author}}<br />{{cite.pubdate}}</p>
+                </div>
+              </div>
+          </div>
         </div>
     </div>
     <p btf-markdown="chooserdata.thispostdata.text" id="preview_text"></p>
