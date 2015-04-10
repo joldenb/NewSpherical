@@ -400,11 +400,11 @@ exports.isBlockLevel = function (node) {
 		'\'': '&#x27;',
 		'<': '&lt;',
 		// See http://mathiasbynens.be/notes/ambiguous-ampersands: in HTML, the
-		// following is not strictly necessary unless it’s part of a tag or an
-		// unquoted attribute value. We’re only escaping it to support those
+		// following is not strictly necessary unless its part of a tag or an
+		// unquoted attribute value. Were only escaping it to support those
 		// situations, and for XML support.
 		'>': '&gt;',
-		// In Internet Explorer ≤ 8, the backtick character can be used
+		// In Internet Explorer  8, the backtick character can be used
 		// to break out of (un)quoted attribute values or HTML comments.
 		// See http://html5sec.org/#102, http://html5sec.org/#108, and
 		// http://html5sec.org/#133.
@@ -459,9 +459,9 @@ exports.isBlockLevel = function (node) {
 		var output = '';
 		if ((codePoint >= 0xD800 && codePoint <= 0xDFFF) || codePoint > 0x10FFFF) {
 			// See issue #4:
-			// “Otherwise, if the number is in the range 0xD800 to 0xDFFF or is
+			// Otherwise, if the number is in the range 0xD800 to 0xDFFF or is
 			// greater than 0x10FFFF, then this is a parse error. Return a U+FFFD
-			// REPLACEMENT CHARACTER.”
+			// REPLACEMENT CHARACTER.
 			if (strict) {
 				parseError('character reference outside the permissible Unicode range');
 			}
@@ -546,7 +546,7 @@ exports.isBlockLevel = function (node) {
 				return '&' + encodeMap[string] + ';';
 			});
 		} else {
-			// Encode `<>"'&` using hexadecimal escapes, now that they’re not handled
+			// Encode `<>"'&` using hexadecimal escapes, now that theyre not handled
 			// using named character references.
 			string = string.replace(regexEscape, hexEscape);
 		}
@@ -616,7 +616,7 @@ exports.isBlockLevel = function (node) {
 					return $0;
 				}
 			}
-			// If we’re still here, it’s a legacy reference for sure. No need for an
+			// If were still here, its a legacy reference for sure. No need for an
 			// extra `if` check.
 			// Decode named character references without trailing `;`, e.g. `&amp`
 			// This is only a parse error if it gets converted to `&`, or if it is
