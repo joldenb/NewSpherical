@@ -17,7 +17,7 @@
 //= require dashboard/services
 //= require dashboard/directives
 //= require dashboard/controllers
-//= require to-markdown
 //= require showdown
 //= require markdown
 //= require he
+//= require to-markdown
