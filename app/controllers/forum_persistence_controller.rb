@@ -42,6 +42,9 @@ class ForumPersistenceController < ApplicationController
       end
       context = params[:topic]
       author = current_dashboard_user.id.to_s
+      if !params[:oid]
+        params[:oid] = SecureRandom.uuid
+      end
       post = DiscussionPost.new.format_post(params)
       post_hash = Hash[post.each_pair.to_a]
       if !params[:post_id] || !Item.where(:id => params[:post_id].to_s, :submitter => author)
