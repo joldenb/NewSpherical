@@ -5,6 +5,10 @@
 //= require angular-touch
 //= require angular-carousel
 //= require angular-file-upload
+//= require showdown
+//= require markdown
+//= require he
+//= require to-markdown
 //= require perfect-scrollbar
 //= require dashboard/websocket/websocket_rails
 //= require dashboard/websocket/channel
@@ -17,7 +21,3 @@
 //= require dashboard/services
 //= require dashboard/directives
 //= require dashboard/controllers
-//= require showdown
-//= require markdown
-//= require he
-//= require to-markdown
