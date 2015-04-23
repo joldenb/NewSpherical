@@ -19,4 +19,3 @@
 //= require dashboard/controllers
 //= require showdown
 //= require markdown
-//= require to-markdown
