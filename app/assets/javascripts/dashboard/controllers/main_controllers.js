@@ -297,6 +297,10 @@ angular.module('sphericalApp.MainControllers', [])
           });
         };
 
+        $scope.show_dragger = function() {
+          return ($scope.visible.activity_window == 'story' || $scope.visible.activity_window == 'discussions' || $scope.visible.activity_window == 'resources') && !$scope.visible.overlay;
+        };
+
         // functions called by certain directives
         $scope.itemctls = function() {
           return  !$scope.visible.overlay && $scope.visible.signedin && $scope.chooser.state.itemVisible && $scope.chooser.state.topicIndicatorVisible;

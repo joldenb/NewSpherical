@@ -91,6 +91,8 @@
   </div>
 
   <div class="activity_window">
+    <div class="dragtarg" ng-drag="true" ng-show="show_dragger()">&nbsp;</div>
+
     <div class="topic_indicator" ng-show="chooser.state.menuVisible">
       <h3 topic-cntrl-btn btntarget="channel" ng-class="{active: chooser.state.channelActive}">{{spheredata.channelname}}</h4>
 

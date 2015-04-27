@@ -19,3 +19,4 @@
 //= require dashboard/controllers
 //= require showdown
 //= require markdown
+//= require ngDraggable
