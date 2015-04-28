@@ -1,13 +1,20 @@
 <div ng-controller="UserCtrl">
   <div id="user_area">
     <div class="userspheres">
-      <div ng-show="signedin || spheredata.channelname == data-sphere" class="four psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth3.png") %></div>
+      <div ng-drag="true" ng-show="signedin || spheredata.channelname == data-sphere" class="four psphere" data-sphere="WiserEarth" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/WiserEarth3.png") %></div>
+
       <!-- <div ng-show="signedin" class="six psphere" data-sphere="Pachamama Alliance" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Pachamama1.png") %></div> -->
-      <div ng-show="signedin" class="three psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE-logo2.png") %></div>
+
+      <div ng-drag="true" ng-show="signedin" class="three psphere" data-sphere="BALLE" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BALLE-logo2.png") %></div>
+
       <!-- <div ng-show="signedin" class="four psphere" data-sphere="American Geophysical Union" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/AGU1.png") %></div> -->
-      <div ng-show="signedin" class="two psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers2.png") %></div>
-      <div ng-show="signedin" class="one psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo4.png") %></div>
+
+      <div ng-drag="true" ng-show="signedin" class="two psphere" data-sphere="Bioneers" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/Bioneers2.png") %></div>
+
+      <div ng-drag="true" ng-show="signedin" class="one psphere" data-sphere="Rainforest Action Network" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/RANLogo4.png") %></div>
+
       <!-- <div ng-show="signedin || spheredata.channelname == 'Planetwork'" class="one psphere" data-sphere="Buckminster Fuller Institute" user-sphere><%= image_tag("#{ENV['FULLHOST']}assets/BFI_logo-sphere4.png") %></div> -->
+
     </div>
   </div>
 
@@ -27,7 +34,7 @@
 
   <ul class="chooser" rn-carousel rn-carousel-index="carouselIndex" rn-carousel-duration="300" rn-carousel-easing="easeOutSine">
     <li ng-repeat="slide in chooser.items">
-      <div class="slide" chooser-click add-citation id="{{slide.id}}" data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
+      <div class="slide" chooser-click ng-drop="true" ng-drop-success="onDropComplete({{slide}})" add-citation id="{{slide.id}}" data-itemid="{{slide.id}}" data-index="{{$index}}" data-itemtype="{{slide.itemtype}}" data-ctxname="{{slide.ctxname}}">
 
         <img ng-src="{{slide.pic}}" brkn-img />
 
@@ -91,7 +98,6 @@
   </div>
 
   <div class="activity_window">
-    <div class="dragtarg" ng-drag="true" ng-show="show_dragger()">&nbsp;</div>
 
     <div class="topic_indicator" ng-show="chooser.state.menuVisible">
       <h3 topic-cntrl-btn btntarget="channel" ng-class="{active: chooser.state.channelActive}">{{spheredata.channelname}}</h4>

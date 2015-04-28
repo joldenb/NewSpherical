@@ -298,6 +298,12 @@
                 max-width: 100%;
                 opacity: 0.7;
               }
+              &.drag-enter {
+                background: #0080c9;
+                img {
+                  opacity: 1;
+                }
+              }
             }
             .story {
               position: absolute;
