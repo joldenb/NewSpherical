@@ -81,8 +81,10 @@
               }
               .image {
                 position: absolute;
-                width: 25px;
-                height: 25px;
+                width: 26px;
+                height: 26px;
+                @include border-radius(13px);
+                overflow: hidden;
                 top: 3px;
                 right: 6px;
                 img {
