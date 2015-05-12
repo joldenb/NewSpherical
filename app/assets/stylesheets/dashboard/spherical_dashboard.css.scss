@@ -1364,6 +1364,18 @@
               z-index: 99999;
               cursor: pointer;
             }
+            .chooser-arrow {
+              position: absolute;
+              top: -90px;
+              opacity: 0.7;
+              cursor: pointer;
+              &.back {
+                left: -30px;
+              }
+              &.forward {
+                right: -30px;
+              }
+            }
             .topic_indicator {
                 position: absolute;
                 top: 0px;

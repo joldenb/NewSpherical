@@ -72,6 +72,40 @@ angular.module('sphericalApp.ActivityDirectives', [])
     }
   };
 }])
+.directive('chooserMoveBack', [function() {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        var currentCarIdx = scope.carouselIndex,
+        newCarIdx;
+        if ((currentCarIdx - 6) > 0) {
+          newCarIdx = currentCarIdx - 6;
+        } else {
+          newCarIdx = 0;
+        }
+        scope.$apply(function() {
+          scope.carouselIndex = newCarIdx;
+        });
+      });
+    }
+  };
+}])
+.directive('chooserMoveForward', [function() {
+  return {
+    restrict: 'A',
+    link: function(scope, elm, attrs) {
+      elm.on('click', function() {
+        var currentCarIdx = scope.carouselIndex,
+        newCarIdx;
+        newCarIdx = currentCarIdx + 6;
+        scope.$apply(function() {
+          scope.carouselIndex = newCarIdx;
+        });
+      });
+    }
+  };
+}])
 .directive('storyDisplay', ['SPHR_HST', function(SPHR_HST) {
     return {
         restrict: 'A',
