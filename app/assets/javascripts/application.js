@@ -18,3 +18,4 @@
 //= require he
 //= require to-markdown
 //= require perfect-scrollbar
+//= require colorpicker.module

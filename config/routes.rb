@@ -86,6 +86,8 @@ Topical::Application.routes.draw do
   post "/personal_settings/edit_profile_text" => 'personal_settings#edit_profile_text'
   get "/personal_settings/tools" => 'personal_settings#tools'
 
+  get "/manage_spheres/create" => 'manage_spheres#create'
+
   get "/curate/feed" => 'curate#feed'
   post "/curate/feeddata" => 'curate#feeddata'
   post "/curate/add_feed_item" => 'curate#add_feed_item'

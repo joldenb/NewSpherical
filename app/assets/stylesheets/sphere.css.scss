@@ -13,6 +13,23 @@ body {
     }
 }
 
+.colorpicker {
+  background: #222;
+  .dropdown-menu {
+    margin-top: 3px;
+    &::after {
+      top: 0;
+    }
+    colorpicker-preview {
+      display: none;
+    }
+    .close-colorpicker {
+      position: absolute;
+      left: 5px;
+      bottom: -18px;
+    }
+  }
+}
 .userspheres {
   .usphere {
     position: absolute;
@@ -231,7 +248,8 @@ fieldset {
   &.signup_container,
   &.admin_container,
   &.tools_container,
-  &.feed_container {
+  &.feed_container,
+  &.create_sphere_container {
     width: 340px;
     min-height: 480px;
     padding: 30px;
@@ -605,6 +623,44 @@ fieldset {
       }
     }
   }
+  &.create_sphere_container {
+    width: 320px;
+    min-height: 400px;
+    margin-top: 180px;
+    .newsphere {
+      height: 110px;
+      width: 110px;
+      @include border-radius(55px);
+      background: #aaa;
+      margin-left: 50px;
+    }
+    .pick_container {
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      top: 100px;
+      left: 200px;
+    }
+    .spherename {
+      width: 80px;
+      height: 40px;
+      position: absolute;
+      top: 135px;
+      left: 95px;
+      font: .7em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+      text-align: center;
+      color: #fff;
+    }
+    .crlpkr {
+      color: #0044cc;
+      position: relative;
+      margin-left: 120px;
+      width: 150px;
+      padding: 25px 0 0;
+      font: .8em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+      cursor: pointer;
+    }
+  }
   fieldset {
     input[type="button"] {
       height: 27px;
@@ -643,6 +699,13 @@ fieldset {
     }
   }
 }
+#create_sphere_form {
+  fieldset {
+    text-align: center;
+    margin-top: 30px;
+    position: relative;
+  }
+}
 .menu_item {
   height: 18px;
   font: .85em "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
@@ -664,6 +727,23 @@ fieldset {
   &.invitation_respond {
     padding: 7px 0 5px;
     width: 160px;
+  }
+  &.create_sphere {
+    background: transparent url(/assets/create-sphere.png) no-repeat 160px 7px;
+    position: absolute;
+    left: 104px;
+    bottom: 50px;
+    width: 160px;
+    opacity: 0.2;
+    &.highlight {
+      background-color: transparent;
+    }
+    &.active {
+      opacity: 1;
+      &.highlight {
+        background-color: #111;
+      }
+    }
   }
   &.savepic, &.cancelpic, &.saveprof {
     width: 60px;

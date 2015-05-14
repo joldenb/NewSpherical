@@ -7,6 +7,7 @@ angular.module('sphericalIoApp', [
   'ngSanitize',
   'ngAnimate',
   'ui.router',
+  'colorpicker.module',
   'sphericalIoApp.filters',
   'sphericalIoApp.services',
   'sphericalIoApp.directives',
@@ -39,6 +40,11 @@ angular.module('sphericalIoApp', [
     })
     .state('curate', {
         url: '/curate',
+        controller: 'MainCtrl'
+    })
+    .state('createsphere', {
+        url: '/sphere/create',
+        templateUrl: "/manage_spheres/create",
         controller: 'MainCtrl'
     });
 }])

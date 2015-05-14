@@ -1,0 +1,21 @@
+<% if current_user -%>
+  <div class="form_containers create_sphere_container">
+      <form name="create_sphere_form" id="create_sphere_form" novalidate>
+        <fieldset>
+          <input type="text" placeholder="Name your new sphere" name="spherename" ng-model="spherename" required focus-field />
+        </fieldset>
+
+        <div class="newsphere" ng-style="{'background-color': spherecolor}">
+          <div class="spherename" ng-style="{'color': spheretext}">{{spherename}}</div>
+          <div class="crlpkr" colorpicker ng-model="spherecolor">Pick a sphere color</div>
+          <div class="crlpkr" colorpicker ng-model="spheretext">Pick a text color</div>
+        </div>
+
+        <p class="submit_notice"><% if flash[:msg] -%><%= flash[:msg] %><% else -%>&nbsp;<% end -%></p>
+
+        <button style="display:none;"></button>
+        <div class="menu_item create_sphere" ng-class="{active: create_sphere_form.$dirty && create_sphere_form.spherename.$valid}" hover-highlight submittor>Create New Sphere</div>
+
+      </form>
+  </div>
+<% end -%>
