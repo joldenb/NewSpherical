@@ -3,7 +3,7 @@ Topical::Application.routes.draw do
       # it accepts :authorizations, :tokens, :applications and :authorized_applications
       controllers :authorizations => 'custom_authorizations'
     end
-
+  scope '/api' do
   get "/auth/:provider/callback" => 'entity#oauth_signin'
   get "/auth/failure" => 'entity#oauth_failure'
 
@@ -95,4 +95,5 @@ Topical::Application.routes.draw do
   get "/nda" => 'nda#index'
 
   root :to => 'sphere#signin'
+  end
 end

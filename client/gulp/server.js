@@ -21,9 +21,11 @@ function browserSyncInit(baseDir, browser) {
     };
   }
 
+  var proxy = proxyMiddleware('/ajax', {target: 'http://localhost:3000'});
   var server = {
     baseDir: baseDir,
-    routes: routes
+    routes: routes,
+    middleware: [proxy]
   };
 
   /*
@@ -33,11 +35,11 @@ function browserSyncInit(baseDir, browser) {
    *
    * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.0.5/README.md
    */
-  // server.middleware = proxyMiddleware('/users', {target: 'http://jsonplaceholder.typicode.com', proxyHost: 'jsonplaceholder.typicode.com'});
-
+  //server.middleware = proxyMiddleware('/ajax', {target: 'http://localhost:3000', proxyHost: 'http://localhost:9000'});
   browserSync.instance = browserSync.init({
     startPath: '/',
     server: server,
+    port: 9000,
     browser: browser
   });
 }
