@@ -1,6 +1,13 @@
-angular.module "client"
-  .service "webDevTec", () ->
-    data = [
+(function() {
+  'use strict';
+
+  angular
+      .module('sphericalFrontEnd')
+      .service('webDevTec', webDevTec);
+
+  /** @ngInject */
+  function webDevTec() {
+    var data = [
       {
         'title': 'AngularJS',
         'url': 'https://angularjs.org/',
@@ -54,24 +61,14 @@ angular.module "client"
         'url': 'https://github.com/sass/node-sass',
         'description': 'Node.js binding to libsass, the C version of the popular stylesheet preprocessor, Sass.',
         'logo': 'node-sass.png'
-      },
-      {
-        'title': 'CoffeeScript',
-        'url': 'http://coffeescript.org/',
-        'description': 'CoffeeScript, \'a little language that compiles into JavaScript\'.',
-        'logo': 'coffeescript.png'
-      },
-      {
-        'key': 'haml',
-        'title': 'HAML',
-        'url': 'http://haml.info/',
-        'description': 'Beautiful, DRY, well-indented, clear markup: templating haiku.',
-        'logo': 'haml.png'
       }
-    ]
+    ];
 
-    getTec = ->
-      data
+    this.getTec = getTec;
 
-    @getTec = getTec
-    return
+    function getTec() {
+      return data;
+    }
+  }
+
+})();
