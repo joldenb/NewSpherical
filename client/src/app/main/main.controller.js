@@ -6,8 +6,18 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, webDevTec, toastr) {
+  function MainController($scope, $http, $timeout, webDevTec, toastr) {
     var vm = this;
+
+    $http.get('http://v3.api.r88r.net/v3/headlines?cname=V3A.electricvehicles').
+    success(function(data, status, headers, config) {
+        $scope.r88rResponse = data.data.headlines;
+        var stop = "stop";
+    }).
+    error(function(data, status, headers, config) {
+    // called asynchronously if an error occurs
+    // or server returns response with an error status.
+    });
 
     vm.awesomeThings = [];
     vm.classAnimation = '';
@@ -34,6 +44,6 @@
       angular.forEach(vm.awesomeThings, function(awesomeThing) {
         awesomeThing.rank = Math.random();
       });
-    }
+    } 
   }
 })();
