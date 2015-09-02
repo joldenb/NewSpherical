@@ -1,50 +1,51 @@
-$image-height: 9em
-$image-width: 12em
+$image-height: 9em;
+$image-width: 12em;
 
 
-body 
-    background-image: url("/assets/images/cryo_sphere1.jpg")
-    background-size: 65%
-    background-repeat: no-repeat
-    background-position: 50% 5%
+body {
+    background-image: url("/assets/images/cryo_sphere1.jpg");
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: 50% 5%;
+}
 
-
-img 
+img { 
 /*    border-radius: 700px;
     width: 100%; */
+}
+
+.storyBlock {
+    display: inline-block;
+    height: 20em;
+}
 
 
-.storyBlock
-    display: inline-block
-    height:20em
-    width: 10em
+.one-half img {
+    height: $image-height;
+    width: $image-width;
+}
 
 
-.one-half img
-    height: $image-height
-    width: $image-width
+.two-half {
+    display: block;
+}
 
-
-.two-half
-    display: block
-
-
-.two-half img
+.two-half img {
     display:inline;
-    height: $image-height
-    width: $image-width
+    height: $image-height;
+    width: $image-width;
+}
 
+.scrollBarWrapper {
+    max-height: 20em;
+    position: absolute;
+    top: 35%;
+    overflow: hidden;
+    max-width: 100%;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
 
-.scrollBarWrapper 
-    max-height: 20em
-    position: absolute
-    top: 
-    overflow: hidden
-    max-width: 100%
-    overflow-y: hidden
-    white-space: nowrap
-
-
-.storyContainer 
-    overflow: auto
-
+.storyContainer {
+    overflow: auto;
+}
