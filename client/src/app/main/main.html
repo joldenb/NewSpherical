@@ -1,15 +1,36 @@
+<div ng-controller="MainController" class="text-center"  ng-class="[backgroundcolor, backgroundimage]">
 
-  <div ng-controller="MainController" class="text-center">
-      <div class="scrollBarWrapper">
-      <div class="storyContainer">
-          <span ng-repeat="story in r88rResponse" ng-if="$even" class="storyBlock">
+    <div id="optionsToggle" >
+        <h4>Background Color</h4>
+        <input id="blackBtn" type="button" value="Switch" ng-click="toggleBackgroundColor()">
+        <br>
+        <h4>Background Image Opacity</h4>
+        <input id="blackBtn" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
+        <br>
+        <h4>Number of Rows</h4>
+        <input id="blackBtn" type="button" value="Switch" ng-click="toggleNumberOfRows()">
+    </div>
+
+
+    <div class="scrollBarWrapper">
+        <div id="leftScrollFade"></div>
+        <div class="storyContainer">
+          <span ng-repeat="story in r88rResponse" ng-if="newColumn($index)" class="storyBlock">
             <span class="one-half" >
                 <img ng-src="{{story.thumbnail}}" />
             </span>
-            <span class="two-half">
+            <span class="two-half" ng-if="atLeastTwoRows()">
                 <img ng-src="{{r88rResponse[$index+1].thumbnail}}" />
             </span>
+            <span class="two-half" ng-if="atLeastThreeRows()">
+                <img ng-src="{{r88rResponse[$index+2].thumbnail}}" />
+            </span>
         </span>
+        </div>
+        <div id="rightScrollFade"></div>
     </div>
-    </div>
+
+
+
   </div>
+

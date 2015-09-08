@@ -2,21 +2,42 @@ $image-height: 9em;
 $image-width: 12em;
 
 
-body {
-    background-image: url("/assets/images/cryo_sphere1.jpg");
-    background-size: 65%;
+.text-center {
+    background-size: 55%;
     background-repeat: no-repeat;
     background-position: 50% 5%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }
 
-img { 
-/*    border-radius: 700px;
-    width: 100%; */
+.text-center.clear{
+    background-image: none ;
+}
+.text-center.full{
+    background-image: url("/assets/images/cryo_sphere1.png");
+}
+.text-center.half{
+    background-image: url("/assets/images/cryo_sphere1-half-transparent.png");
+}
+
+.text-center.gray {
+    background-color: lightgray !important;
+}
+
+.text-center.black{
+    background-color: black!important;
+}
+
+.text-center.white{
+    background-color: white!important;
 }
 
 .storyBlock {
     display: inline-block;
-    height: 20em;
+    height: 27em;
 }
 
 
@@ -26,7 +47,7 @@ img {
 }
 
 
-.two-half {
+.two-half, .one-half {
     display: block;
 }
 
@@ -37,7 +58,7 @@ img {
 }
 
 .scrollBarWrapper {
-    max-height: 20em;
+    max-height: 27em;
     position: absolute;
     top: 35%;
     overflow: hidden;
@@ -48,4 +69,50 @@ img {
 
 .storyContainer {
     overflow: auto;
+}
+
+.text-center.black #rightScrollFade {
+    background: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+.text-center.black #leftScrollFade {
+    background: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+.text-center.gray #rightScrollFade {
+    background: linear-gradient(to left, rgba(172,172,172,1), rgba(172,172,172,0));
+}
+.text-center.gray #leftScrollFade {
+    background: linear-gradient(to right, rgba(172,172,172,1), rgba(172,172,172,0));
+}
+.text-center.white #rightScrollFade {
+    background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+.text-center.white #leftScrollFade {
+    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+#rightScrollFade {
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    width:12em;
+    background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+#leftScrollFade {
+    position:absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    width:12em;
+    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+#optionsToggle{
+    margin-right:3em;
+    float:right;
+    z-index: 3;
+}
+
+#optionsToggle input{
 }
