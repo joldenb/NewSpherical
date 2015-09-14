@@ -2,10 +2,37 @@ $image-height: 9em;
 $image-width: 12em;
 
 
-.text-center {
-    background-size: 55%;
+
+body {
+    overflow:hidden;
+}
+
+.sphere-top-img {
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    top: -250px;
+    left: 35%;
+}
+
+
+.sphere-top {
+    height: 300px;
+    background-size: 47%;
     background-repeat: no-repeat;
-    background-position: 50% 5%;
+    background-position: 86% 275%;
+    position: absolute;
+    top: 0;
+    right: 29%;
+    left: 0;
+/*    background-image: url("/assets/images/forest-picture-circle.png"); */
+    z-index: 3;
+}
+
+.sphere-middle {
+    background-size: 40%;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -13,25 +40,25 @@ $image-width: 12em;
     left: 0;
 }
 
-.text-center.clear{
-    background-image: none ;
+.sphere-middle.clear {
+    //background-image: none ;
 }
-.text-center.full{
-    background-image: url("/assets/images/cryo_sphere1.png");
+.sphere-middle.full {
+/*    background-image: url("/assets/images/cryo_sphere1.png"); */
 }
-.text-center.half{
-    background-image: url("/assets/images/cryo_sphere1-half-transparent.png");
+.sphere-middle.half{
+   // background-image: url("/assets/images/cryo_sphere1-half-transparent.png");
 }
 
-.text-center.gray {
+.sphere-middle.gray {
     background-color: lightgray !important;
 }
 
-.text-center.black{
+.sphere-middle.black{
     background-color: black!important;
 }
 
-.text-center.white{
+.sphere-middle.white{
     background-color: white!important;
 }
 
@@ -65,28 +92,29 @@ $image-width: 12em;
     max-width: 100%;
     overflow-y: hidden;
     white-space: nowrap;
+    z-index:2;
 }
 
 .storyContainer {
     overflow: auto;
 }
 
-.text-center.black #rightScrollFade {
+.sphere-middle.black #rightScrollFade {
     background: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
 }
-.text-center.black #leftScrollFade {
+.sphere-middle.black #leftScrollFade {
     background: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
 }
-.text-center.gray #rightScrollFade {
+.sphere-middle.gray #rightScrollFade {
     background: linear-gradient(to left, rgba(172,172,172,1), rgba(172,172,172,0));
 }
-.text-center.gray #leftScrollFade {
+.sphere-middle.gray #leftScrollFade {
     background: linear-gradient(to right, rgba(172,172,172,1), rgba(172,172,172,0));
 }
-.text-center.white #rightScrollFade {
+.sphere-middle.white #rightScrollFade {
     background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
 }
-.text-center.white #leftScrollFade {
+.sphere-middle.white #leftScrollFade {
     background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
 }
 
@@ -111,6 +139,7 @@ $image-width: 12em;
 #optionsToggle{
     margin-right:3em;
     float:right;
+    position:relative;
     z-index: 3;
 }
 
