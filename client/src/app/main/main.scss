@@ -15,6 +15,36 @@ body {
     left: 35%;
 }
 
+.sphere-top-img-static {
+    height: 400px;
+    width:400px;
+    position:absolute;
+    top:-40%;
+    left:50%;
+    margin-left:-200px;
+    z-index:1;
+    opacity:.5;
+}
+.sphere-middle-img-static {
+    height: 500px;
+    width: 500px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    margin-top:-250px;
+    margin-left:-250px;      
+    z-index:1;
+}
+.sphere-bottom-img-static {
+    height: 400px;
+    width: 400px;
+    position:absolute;
+    top:90%;
+    left:50%;      
+    margin-left:-200px;
+    z-index:1;
+    opacity:.5;
+}
 
 .sphere-top {
     height: 300px;
@@ -144,4 +174,14 @@ body {
 }
 
 #optionsToggle input{
+}
+
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)  { 
+
+
+
+
+
 }
