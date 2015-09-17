@@ -5,7 +5,7 @@
     <p><span class="label">Signin Name</span><em><%= current_user.handle %></em></p>
     <fieldset>
       <p>
-        <span class="fld label">Screen Name</span>
+        <span class="fld label">Screen Name...</span>
         <input type="text" placeholder="Optional" name="screenname" ng-model="userprofile.screen_name" value="{{userprofile.screen_name || signedin.handle}}" is-focussed unique-screenname />
         <span class="ok" ng-show="userprofileform.screenname.$dirty && userprofileform.screenname.$valid && !_focussed.screenname && !checking_screenname"></span>
         <span class="error" ng-show="userprofileform.screenname.$dirty && userprofileform.screenname.$error.unique_screenname && !_focussed.screenname && !checking_screenname">in use</span>

@@ -18,15 +18,15 @@ set :term_mode, :system  # otherwise won't ask for github ssh passphrase
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
-set :shared_paths, ['config/mongoid.yml', 
-                    'config/initializers/server_specific.rb', 
+set :shared_paths, ['config/mongoid.yml',
+                    'config/initializers/server_specific.rb',
                     'config/initializers/social_auth_keys.rb',
                     'public/uploads',
                     'log',
                     'tmp']
 
 # Optional settings:
-#   set :user, 'foobar'    # Username in the server to SSH to.
+set :user, 'spherical'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
 
 # This task is the environment that is loaded for most commands, such as
@@ -107,4 +107,3 @@ end
 #  - http://nadarei.co/mina/tasks
 #  - http://nadarei.co/mina/settings
 #  - http://nadarei.co/mina/helpers
-
