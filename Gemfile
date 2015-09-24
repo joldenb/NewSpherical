@@ -33,7 +33,7 @@ gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mini_magick'
 
 gem 'foreman'
-gem 'pismo', :git => 'git://github.com/peterc/pismo.git'
+gem 'pismo', :git => 'https://github.com/peterc/pismo.git'
 
 gem 'rails4_upgrade'
 
