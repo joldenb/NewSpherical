@@ -26,7 +26,7 @@ set :shared_paths, ['config/mongoid.yml',
                     'tmp']
 
 # Optional settings:
-set :user, 'spherical'    # Username in the server to SSH to.
+set :user, 'victor'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
 
 # This task is the environment that is loaded for most commands, such as
