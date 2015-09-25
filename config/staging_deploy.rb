@@ -11,7 +11,7 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :domain, 'alpha2.planetwork.net'
-set :deploy_to, '/var/www/spherical_staging'
+set :deploy_to, '/var/www/staging_spherical'
 set :repository, 'git@github.com:planetwork/spherical.git'
 set :branch, 'master'
 set :term_mode, :system  # otherwise won't ask for github ssh passphrase
@@ -26,7 +26,7 @@ set :shared_paths, ['config/mongoid.yml',
                     'tmp']
 
 # Optional settings:
-set :user, 'spherical'    # Username in the server to SSH to.
+set :user, 'victor'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
 
 # This task is the environment that is loaded for most commands, such as

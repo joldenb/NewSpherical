@@ -33,7 +33,7 @@ gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mini_magick'
 
 gem 'foreman'
-gem 'pismo'
+gem 'pismo', :git => 'https://github.com/peterc/pismo.git'
 
 gem 'rails4_upgrade'
 
@@ -58,7 +58,7 @@ group(:development) do
 end
 
 # To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '3.0.1'
 
 group :test do
     gem 'minitest-rails'
