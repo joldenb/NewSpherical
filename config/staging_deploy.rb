@@ -13,7 +13,7 @@ require 'mina/rbenv'  # for rbenv support. (http://rbenv.org)
 set :domain, 'alpha2.planetwork.net'
 set :deploy_to, '/var/www/staging_spherical'
 set :repository, 'git@github.com:planetwork/spherical.git'
-set :branch, 'master'
+set :branch, 'new-ui'
 set :term_mode, :system  # otherwise won't ask for github ssh passphrase
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
