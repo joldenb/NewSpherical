@@ -7,6 +7,7 @@ Topical::Application.routes.draw do
   get "/auth/:provider/callback" => 'entity#oauth_signin'
   get "/auth/failure" => 'entity#oauth_failure'
 
+  match "/new-interface" => redirect("http://10.218.6.210:9000/")
   get "/admin" => 'admin#index'
   get "/admin/usercheck/:handle" => 'admin#usercheck'
   post "/admin/upload_profile_pic" => 'admin#upload_profile_pic'

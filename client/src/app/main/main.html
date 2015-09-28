@@ -8,27 +8,31 @@
 
     <div id="optionsToggle" >
         <h4>Background Color</h4>
-        <input id="blackBtn" type="button" value="Switch" ng-click="toggleBackgroundColor()">
+        <input class="blackBtn bgColor" type="button" value="Switch" ng-click="toggleBackgroundColor()">
         <br>
         <h4>Background Image Opacity</h4>
-        <input id="blackBtn" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
+        <input class="blackBtn bgOpacity" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
         <br>
         <h4>Number of Rows</h4>
-        <input id="blackBtn" type="button" value="Switch" ng-click="toggleNumberOfRows()">
+        <input class="blackBtn numRows" type="button" value="Switch" ng-click="toggleNumberOfRows()">
+        <input id="row-toggle-button" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
     </div>
 
 
     <div class="scrollBarWrapper">
         <div id="leftScrollFade"></div>
         <div class="storyContainer">
-          <span ng-repeat="story in r88rResponse" ng-if="newColumn($index)" class="storyBlock">
-            <span class="one-half" >
+          <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.thumbnail)" class="storyBlock">
+            <span class="one-half" ng-click="clickStory(story)">
+                <span class="title">{{story.title}}</span>
                 <img ng-src="{{story.thumbnail}}" />
             </span>
-            <span class="two-half" ng-if="atLeastTwoRows()">
+            <span class="two-half" ng-if="atLeastTwoRows()" ng-click="clickStory(r88rResponse[$index+1])">
+                <span class="title">{{story.title}}</span>
                 <img ng-src="{{r88rResponse[$index+1].thumbnail}}" />
             </span>
-            <span class="two-half" ng-if="atLeastThreeRows()">
+            <span class="two-half" ng-if="atLeastThreeRows()" ng-click="clickStory(r88rResponse[$index+2])">
+                <span class="title">{{story.title}}</span>
                 <img ng-src="{{r88rResponse[$index+2].thumbnail}}" />
             </span>
         </span>

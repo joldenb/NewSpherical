@@ -98,20 +98,27 @@ body {
 }
 
 
-.one-half img {
-    height: $image-height;
-    width: $image-width;
-}
-
-
-.two-half, .one-half {
+.one-half img{
+    height: 150%;
+    width: auto;
     display: block;
+    position: static;
 }
 
-.two-half img {
-    display:inline;
+
+.two-half, .one-half, {
+    display: block;
     height: $image-height;
     width: $image-width;
+    overflow: hidden;    
+    border-radius: 8px;
+    border: 2px solid rgba(0, 0, 0, 0.0);
+}
+
+.two-half img, {
+    display:inline;
+    height: 150%;
+    width: auto;
 }
 
 .scrollBarWrapper {
@@ -176,6 +183,12 @@ body {
 #optionsToggle input{
 }
 
+#row-toggle-button {
+    display: none;
+    position: relative;
+    margin: 16px auto;
+}
+
 @media only screen 
 and (min-device-width : 768px) 
 and (max-device-width : 1024px)  { 
@@ -185,3 +198,4 @@ and (max-device-width : 1024px)  {
 
 
 }
+
