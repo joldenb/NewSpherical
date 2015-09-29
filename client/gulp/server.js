@@ -38,6 +38,7 @@ function browserSyncInit(baseDir, browser) {
   //server.middleware = proxyMiddleware('/ajax', {target: 'http://localhost:3000', proxyHost: 'http://localhost:9000'});
   browserSync.instance = browserSync.init({
     startPath: '/',
+    host: "10.218.6.210",
     server: server,
     port: 9000,
     browser: browser
