@@ -4,45 +4,51 @@
     <img class="sphere-top-img-static">
     <img class="sphere-middle-img">
     <img class="sphere-middle-img-static">
+
     <div class="sphere-middle" ng-class="[backgroundcolor, backgroundimage]">
-
-    <div id="optionsToggle" >
-        <h4>Background Color</h4>
-        <input class="blackBtn bgColor" type="button" value="Switch" ng-click="toggleBackgroundColor()">
-        <br>
-        <h4>Background Image Opacity</h4>
-        <input class="blackBtn bgOpacity" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
-        <br>
-        <h4>Number of Rows</h4>
-        <input class="blackBtn numRows" type="button" value="Switch" ng-click="toggleNumberOfRows()">
-        <input id="row-toggle-button" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
-    </div>
-
-
-    <div class="scrollBarWrapper">
-        <div id="leftScrollFade"></div>
-        <div class="storyContainer">
-          <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.thumbnail)" class="storyBlock">
-            <span class="one-half" ng-click="clickStory(story)">
-                <span class="title">{{story.title}}</span>
-                <img ng-src="{{story.thumbnail}}" />
-            </span>
-            <span class="two-half" ng-if="atLeastTwoRows()" ng-click="clickStory(r88rResponse[$index+1])">
-                <span class="title">{{story.title}}</span>
-                <img ng-src="{{r88rResponse[$index+1].thumbnail}}" />
-            </span>
-            <span class="two-half" ng-if="atLeastThreeRows()" ng-click="clickStory(r88rResponse[$index+2])">
-                <span class="title">{{story.title}}</span>
-                <img ng-src="{{r88rResponse[$index+2].thumbnail}}" />
-            </span>
-        </span>
+        <div id="optionsToggle" >
+            <h4>Background Color</h4>
+            <input class="blackBtn bgColor" type="button" value="Switch" ng-click="toggleBackgroundColor()">
+            <br>
+            <h4>Background Image Opacity</h4>
+            <input class="blackBtn bgOpacity" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
+            <br>
+            <h4>Number of Rows</h4>
+            <input class="blackBtn numRows" type="button" value="Switch" ng-click="toggleNumberOfRows()">
+            <input id="row-toggle-button" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
         </div>
-        <div id="rightScrollFade"></div>
-    </div>
 
-    <img class="sphere-bottom-img">
-    <img class="sphere-bottom-img-static">
-</div>
+        <img id="storyCloseIcon" src="/assets/images/close-circle.png" ng-show="isStoryVisible()" ng-click="closeStoryView()">
+        <div ng-show="isStoryVisible()" class="storyView">
+            <h3 class="storyHeadline">{{visibleStory.headline}}</h3>
+            <div class="storyAbstract">{{visibleStory.abstract}}</div>
+            <a href="http://google.com"><h3 class="viewArticleLink">View Original Article<h3></a>
+        </div>
+
+        <div class="scrollBarWrapper">
+            <div id="leftScrollFade"></div>
+            <div class="storyContainer">
+              <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.thumbnail)" class="storyBlock">
+                <span class="one-half" ng-click="clickStory(story)">
+                    <span class="title">{{story.title}}</span>
+                    <img ng-src="{{story.thumbnail}}" />
+                </span>
+                <span class="two-half" ng-if="atLeastTwoRows()" ng-click="clickStory(r88rResponse[$index+1])">
+                    <span class="title">{{story.title}}</span>
+                    <img ng-src="{{r88rResponse[$index+1].thumbnail}}" />
+                </span>
+                <span class="two-half" ng-if="atLeastThreeRows()" ng-click="clickStory(r88rResponse[$index+2])">
+                    <span class="title">{{story.title}}</span>
+                    <img ng-src="{{r88rResponse[$index+2].thumbnail}}" />
+                </span>
+            </span>
+            </div>
+            <div id="rightScrollFade"></div>
+        </div>
+
+        <img class="sphere-bottom-img">
+        <img class="sphere-bottom-img-static">
+    </div>
 
   </div>
 

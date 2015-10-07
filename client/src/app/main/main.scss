@@ -95,6 +95,8 @@ body {
 .storyBlock {
     display: inline-block;
     height: 27em;
+    max-width: 600px;
+
 }
 
 
@@ -187,6 +189,42 @@ body {
     display: none;
     position: relative;
     margin: 16px auto;
+}
+
+.storyView {
+    width: 500px;
+    overflow: auto;
+    white-space: normal;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -250px;
+    margin-left: -250px;
+    z-index: 4;
+    color: #d6d6d6;
+    background-color: #383838;
+    border-radius :8px;
+}
+
+.storyView .storyAbstract {
+    height: 345px;
+    overflow: hidden;
+    padding: 0 25px;
+}
+
+.storyView .storyHeadline {
+    padding: 0 25px;
+}
+
+#storyCloseIcon {
+    height: 50px;
+    width: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -290px;
+    margin-left: 250px;
+    z-index: 6;
 }
 
 @media only screen 

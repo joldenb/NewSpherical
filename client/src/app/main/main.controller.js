@@ -42,6 +42,7 @@
 
     $scope.backgroundcolor = 'white';
     $scope.backgroundimage= 'full';
+    $scope.visibleStory = "";
     $scope.numberOfRows = 1;
     $scope.initialR88rResponse = [
         {
@@ -178,24 +179,50 @@
     $scope.r88rResponse = $scope.initialR88rResponse;
 
     $scope.clickStory = function(story) {
-        $http.get(story.url).
-        success(function(data, status, headers, config) {
-            $scope.r88rResponse = data.data.headlines;
-            $scope.r88rResponse = $scope.deleteNoThumbnails($scope.r88rResponse);
-            $scope.numberOfRows = 2;
 
-        }).
-        error(function(data, status, headers, config) {
-        // called asynchronously if an error occurs
-        // or server returns response with an error status.
-        });
+        //Determine if the story clicked should load a feed or if it's a specific story
+        if(story.url && story.url.indexOf("api.r88r.net") > -1){
+
+            $http.get(story.url).
+            success(function(data, status, headers, config) {
+                $scope.r88rResponse = data.data.headlines;
+                $scope.r88rResponse = $scope.deleteNoThumbnails($scope.r88rResponse);
+                $scope.numberOfRows = 2;
+
+            }).
+            error(function(data, status, headers, config) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            });
 
 
-        $("#row-toggle-button").show();
-        $("#row-toggle-button").css("display","block");
+            $("#row-toggle-button").show();
+            $("#row-toggle-button").css("display","block");
+        }
+
+        else if (story.short){
+            $scope.visibleStory = {
+                headline : story.headline,
+                short : story.short,
+                abstract : story.abstract
+            };
+
+        }
 
     }
 
+    $scope.closeStoryView = function() {
+        $scope.visibleStory = false;
+    }
+
+    $scope.isStoryVisible = function() {
+            if($scope.visibleStory) {
+                return true;
+            } else {
+                return false;
+            }
+
+    }
 
     $scope.deleteNoThumbnails = function(array) {
         var result = [],
