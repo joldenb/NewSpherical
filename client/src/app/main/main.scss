@@ -16,8 +16,8 @@ body {
 }
 
 .sphere-top-img-static {
-    height: 400px;
-    width:400px;
+    height: 50%;
+    width:auto;
     position:absolute;
     top:-40%;
     left:50%;
@@ -26,8 +26,8 @@ body {
     opacity:.5;
 }
 .sphere-middle-img-static {
-    height: 500px;
-    width: 500px;
+    height: 70%;
+    width: auto;
     position: absolute;
     top:50%;
     left:50%;
@@ -36,8 +36,8 @@ body {
     z-index:1;
 }
 .sphere-bottom-img-static {
-    height: 400px;
-    width: 400px;
+    height: 50%;
+    width: auto;
     position:absolute;
     top:90%;
     left:50%;      
@@ -232,9 +232,39 @@ body {
     width:200px;
 }
 
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px)  { 
+@media (max-width: 480px)
+  { 
+
+    .sphere-top-img-static {
+        height: 50%;
+        width:auto;
+        position:absolute;
+        top:-40%;
+        left:50%;
+        margin-left:-45%;
+        z-index:1;
+        opacity:.5;
+    }
+    .sphere-middle-img-static {
+        height: 50%;
+        width: auto;
+        position: absolute;
+        top:50%;
+        left:50%;
+        margin-top: -54%;
+        margin-left: -45%;
+        z-index:1;
+    }
+    .sphere-bottom-img-static {
+        height: 50%;
+        width: auto;
+        position:absolute;
+        top:83%;
+        left:50%;      
+        margin-left:-45%;
+        z-index:1;
+        opacity:.5;
+    }
 
 
 
