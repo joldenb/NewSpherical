@@ -231,12 +231,86 @@ body {
     height:200px;
     width:200px;
 }
-
+/*Iphone 5 */
 @media only screen 
   and (min-device-width: 320px) 
   and (max-device-width: 568px)
   and (-webkit-min-device-pixel-ratio: 2)
   { 
+
+    #rightScrollFade, #leftScrollFade {
+        display: none;
+    }
+
+    .storyBlock {
+        display: inline-block;
+        height: 7em;
+        max-width: 600px;
+    }
+
+    .scrollBarWrapper {
+        max-height: 7em;
+        position: absolute;
+        top: 10%;
+        overflow: hidden;
+        max-width: 100%;
+        overflow-y: hidden;
+        white-space: nowrap;
+        z-index:2;
+    }
+
+
+    .sphere-top-img {
+        height: 50%;
+        width: auto;
+    }
+
+    .sphere-top-img-static {
+        height: 30%;
+        width:auto;
+        position:absolute;
+        top:-20%;
+        left:50%;
+        margin-left:-45%;
+        z-index:1;
+        opacity:.5;
+    }
+    .sphere-middle-img-static {
+        height: 30%;
+        width: auto;
+        position: absolute;
+        top:50%;
+        left:50%;
+        margin-top: -54%;
+        margin-left: -45%;
+        z-index:1;
+    }
+    .sphere-bottom-img-static {
+        height: 30%;
+        width: auto;
+        position:absolute;
+        top:83%;
+        left:50%;      
+        margin-left:-45%;
+        z-index:1;
+        opacity:.5;
+    }
+
+
+
+
+
+}
+
+@media  
+  (min-width: 320px) 
+  and (max-width: 568px)
+  { 
+
+    .sphere-top-img {
+        height: 50%;
+        width: auto;
+    }
 
     .sphere-top-img-static {
         height: 50%;
@@ -274,11 +348,16 @@ body {
 
 
 }
-
-@media  
-  (min-width: 320px) 
-  and (max-width: 568px)
-  { 
+/* IPad */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+    
+    .sphere-top-img {
+        height: 50%;
+        width: auto;
+    }
 
     .sphere-top-img-static {
         height: 50%;
@@ -310,9 +389,5 @@ body {
         z-index:1;
         opacity:.5;
     }
-
-
-
-
 
 }
