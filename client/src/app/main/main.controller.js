@@ -40,6 +40,8 @@
     $(".sphere-middle-img-static").attr("src", preLoadedSpheres[currentSphereIndex]);
     $(".sphere-bottom-img-static").attr("src", preLoadedSpheres[preLoadedSpheres.length - 1]);
 
+    $scope.optionsNowVisible = false;
+
     $scope.backgroundcolor = 'white';
     $scope.backgroundimage= 'full';
     $scope.visibleStory = "";
@@ -465,7 +467,17 @@
 
     });
 
+    $scope.toggleOptions = function() {
+        if($scope.optionsNowVisible){
+            $scope.optionsNowVisible = false;
+        } else {
+            $scope.optionsNowVisible = true;
+        }
+    };
+
+
   }
+
 
     $(window).bind('onscroll', function(event) {
         // jQuery clones events, but only with a limited number of properties for perf reasons. Need the original event to get 'touches'

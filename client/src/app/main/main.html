@@ -6,16 +6,16 @@
     <img class="sphere-middle-img-static">
 
     <div class="sphere-middle" ng-class="[backgroundcolor, backgroundimage]">
-        <div id="optionsToggle" >
-            <h4>Background Color</h4>
-            <input class="blackBtn bgColor" type="button" value="Switch" ng-click="toggleBackgroundColor()">
+        <div id="optionsToggle" ng-click="toggleOptions()">
+            <h4 ng-show="optionsNowVisible">Background Color</h4>
+            <input class="blackBtn bgColor" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleBackgroundColor()">
             <br>
-            <h4>Background Image Opacity</h4>
-            <input class="blackBtn bgOpacity" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
+            <h4 ng-show="optionsNowVisible">Background Image Opacity</h4>
+            <input class="blackBtn bgOpacity" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
             <br>
-            <h4>Number of Rows</h4>
-            <input class="blackBtn numRows" type="button" value="Switch" ng-click="toggleNumberOfRows()">
-            <input id="row-toggle-button" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
+            <h4 ng-show="optionsNowVisible">Number of Rows</h4>
+            <input class="blackBtn numRows" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleNumberOfRows()">
+            <input id="row-toggle-button" ng-show="optionsNowVisible" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
         </div>
 
         <img id="storyCloseIcon" src="/assets/images/close-circle.png" ng-show="isStoryVisible()" ng-click="closeStoryView()">
