@@ -83,8 +83,8 @@ body {
 
 
 .one-half img{
-    height: 150%;
-    width: auto;
+    height: auto;
+    width: 100%;
     display: block;
     position: static;
 }
@@ -101,8 +101,8 @@ body {
 
 .two-half img, {
     display:inline;
-    height: 150%;
-    width: auto;
+    height: auto;
+    width: 100%;
 }
 
 .scrollBarWrapper {
@@ -213,72 +213,6 @@ body {
     height:10em;
     width:10em;
 }
-/*Iphone 5 */
-@media only screen 
-  and (min-device-width: 320px) 
-  and (max-device-width: 568px)
-  and (-webkit-min-device-pixel-ratio: 2)
-  { 
-
-    #rightScrollFade, #leftScrollFade {
-        display: none;
-    }
-
-    .storyBlock {
-        display: inline-block;
-        height: 7em;
-        max-width: 600px;
-    }
-
-    .scrollBarWrapper {
-        max-height: 7em;
-        position: absolute;
-        top: 10%;
-        overflow: hidden;
-        max-width: 100%;
-        overflow-y: hidden;
-        white-space: nowrap;
-        z-index:2;
-    }
-
-
-    .sphere-top-img-static {
-        height: 30%;
-        width:auto;
-        position:absolute;
-        top:-20%;
-        left:50%;
-        margin-left:-45%;
-        z-index:1;
-        opacity:.5;
-    }
-    .sphere-middle-img-static {
-        height: 30%;
-        width: auto;
-        position: absolute;
-        top:50%;
-        left:50%;
-        margin-top: -54%;
-        margin-left: -45%;
-        z-index:1;
-    }
-    .sphere-bottom-img-static {
-        height: 30%;
-        width: auto;
-        position:absolute;
-        top:40%;
-        left:50%;      
-        margin-left:-45%;
-        z-index:1;
-        opacity:.5;
-    }
-
-
-
-
-
-}
-
 
 
 
@@ -289,6 +223,9 @@ body {
   and (max-device-width: 1024px) 
   and (orientation : portrait) {
     
+    .scrollBarWrapper {
+        -webkit-overflow-scrolling: touch;
+    }
 
     .sphere-top-img-static {
         height: auto;
@@ -329,6 +266,9 @@ body {
   and (max-device-width: 1024px) 
   and (orientation : landscape) {
     
+    .scrollBarWrapper {
+        -webkit-overflow-scrolling: touch;
+    }
 
     .sphere-top-img-static {
         height: auto;
@@ -369,6 +309,29 @@ and (min-device-width : 320px)
 and (max-device-width : 667px) 
 and (orientation : portrait) {    
 
+
+    .storyBlock {
+        display: inline-block;
+        height: 7em;
+        max-width: 600px;
+    }
+
+    .scrollBarWrapper {
+        max-height: 7em;
+        position: absolute;
+        -webkit-overflow-scrolling: touch;
+        top: 10%;
+        overflow: hidden;
+        max-width: 100%;
+        overflow-y: hidden;
+        white-space: nowrap;
+        z-index:2;
+    }
+
+    #rightScrollFade, #leftScrollFade {
+        display: none;
+    }
+
     .sphere-top-img-static {
         height: auto;
         width: 50%;
@@ -408,6 +371,27 @@ and (min-device-width : 320px)
 and (max-device-width : 667px) 
 and (orientation : landscape) {    
     
+    .storyBlock {
+        display: inline-block;
+        height: 7em;
+        max-width: 600px;
+    }
+
+    .scrollBarWrapper {
+        max-height: 7em;
+        position: absolute;
+        top: 10%;
+        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
+        max-width: 100%;
+        overflow-y: hidden;
+        white-space: nowrap;
+        z-index:2;
+    }
+
+    #rightScrollFade, #leftScrollFade {
+        display: none;
+    }
 
     .sphere-top-img-static {
         height: auto;

@@ -52,128 +52,128 @@
             "Fab Lab",
         "url":
             "http://v3.api.r88r.net/v3/headlines?cname=V3A.fablab",
-        thumbnail:
-            "/assets/images/humanLathe_3.jpg"
+        img:{src:
+            "/assets/images/humanLathe_3.jpg"}
         },
         {
         "title":
             "Electric Vehicles",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.electricvehicles',
-        thumbnail:
-            "/assets/images/electricvehicle.jpg"
+        img:{src:
+            "/assets/images/electricvehicle.jpg"}
         },
         {
         "title":
             "Education Policy",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.educationpolicy',
-        thumbnail:
-            "/assets/images/ed-policy.jpg"
+        img:{src:
+            "/assets/images/ed-policy.jpg"}
         },
         {
         "title":
             "Data Viz",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.dataviz',
-        thumbnail:
-            "/assets/images/data-viz.jpg"
+        img:{src:
+            "/assets/images/data-viz.jpg"}
         },
         {
         "title":
             "Geology",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.geology',
-        thumbnail:
-            "/assets/images/geology.jpeg"
+        img:{src:
+            "/assets/images/geology.jpeg"}
         },
         {
         "title":
             "Cloud Computing",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.cloudcomputing',
-        thumbnail:
-            "/assets/images/cloud-compute.jpg"
+        img:{src:
+            "/assets/images/cloud-compute.jpg"}
         },
         {
         "title":
             "CG3D",    
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.cg3d',
-        thumbnail:
-            "/assets/images/protractor.png"
+        img:{src:
+            "/assets/images/protractor.png"}
         },
         {
         "title":
             "Health Tech",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.healthtech',
-        thumbnail:
-            "/assets/images/health-tec.png"
+        img:{src:
+            "/assets/images/health-tec.png"}
         },
         {
         "title":
             "IIW",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.iiw',
-        thumbnail:
-            "/assets/images/iiw.jpeg"   
+        img:{src:
+            "/assets/images/iiw.jpeg"}
         },
         {
         "title":
             "GIS",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.gis',
-        thumbnail:
-            "/assets/images/GIS.jpg"
+        img:{src:
+            "/assets/images/GIS.jpg"}
         },
         {
         "title":
             "Local Food",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.localfood',
-        thumbnail:
-            "/assets/images/local-food.jpg"
+        img:{src:
+            "/assets/images/local-food.jpg"}
         },
         {
         "title":
             "MOOC",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.mooc',
-        thumbnail:
-            "/assets/images/mooc.jpg"
+        img:{src:
+            "/assets/images/mooc.jpg"}
         },
         {
         "title":
             "Next Edge",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.nextedgeplus',
-        thumbnail:
-            "/assets/images/nextedge.jpg"
+        img:{src:
+            "/assets/images/nextedge.jpg"}
         },
         {
         "title":
             "Particle Physics",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.particlephysics',
-        thumbnail:
-            "/assets/images/particlephysics.jpg"
+        img:{src:
+            "/assets/images/particlephysics.jpg"}
         },
         {
         "title":
             "SAP",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.sap',
-        thumbnail:
-            "/assets/images/sap.jpg"
+        img:{src:
+            "/assets/images/sap.jpg"}
         },
         {
         "title":
             "Ted Plus",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.tedplus',
-        thumbnail:
-            "/assets/images/tedplus.jpg"
+        img:{src:
+            "/assets/images/tedplus.jpg"}
         }
 
     ]

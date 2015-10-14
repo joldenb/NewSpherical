@@ -28,18 +28,18 @@
         <div class="scrollBarWrapper">
             <div id="leftScrollFade"></div>
             <div class="storyContainer">
-              <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.thumbnail)" class="storyBlock">
+              <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.img.src)" class="storyBlock">
                 <span class="one-half" ng-click="clickStory(story)">
                     <span class="title">{{story.title}}</span>
-                    <img ng-src="{{story.thumbnail}}" />
+                    <img ng-src="{{story.img.src}}" />
                 </span>
                 <span class="two-half" ng-if="atLeastTwoRows()" ng-click="clickStory(r88rResponse[$index+1])">
                     <span class="title">{{story.title}}</span>
-                    <img ng-src="{{r88rResponse[$index+1].thumbnail}}" />
+                    <img ng-src="{{r88rResponse[$index+1].img.src}}" />
                 </span>
                 <span class="two-half" ng-if="atLeastThreeRows()" ng-click="clickStory(r88rResponse[$index+2])">
                     <span class="title">{{story.title}}</span>
-                    <img ng-src="{{r88rResponse[$index+2].thumbnail}}" />
+                    <img ng-src="{{r88rResponse[$index+2].img.src}}" />
                 </span>
             </span>
             </div>
