@@ -7,41 +7,34 @@ body {
     overflow:hidden;
 }
 
-.sphere-top-img {
-    height: 400px;
-    width: 400px;
-    position: absolute;
-    top: -250px;
-    left: 35%;
-}
 
 .sphere-top-img-static {
-    height: 50%;
-    width:auto;
+    height: auto;
+    width: 30%;
     position:absolute;
-    top:-40%;
-    left:50%;
-    margin-left:-200px;
+    top: -44%;
+    left: 35%;
+    margin-left: 0;
     z-index:1;
     opacity:.5;
 }
 .sphere-middle-img-static {
-    height: 70%;
-    width: auto;
+    height: auto;
+    width: 40%;
     position: absolute;
-    top:50%;
-    left:50%;
-    margin-top:-250px;
-    margin-left:-250px;      
+    top: 15%;
+    left: 30%;
+    margin-top: 0;
+    margin-left: 0;      
     z-index:1;
 }
 .sphere-bottom-img-static {
-    height: 50%;
-    width: auto;
+    height: auto;
+    width: 30%;
     position:absolute;
-    top:90%;
-    left:50%;      
-    margin-left:-200px;
+    top:93%;
+    left: 35%;      
+    margin-left: 0;
     z-index:1;
     opacity:.5;
 }
@@ -52,6 +45,7 @@ body {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     position: absolute;
+    overflow: hidden;
     top: 0;
     bottom: 0;
     right: 0;
@@ -297,7 +291,8 @@ body {
 /* IPad */
 @media only screen 
   and (min-device-width: 768px) 
-  and (max-device-width: 1024px) {
+  and (max-device-width: 1024px) 
+  and (orientation : portrait) {
     
     .sphere-top-img {
         height: 50%;
@@ -305,32 +300,76 @@ body {
     }
 
     .sphere-top-img-static {
-        height: 50%;
-        width:auto;
+        height: auto;
+        width: 60%;
         position:absolute;
-        top:-40%;
-        left:50%;
-        margin-left:-45%;
+        top: -35%;
+        left: 20%;
+        margin-left: 0;
         z-index:1;
         opacity:.5;
     }
     .sphere-middle-img-static {
-        height: 60%;
-        width: auto;
+        height: auto;
+        width: 50%;
         position: absolute;
-        top:50%;
-        left:50%;
-        margin-top: -45%;
-        margin-left: -40%;
+        top: 40%;
+        left: 25%;
+        margin-top: 0;
+        margin-left: 0;      
         z-index:1;
     }
     .sphere-bottom-img-static {
+        height: auto;
+        width: 60%;
+        position:absolute;
+        top:90%;
+        left: 20%;      
+        margin-left: 0;
+        z-index:1;
+        opacity:.5;
+    }
+
+}
+
+/* IPad */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation : landscape) {
+    
+    .sphere-top-img {
         height: 50%;
         width: auto;
+    }
+
+    .sphere-top-img-static {
+        height: auto;
+        width: 60%;
         position:absolute;
-        top:83%;
-        left:50%;      
-        margin-left:-45%;
+        top: -35%;
+        left: 20%;
+        margin-left: 0;
+        z-index:1;
+        opacity:.5;
+    }
+    .sphere-middle-img-static {
+        height: auto;
+        width: 50%;
+        position: absolute;
+        top: 40%;
+        left: 25%;
+        margin-top: 0;
+        margin-left: 0;      
+        z-index:1;
+    }
+    .sphere-bottom-img-static {
+        height: auto;
+        width: 60%;
+        position:absolute;
+        top:90%;
+        left: 20%;      
+        margin-left: 0;
         z-index:1;
         opacity:.5;
     }
