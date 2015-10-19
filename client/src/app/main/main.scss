@@ -1,5 +1,5 @@
-$image-height: 9em;
-$image-width: 12em;
+$image-height: 24em;
+$image-width: 32em;
 
 
 
@@ -83,15 +83,16 @@ body {
 
 
 .one-half img{
-    height: auto;
-    width: 100%;
+    margin: 0 auto;
     display: block;
     position: static;
 }
 
 
 .two-half, .one-half, {
+    background-color: rgba(51, 102, 204, 0.8);
     display: block;
+    position:relative;
     height: $image-height;
     width: $image-width;
     overflow: hidden;    
@@ -108,7 +109,7 @@ body {
 .scrollBarWrapper {
     max-height: 27em;
     position: absolute;
-    top: 35%;
+    top: 28%;
     overflow: hidden;
     max-width: 100%;
     overflow-y: hidden;
@@ -158,6 +159,7 @@ body {
 }
 
 #optionsToggle{
+    display:none;
     margin-right:3em;
     float:right;
     position:relative;
@@ -214,7 +216,29 @@ body {
     width:10em;
 }
 
+.title {
+    padding: 0 2em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: absolute;
+    top: 14em;
+    text-align: center;
+    width: 23.8em;
+    height: 4em;
+    line-height:4em;
+    font-size:19px;
+    background-color: rgba(255,255,255,0.8);
+}
 
+.longWideImage {
+    height:100%;
+    width:auto;
+}
+
+.tallNarrowImage {
+    height:auto;
+    width:100%;
+}
 
 
 /* IPad portrait*/

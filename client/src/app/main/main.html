@@ -7,12 +7,6 @@
 
     <div class="sphere-middle" ng-class="[backgroundcolor, backgroundimage]">
         <div id="optionsToggle" ng-click="toggleOptions()">
-            <h4 ng-show="optionsNowVisible">Background Color</h4>
-            <input class="blackBtn bgColor" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleBackgroundColor()">
-            <br>
-            <h4 ng-show="optionsNowVisible">Background Image Opacity</h4>
-            <input class="blackBtn bgOpacity" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleBackgroundOpacity()">
-            <br>
             <h4 ng-show="optionsNowVisible">Number of Rows</h4>
             <input class="blackBtn numRows" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleNumberOfRows()">
             <input id="row-toggle-button" ng-show="optionsNowVisible" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
@@ -29,9 +23,9 @@
             <div id="leftScrollFade"></div>
             <div class="storyContainer">
               <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.img.src)" class="storyBlock">
-                <span class="one-half" ng-click="clickStory(story)">
-                    <span class="title">{{story.title}}</span>
-                    <img ng-src="{{story.img.src}}" />
+                <span class="one-half" ng-class="getImageClass(story)" ng-click="clickStory(story)">
+                    <img ng-src="{{story.img.src}}" orientable/>
+                    <div class="title">{{story.headline}}</div>
                 </span>
                 <span class="two-half" ng-if="atLeastTwoRows()" ng-click="clickStory(r88rResponse[$index+1])">
                     <span class="title">{{story.title}}</span>

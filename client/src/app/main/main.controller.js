@@ -3,7 +3,31 @@
 
   angular
     .module('sphericalFrontEnd')
-    .controller('MainController', MainController);
+    .controller('MainController', MainController)
+    .directive('orientable', function () {       
+        return {
+            link: function(scope, element, attrs) {   
+
+                element.bind("load" , function(e){ 
+
+                    var heightDiff = parseInt(this.naturalHeight) - parseInt($(".storyBlock").height());                        
+                    var widthDiff =  parseInt(this.naturalWidth) - parseInt($(".storyBlock").width());
+                    if( heightDiff > 0 && widthDiff > 0 ){
+                        if(heightDiff > widthDiff){
+                            this.className = "tallNarrowImage";
+                        } else {
+                            this.className = "longWideImage";
+                        }
+                    } else if (heightDiff > 0) {
+                        this.className = "tallNarrowImage";
+                    } else {
+                        this.className = "longWideImage";
+                    }
+                });
+            }
+        }
+    });
+
 
   /** @ngInject */
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
@@ -48,7 +72,7 @@
     $scope.numberOfRows = 1;
     $scope.initialR88rResponse = [
         {
-        "title":
+        "headline":
             "Fab Lab",
         "url":
             "http://v3.api.r88r.net/v3/headlines?cname=V3A.fablab",
@@ -56,7 +80,7 @@
             "/assets/images/humanLathe_3.jpg"}
         },
         {
-        "title":
+        "headline":
             "Electric Vehicles",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.electricvehicles',
@@ -64,7 +88,7 @@
             "/assets/images/electricvehicle.jpg"}
         },
         {
-        "title":
+        "headline":
             "Education Policy",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.educationpolicy',
@@ -72,7 +96,7 @@
             "/assets/images/ed-policy.jpg"}
         },
         {
-        "title":
+        "headline":
             "Data Viz",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.dataviz',
@@ -80,7 +104,7 @@
             "/assets/images/data-viz.jpg"}
         },
         {
-        "title":
+        "headline":
             "Geology",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.geology',
@@ -88,7 +112,7 @@
             "/assets/images/geology.jpeg"}
         },
         {
-        "title":
+        "headline":
             "Cloud Computing",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.cloudcomputing',
@@ -96,7 +120,7 @@
             "/assets/images/cloud-compute.jpg"}
         },
         {
-        "title":
+        "headline":
             "CG3D",    
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.cg3d',
@@ -104,7 +128,7 @@
             "/assets/images/protractor.png"}
         },
         {
-        "title":
+        "headline":
             "Health Tech",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.healthtech',
@@ -112,7 +136,7 @@
             "/assets/images/health-tec.png"}
         },
         {
-        "title":
+        "headline":
             "IIW",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.iiw',
@@ -120,7 +144,7 @@
             "/assets/images/iiw.jpeg"}
         },
         {
-        "title":
+        "headline":
             "GIS",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.gis',
@@ -128,7 +152,7 @@
             "/assets/images/GIS.jpg"}
         },
         {
-        "title":
+        "headline":
             "Local Food",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.localfood',
@@ -136,7 +160,7 @@
             "/assets/images/local-food.jpg"}
         },
         {
-        "title":
+        "headline":
             "MOOC",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.mooc',
@@ -144,7 +168,7 @@
             "/assets/images/mooc.jpg"}
         },
         {
-        "title":
+        "headline":
             "Next Edge",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.nextedgeplus',
@@ -152,7 +176,7 @@
             "/assets/images/nextedge.jpg"}
         },
         {
-        "title":
+        "headline":
             "Particle Physics",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.particlephysics',
@@ -160,7 +184,7 @@
             "/assets/images/particlephysics.jpg"}
         },
         {
-        "title":
+        "headline":
             "SAP",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.sap',
@@ -168,7 +192,7 @@
             "/assets/images/sap.jpg"}
         },
         {
-        "title":
+        "headline":
             "Ted Plus",
         "url":
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.tedplus',
@@ -189,7 +213,7 @@
             success(function(data, status, headers, config) {
                 $scope.r88rResponse = data.data.headlines;
                 $scope.r88rResponse = $scope.deleteNoThumbnails($scope.r88rResponse);
-                $scope.numberOfRows = 2;
+                //$scope.numberOfRows = 2;
 
             }).
             error(function(data, status, headers, config) {
@@ -369,6 +393,10 @@
 
     };
 
+    $scope.getImageClass = function(story) {
+        var stop;
+    }
+
     $scope.staticSpheresReappear = function(){
                 $(".sphere-top-img").fadeOut(400);
                 $(".sphere-middle-img").fadeOut(400);
@@ -500,5 +528,8 @@
 //        $(this).scrollTop(scrollStartPos - e.touches[0].pageY);
 //        e.preventDefault();
     });
+
+
+
 
 })();
