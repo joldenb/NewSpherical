@@ -33,9 +33,18 @@
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
     var preLoadedSpheres = 
     [
-        "/assets/images/cryo_sphere1.png",
-        "/assets/images/atmosphere.png",
-        "/assets/images/forest-picture-circle.png"
+        {
+            "src":"/assets/images/cryo_sphere1.png",
+            "sphereName": "Cryosphere"
+        } ,
+        {
+            "src":"/assets/images/atmosphere.png",
+            "sphereName": "Atmosphere"
+        } ,
+        {
+            "src":"/assets/images/forest-picture-circle.png",
+            "sphereName": "Forest"
+        } 
     ]
 
     var feeds = 
@@ -60,12 +69,16 @@
 
     var currentSphereIndex = 0;
 
-    $(".sphere-top-img-static").attr("src", preLoadedSpheres[currentSphereIndex + 1]);
-    $(".sphere-middle-img-static").attr("src", preLoadedSpheres[currentSphereIndex]);
-    $(".sphere-bottom-img-static").attr("src", preLoadedSpheres[preLoadedSpheres.length - 1]);
+
+    //This is jQuery, try not to mix angular and jquery when possible, because
+    // they both do DOM manipulation.
+    $(".sphere-top-img-static").attr("src", preLoadedSpheres[currentSphereIndex + 1].src);
+    $(".sphere-middle-img-static").attr("src", preLoadedSpheres[currentSphereIndex].src);
+    $(".sphere-bottom-img-static").attr("src", preLoadedSpheres[preLoadedSpheres.length - 1].src);
 
     $scope.optionsNowVisible = false;
 
+    $scope.breadcrumbSphere = preLoadedSpheres[currentSphereIndex].sphereName;
     $scope.backgroundcolor = 'white';
     $scope.backgroundimage= 'full';
     $scope.visibleStory = "";
@@ -208,6 +221,8 @@
 
         //Determine if the story clicked should load a feed or if it's a specific story
         if(story.url && story.url.indexOf("api.r88r.net") > -1){
+
+            $scope.breadcrumbFeed = story.headline;
 
             $http.get(story.url).
             success(function(data, status, headers, config) {
@@ -412,6 +427,10 @@
     }
 
     $scope.getR88rResponse = function(){
+        if($scope.breadcrumbFeed){ 
+            $scope.breadcrumbFeed = undefined;
+        }
+        $scope.closeStoryView();
         $(".scrollBarWrapper").hide();
         $scope.r88rResponse = $scope.initialR88rResponse;
         if(!$scope.scrollEventTriggered){
@@ -504,32 +523,46 @@
     };
 
 
-  }
 
 
-    $(window).bind('onscroll', function(event) {
-        // jQuery clones events, but only with a limited number of properties for perf reasons. Need the original event to get 'touches'
-        var e = event.originalEvent;
-//        scrollStartPos = $(this).scrollTop() + e.touches[0].pageY;
-//        e.preventDefault();
-    });
-    $(window).bind('touchmove', function(event) {
-        var e = event.originalEvent;
-//        $(this).scrollTop(scrollStartPos - e.touches[0].pageY);
-//        e.preventDefault();
-    });
-    $(window).bind('touchend', function(event) {
-        var e = event.originalEvent;
-//        $(this).scrollTop(scrollStartPos - e.touches[0].pageY);
-//        e.preventDefault();
-    });
-    $(window).bind('touchstart', function(event) {
-        var e = event.originalEvent;
-//        $(this).scrollTop(scrollStartPos - e.touches[0].pageY);
-//        e.preventDefault();
-    });
+    //touch event handlers for ipad
+
+    var start = {x:0,y:0};
+
+    document.addEventListener('touchstart', function(event) {
+            start.x = event.touches[0].pageX;
+            start.y = event.touches[0].pageY;
+    }, false);
+
+    document.addEventListener("touchmove", function(event) {
+
+    var offset = {};
+
+    offset.x = start.x - event.touches[0].pageX;
+    offset.y = start.y - event.touches[0].pageY;
+            if(offset.y < -75 && !$scope.scrollEventTriggered)
+            {
+                $scope.scrollUpSphere();
+                $scope.scrollEventTriggered = true;
 
 
+            } else if (offset.y > 75 && !$scope.scrollEventTriggered)
+            {
+                $scope.scrollDownSphere();
+                $scope.scrollEventTriggered = true;
+
+            }
+
+            console.log("x is" + offset.x);
+            console.log("y is" + offset.y);
+    return offset;
+
+    }, false);
+
+
+
+
+  } //This is the end of the big thing
 
 
 })();

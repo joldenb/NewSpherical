@@ -240,6 +240,16 @@ body {
     width:100%;
 }
 
+#breadCrumbs {
+    text-align: left;
+    position: absolute;
+    top:21%;
+    padding-left: 1em;
+}
+
+#breadCrumbs h3 {
+    display: inline;
+}
 
 /* IPad portrait*/
 @media only screen 
