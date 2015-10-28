@@ -22,7 +22,8 @@ body {
     height: auto;
     width: 40%;
     position: absolute;
-    top: 15%;
+    top: 50%;
+    margin-top: -20% !important;
     left: 30%;
     margin-top: 0;
     margin-left: 0;      
@@ -109,7 +110,8 @@ body {
 .scrollBarWrapper {
     max-height: 27em;
     position: absolute;
-    top: 28%;
+    top: 50%;
+    margin-top:-12em;
     overflow: hidden;
     max-width: 100%;
     overflow-y: hidden;

@@ -44,7 +44,32 @@
         {
             "src":"/assets/images/forest-picture-circle.png",
             "sphereName": "Forest"
+        } , 
+        {
+            "src":"/assets/images/volcano-circle.png",
+            "sphereName": "Volcano"
+        } ,
+        {
+            "src":"/assets/images/swamp-circle.png",
+            "sphereName": "Swamp"
+        } , 
+        {
+            "src":"/assets/images/coral-circle.png",
+            "sphereName": "Coral"
+        } , 
+        {
+            "src":"/assets/images/andromeda-circle.png",
+            "sphereName": "Space"
+        } , 
+        {
+            "src":"/assets/images/forest-circle.png",
+            "sphereName": "Trees"
+        } , 
+        {
+            "src":"/assets/images/round-mtn-picture.png",
+            "sphereName": "Rocky Mountains"
         } 
+
     ]
 
     var feeds = 
@@ -68,6 +93,8 @@
     ]
 
     var currentSphereIndex = 0;
+    var nextSphereUp = 1;
+    var nextSphereDown = preLoadedSpheres[preLoadedSpheres.length - 1];
 
 
     //This is jQuery, try not to mix angular and jquery when possible, because
@@ -78,7 +105,10 @@
 
     $scope.optionsNowVisible = false;
 
-    $scope.breadcrumbSphere = preLoadedSpheres[currentSphereIndex].sphereName;
+    //Couldn't get Angular to update the dom when switching spheres.  So frustrating.
+    //$scope.breadcrumbSphere = preLoadedSpheres[currentSphereIndex].sphereName;
+    $("#breadcrumpSphereName").text(preLoadedSpheres[currentSphereIndex].sphereName);
+
     $scope.backgroundcolor = 'white';
     $scope.backgroundimage= 'full';
     $scope.visibleStory = "";
@@ -373,6 +403,7 @@
           "position":"absolute",
           "top":"-40%",
           "left":"50%",
+          "-webkit-transform":"translateZ(0)",
           "margin-left":"-200px",
           "z-index":"5"
         });
@@ -384,19 +415,21 @@
           "position":"absolute",
           "top":"50%",
           "left":"50%",
+          "-webkit-transform":"translateZ(0)",
           "margin-top":"-250px",
           "margin-left":"-250px",
           "z-index":"4"
         });
 
 
-        $(".sphere-bottom-img").attr("src", $scope.topSphereUrl);
+        $(".sphere-bottom-img").attr("src", $scope.bottomSphereUrl);
         $(".sphere-bottom-img").css({
           "height":"400px",  
           "width":"400px",
           "position":"absolute",
           "top":"90%",
           "left":"50%",
+          "-webkit-transform":"translateZ(0)",
           "margin-left":"-200px",
           "z-index":"3"
         });
@@ -423,7 +456,6 @@
                 $(".sphere-bottom-img-static").fadeIn(400, function(){
                     $scope.scrollEventTriggered = false;
                 });
-
     }
 
     $scope.getR88rResponse = function(){
@@ -455,12 +487,15 @@
             top: '100%',
         }, 1000, function(){
 
+                currentSphereIndex = (currentSphereIndex + 1) % (preLoadedSpheres.length);
+                nextSphereUp = (currentSphereIndex + 1) % (preLoadedSpheres.length);
+                $("#breadcrumpSphereName").text(preLoadedSpheres[currentSphereIndex].sphereName);
 
                 $scope.newMiddleSphere = $(".sphere-top-img").attr("src");
                 $scope.newBottomSphere = $(".sphere-middle-img").attr("src");
                 $(".sphere-middle-img-static").attr("src", $scope.newMiddleSphere);
                 $(".sphere-bottom-img-static").attr("src", $scope.newBottomSphere);
-                $(".sphere-top-img-static").attr("src", $scope.newBottomSphere);
+                $(".sphere-top-img-static").attr("src", preLoadedSpheres[nextSphereUp].src);
                 
                 $scope.staticSpheresReappear();
         });
@@ -483,13 +518,19 @@
             top: '-10%',
         }, 1000, function(){
 
-                $scope.newMiddleSphere = $(".sphere-top-img").attr("src");
-                $scope.newBottomSphere = $(".sphere-middle-img").attr("src");
+                var numSpheres = preLoadedSpheres.length;
+                currentSphereIndex = (((currentSphereIndex - 1) % numSpheres) + numSpheres) % numSpheres;
+                nextSphereDown = (((currentSphereIndex - 1) % numSpheres) + numSpheres) % numSpheres;
+                $("#breadcrumpSphereName").text(preLoadedSpheres[currentSphereIndex].sphereName);
+
+                $scope.newMiddleSphere = $(".sphere-bottom-img").attr("src");
+                $scope.newTopSphere = $(".sphere-middle-img").attr("src");
                 $(".sphere-middle-img-static").attr("src", $scope.newMiddleSphere);
-                $(".sphere-bottom-img-static").attr("src", $scope.newBottomSphere);
-                $(".sphere-top-img-static").attr("src", $scope.newBottomSphere);
+                $(".sphere-bottom-img-static").attr("src", preLoadedSpheres[nextSphereDown].src);
+                $(".sphere-top-img-static").attr("src", $scope.newTopSphere);
 
                 $scope.staticSpheresReappear();
+
         });
 
         $(".sphere-bottom-img").animate({
@@ -499,19 +540,19 @@
 
 
     $(window).bind('wheel', function(e){
+        
         if(e.originalEvent.deltaY < -75 && !$scope.scrollEventTriggered)
         {
             $scope.scrollUpSphere();
             $scope.scrollEventTriggered = true;
 
-
         } else if (e.originalEvent.deltaY > 75 && !$scope.scrollEventTriggered)
         {
             $scope.scrollDownSphere();
             $scope.scrollEventTriggered = true;
-
         }
 
+        
     });
 
     $scope.toggleOptions = function() {
