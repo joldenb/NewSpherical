@@ -323,9 +323,10 @@
                 headline : story.headline,
                 img : {src: story.img.src},
                 short : story.short,
-                abstract : story.abstract
+                abstract : story.abstract,
+                link : story.uri
             };
-
+            $(".viewArticleLink").attr("href", story.uri);
         }
 
     }
