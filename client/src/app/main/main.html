@@ -1,5 +1,10 @@
 <div ng-controller="MainController" class="text-center" >
 
+    <img class="my-sphere" src="/assets/images/my-sphere-earth.png" ng-click="openMySphere()">
+    <img class="my-sphere plus-one" src="/assets/images/plus-one.jpg">
+    <span id="my-sphere-label">My Sphere</span>
+    <img class="my-sphere-background" src="/assets/images/my-sphere-large-background.png">
+
     <img class="sphere-top-img">
     <img class="sphere-top-img-static">
     <img class="sphere-middle-img">
@@ -9,9 +14,10 @@
         <div id="optionsToggle" ng-click="toggleOptions()">
             <h4 ng-show="optionsNowVisible">Number of Rows</h4>
             <input class="blackBtn numRows" ng-show="optionsNowVisible" type="button" value="Switch" ng-click="toggleNumberOfRows()">
-            <input id="row-toggle-button" ng-show="optionsNowVisible" type="button" value="List All Feeds" ng-click="getR88rResponse()" >
+            <!--<input id="row-toggle-button" ng-show="optionsNowVisible" type="button" value="List All Feeds" ng-click="getR88rResponse()" > Causes the feed not to work--> 
         </div>
 
+        <img id="storySaveIcon" src="/assets/images/download-icon.png" ng-show="isStoryVisible()" ng-click="saveStoryView(visibleStory)">
         <img id="storyCloseIcon" src="/assets/images/close-circle.png" ng-show="isStoryVisible()" ng-click="closeStoryView()">
         <div ng-show="isStoryVisible()" class="storyView">
             <h3 class="storyHeadline">{{visibleStory.headline}}</h3>
@@ -22,12 +28,13 @@
         <div id="breadCrumbs">
             <h3><a ng-click="getR88rResponse()" ng-href="{{sphereLink}}" id="breadcrumpSphereName"></a> </h3>
             <h3 ng-show="breadcrumbFeed">> <a ng-click="closeStoryView()" ng-href="{{feedLink}}">{{breadcrumbFeed}} </a></h3>
+            <a ng-click="getfakeR88rResponse()" id="fakeButton" style="display:none;"></a>
         </div>
 
         <div class="scrollBarWrapper">
             <div id="leftScrollFade"></div>
             <div class="storyContainer">
-              <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.img.src)" class="storyBlock">
+              <span ng-repeat="story in r88rResponse track by story.headline" ng-if="newColumn($index, story.img.src)" class="storyBlock">
                 <span class="one-half" ng-class="getImageClass(story)" ng-click="clickStory(story)">
                     <img ng-src="{{story.img.src}}" orientable/>
                     <div class="title">{{story.headline}}</div>

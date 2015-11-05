@@ -92,16 +92,17 @@
         'http://v3.api.r88r.net/v3/headlines?cname=V3A.tedplus'
     ]
 
-    var currentSphereIndex = 0;
-    var nextSphereUp = 1;
-    var nextSphereDown = preLoadedSpheres[preLoadedSpheres.length - 1];
+    var currentSphereIndex = 1;
+    var nextSphereUp = 2;
+    var nextSphereDown; // = preLoadedSpheres[preLoadedSpheres.length - 1];
 
 
     //This is jQuery, try not to mix angular and jquery when possible, because
     // they both do DOM manipulation.
     $(".sphere-top-img-static").attr("src", preLoadedSpheres[currentSphereIndex + 1].src);
     $(".sphere-middle-img-static").attr("src", preLoadedSpheres[currentSphereIndex].src);
-    $(".sphere-bottom-img-static").attr("src", preLoadedSpheres[preLoadedSpheres.length - 1].src);
+    $(".sphere-bottom-img-static").attr("src", preLoadedSpheres[currentSphereIndex - 1].src);
+    //$(".sphere-bottom-img-static").attr("src", preLoadedSpheres[preLoadedSpheres.length - 1].src);
 
     $scope.optionsNowVisible = false;
 
@@ -112,132 +113,133 @@
     $scope.backgroundcolor = 'white';
     $scope.backgroundimage= 'full';
     $scope.visibleStory = "";
+    $scope.mySavedStories = [];
     $scope.numberOfRows = 1;
     $scope.initialR88rResponse = [
         {
-        "headline":
+        headline:
             "Fab Lab",
-        "url":
+        url:
             "http://v3.api.r88r.net/v3/headlines?cname=V3A.fablab",
         img:{src:
             "/assets/images/humanLathe_3.jpg"}
         },
         {
-        "headline":
+        headline:
             "Electric Vehicles",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.electricvehicles',
         img:{src:
             "/assets/images/electricvehicle.jpg"}
         },
         {
-        "headline":
+        headline:
             "Education Policy",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.educationpolicy',
         img:{src:
             "/assets/images/ed-policy.jpg"}
         },
         {
-        "headline":
+        headline:
             "Data Viz",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.dataviz',
         img:{src:
             "/assets/images/data-viz.jpg"}
         },
         {
-        "headline":
+        headline:
             "Geology",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.geology',
         img:{src:
             "/assets/images/geology.jpeg"}
         },
         {
-        "headline":
+        headline:
             "Cloud Computing",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.cloudcomputing',
         img:{src:
             "/assets/images/cloud-compute.jpg"}
         },
         {
-        "headline":
+        headline:
             "CG3D",    
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.cg3d',
         img:{src:
             "/assets/images/protractor.png"}
         },
         {
-        "headline":
+        headline:
             "Health Tech",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.healthtech',
         img:{src:
             "/assets/images/health-tec.png"}
         },
         {
-        "headline":
+        headline:
             "IIW",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.iiw',
         img:{src:
             "/assets/images/iiw.jpeg"}
         },
         {
-        "headline":
+        headline:
             "GIS",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.gis',
         img:{src:
             "/assets/images/GIS.jpg"}
         },
         {
-        "headline":
+        headline:
             "Local Food",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.localfood',
         img:{src:
             "/assets/images/local-food.jpg"}
         },
         {
-        "headline":
+        headline:
             "MOOC",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.mooc',
         img:{src:
             "/assets/images/mooc.jpg"}
         },
         {
-        "headline":
+        headline:
             "Next Edge",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.nextedgeplus',
         img:{src:
             "/assets/images/nextedge.jpg"}
         },
         {
-        "headline":
+        headline:
             "Particle Physics",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.particlephysics',
         img:{src:
             "/assets/images/particlephysics.jpg"}
         },
         {
-        "headline":
+        headline:
             "SAP",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.sap',
         img:{src:
             "/assets/images/sap.jpg"}
         },
         {
-        "headline":
+        headline:
             "Ted Plus",
-        "url":
+        url:
             'http://v3.api.r88r.net/v3/headlines?cname=V3A.tedplus',
         img:{src:
             "/assets/images/tedplus.jpg"}
@@ -245,7 +247,52 @@
 
     ]
 
-    $scope.r88rResponse = $scope.initialR88rResponse;
+    $scope.getSphereFeeds = function(sphere){
+        switch(sphere){
+            case "Cryosphere":
+            case "Forest":
+            case "Coral":
+            case "Rocky Mountains":
+                $scope.r88rResponse =  [$scope.initialR88rResponse[0],
+                        $scope.initialR88rResponse[2],
+                        $scope.initialR88rResponse[4],
+                        $scope.initialR88rResponse[6],
+                        $scope.initialR88rResponse[8],
+                        $scope.initialR88rResponse[10],
+                        $scope.initialR88rResponse[14],
+                        $scope.initialR88rResponse[12]];
+                break;
+            case "Atmosphere":
+            case "Swamp":
+            case "Space":
+                $scope.r88rResponse =  [$scope.initialR88rResponse[1],
+                        $scope.initialR88rResponse[3],
+                        $scope.initialR88rResponse[5],
+                        $scope.initialR88rResponse[7],
+                        $scope.initialR88rResponse[9],
+                        $scope.initialR88rResponse[11],
+                        $scope.initialR88rResponse[13],
+                        $scope.initialR88rResponse[15]];
+                break;
+            case "Trees":
+            case "Volcano":
+                $scope.r88rResponse =  [$scope.initialR88rResponse[14],
+                        $scope.initialR88rResponse[12],
+                        $scope.initialR88rResponse[4],
+                        $scope.initialR88rResponse[7],
+                        $scope.initialR88rResponse[9],
+                        $scope.initialR88rResponse[10],
+                        $scope.initialR88rResponse[11],
+                        $scope.initialR88rResponse[2]];
+                break;
+
+            case "My Sphere":
+                $scope.r88rResponse = $scope.mySavedStories;
+                break;
+        }
+    }
+
+    $scope.getSphereFeeds("Atmosphere");
 
     $scope.clickStory = function(story) {
 
@@ -267,13 +314,14 @@
             });
 
 
-            $("#row-toggle-button").show();
-            $("#row-toggle-button").css("display","block");
+            //$("#row-toggle-button").show();
+            //$("#row-toggle-button").css("display","block");
         }
 
         else if (story.short){
             $scope.visibleStory = {
                 headline : story.headline,
+                img : {src: story.img.src},
                 short : story.short,
                 abstract : story.abstract
             };
@@ -285,6 +333,22 @@
     $scope.closeStoryView = function() {
         $scope.visibleStory = false;
     }
+
+
+    $scope.openMySphere = function(){
+        $(".text-center").css("background-color","rgba(51, 102, 204, 0.8)");
+        $scope.breadcrumbFeed = undefined;
+        $scope.r88rResponse = $scope.mySavedStories;
+        $(".sphere-top-img-static, .sphere-middle-img-static, .sphere-bottom-img-static").fadeOut();
+        $(".my-sphere-background").fadeIn();
+        $("#breadcrumpSphereName").text("Back to Other Spheres");
+    }
+
+    $scope.saveStoryView = function(visibleStoryArgument) {
+        $scope.mySavedStories.push(visibleStoryArgument);
+        $(".plus-one").fadeIn().delay(2000).fadeOut();
+    }
+
 
     $scope.isStoryVisible = function() {
             if($scope.visibleStory) {
@@ -459,18 +523,35 @@
     }
 
     $scope.getR88rResponse = function(){
+        if($(".sphere-middle-img-static").is(":visible")){
+            if($scope.breadcrumbFeed){ 
+                $scope.breadcrumbFeed = undefined;
+            }
+            $scope.closeStoryView();
+            $(".scrollBarWrapper").hide();
+            $scope.r88rResponse = $scope.initialR88rResponse;
+            if(!$scope.scrollEventTriggered){
+                $(".scrollBarWrapper").fadeIn("slow");
+            }
+            $scope.numberOfRows = 1;
+            $("#row-toggle-button").hide();
+            return $scope.r88rResponse;
+        } else {
+            $(".my-sphere-background").fadeOut();
+            $(".sphere-top-img-static, .sphere-middle-img-static, .sphere-bottom-img-static").fadeIn();
+            $("#breadcrumpSphereName").text(preLoadedSpheres[currentSphereIndex].sphereName);
+            $scope.getSphereFeeds(preLoadedSpheres[currentSphereIndex].sphereName);
+            $(".text-center").css("background-color","white");
+    }
+
+    }
+
+    $scope.getfakeR88rResponse = function(){
         if($scope.breadcrumbFeed){ 
             $scope.breadcrumbFeed = undefined;
         }
         $scope.closeStoryView();
-        $(".scrollBarWrapper").hide();
-        $scope.r88rResponse = $scope.initialR88rResponse;
-        if(!$scope.scrollEventTriggered){
-            $(".scrollBarWrapper").fadeIn("slow");
-        }
-        $scope.numberOfRows = 1;
-        $("#row-toggle-button").hide();
-        return $scope.r88rResponse;
+        $scope.getSphereFeeds($("#breadcrumpSphereName").text());
     }
 
     $scope.scrollUpSphere = function() {
@@ -487,9 +568,11 @@
             top: '100%',
         }, 1000, function(){
 
-                currentSphereIndex = (currentSphereIndex + 1) % (preLoadedSpheres.length);
-                nextSphereUp = (currentSphereIndex + 1) % (preLoadedSpheres.length);
+                var numSpheres = preLoadedSpheres.length;
+                currentSphereIndex = (((currentSphereIndex + 1) % numSpheres) + numSpheres) % numSpheres;
+                nextSphereUp = (((currentSphereIndex + 1) % numSpheres) + numSpheres) % numSpheres;
                 $("#breadcrumpSphereName").text(preLoadedSpheres[currentSphereIndex].sphereName);
+                $("#fakeButton").click();
 
                 $scope.newMiddleSphere = $(".sphere-top-img").attr("src");
                 $scope.newBottomSphere = $(".sphere-middle-img").attr("src");
@@ -522,6 +605,7 @@
                 currentSphereIndex = (((currentSphereIndex - 1) % numSpheres) + numSpheres) % numSpheres;
                 nextSphereDown = (((currentSphereIndex - 1) % numSpheres) + numSpheres) % numSpheres;
                 $("#breadcrumpSphereName").text(preLoadedSpheres[currentSphereIndex].sphereName);
+                $("#fakeButton").click();
 
                 $scope.newMiddleSphere = $(".sphere-bottom-img").attr("src");
                 $scope.newTopSphere = $(".sphere-middle-img").attr("src");
@@ -533,26 +617,28 @@
 
         });
 
+        
         $(".sphere-bottom-img").animate({
             top: '25%'
         }, 1000);
     };
 
 
-    $(window).bind('wheel', function(e){
-        
-        if(e.originalEvent.deltaY < -75 && !$scope.scrollEventTriggered)
-        {
-            $scope.scrollUpSphere();
-            $scope.scrollEventTriggered = true;
+    document.addEventListener('wheel', function(e){
+        if($(".sphere-middle-img-static").is(":visible")){
 
-        } else if (e.originalEvent.deltaY > 75 && !$scope.scrollEventTriggered)
-        {
-            $scope.scrollDownSphere();
-            $scope.scrollEventTriggered = true;
+            if(e.wheelDeltaY < -75 && !$scope.scrollEventTriggered)
+            {
+                $scope.scrollUpSphere();
+                $scope.scrollEventTriggered = true;
+
+            } else if (e.wheelDeltaY > 75 && !$scope.scrollEventTriggered)
+            {
+                $scope.scrollDownSphere();
+                $scope.scrollEventTriggered = true;
+            }
         }
 
-        
     });
 
     $scope.toggleOptions = function() {
@@ -581,7 +667,7 @@
 
     offset.x = start.x - event.touches[0].pageX;
     offset.y = start.y - event.touches[0].pageY;
-            if(offset.y < -75 && !$scope.scrollEventTriggered)
+        if(offset.y < -75 && !$scope.scrollEventTriggered && $(".sphere-middle-img-static").is(":visible"))
             {
                 $scope.scrollUpSphere();
                 $scope.scrollEventTriggered = true;
