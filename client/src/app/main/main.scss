@@ -198,6 +198,43 @@ body {
     margin: 16px auto;
 }
 
+.sphereItemWrapper {
+    max-width:16%;
+    display: inline-block;
+    margin:1em;
+    font-size: large;
+}
+
+.sphereListItemImage {
+    margin: 0em;
+    width: 100%;
+    padding-bottom: 1em;
+}
+
+#allSphereCloseIcon {
+    height: 50px;
+    width: auto;
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    z-index: 6;
+
+}
+
+.allSpheresView {
+    width: 80%;
+    height:90%;
+    overflow: auto;
+    white-space: normal;
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    z-index: 4;
+    color: #d6d6d6;
+    background-color: #383838;
+    border-radius :8px;
+}
+
 .storyView {
     width: 500px;
     overflow: auto;

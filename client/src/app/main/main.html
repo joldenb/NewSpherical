@@ -22,10 +22,22 @@
         <div ng-show="isStoryVisible()" class="storyView">
             <h3 class="storyHeadline">{{visibleStory.headline}}</h3>
             <div class="storyAbstract">{{visibleStory.abstract}}</div>
-            <a href="http://google.com" class="viewArticleLink"><h3 >View Original Article<h3></a>
+            <a target="_blank" href="http://google.com" class="viewArticleLink"><h3 >View Original Article<h3></a>
+        </div>
+
+        <img id="allSphereCloseIcon" src="/assets/images/close-circle.png" ng-show="isAllSpheresVisible()" ng-click="closeAllSphereView()">
+        <div ng-show="isAllSpheresVisible()" class="allSpheresView">
+            <h3 class="allSpheresHeadline">Select Any Sphere:</h3>
+            <span ng-repeat="sphere in preLoadedSpheres" class="sphereListItem">
+                <div class="sphereItemWrapper">
+                    <img class="sphereListItemImage" ng-click="openSphere({{sphere}})" src="{{sphere.src}}">
+                    <br>{{sphere.sphereName}}
+                </div>
+            </span>
         </div>
 
         <div id="breadCrumbs">
+            <h3><a ng-click="openAllSphereView()" id="viewAllSpheres">View All Spheres </a>></h3>
             <h3><a ng-click="getR88rResponse()" ng-href="{{sphereLink}}" id="breadcrumpSphereName"></a> </h3>
             <h3 ng-show="breadcrumbFeed">> <a ng-click="closeStoryView()" ng-href="{{feedLink}}">{{breadcrumbFeed}} </a></h3>
             <a ng-click="getfakeR88rResponse()" id="fakeButton" style="display:none;"></a>
@@ -34,7 +46,7 @@
         <div class="scrollBarWrapper">
             <div id="leftScrollFade"></div>
             <div class="storyContainer">
-              <span ng-repeat="story in r88rResponse track by story.headline" ng-if="newColumn($index, story.img.src)" class="storyBlock">
+              <span ng-repeat="story in r88rResponse" ng-if="newColumn($index, story.img.src)" class="storyBlock">
                 <span class="one-half" ng-class="getImageClass(story)" ng-click="clickStory(story)">
                     <img ng-src="{{story.img.src}}" orientable/>
                     <div class="title">{{story.headline}}</div>
