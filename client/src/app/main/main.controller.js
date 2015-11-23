@@ -31,6 +31,10 @@
 
   /** @ngInject */
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
+    setTimeout(function(){ 
+        $("#splashScreen").fadeOut(800);
+     }, 3000);
+
     $scope.preLoadedSpheres = 
     [
         {
@@ -492,12 +496,12 @@
                         $scope.initialR88rResponse[12]];
                 break;
             case "Hydrosphere":
-                $scope.r88rResponse =  [$scope.initialR88rResponse[6],
+                $scope.r88rResponse =  [$scope.initialR88rResponse[4],
                         $scope.initialR88rResponse[2],
                         $scope.initialR88rResponse[20],
                         $scope.initialR88rResponse[30],
                         $scope.initialR88rResponse[20],
-                        $scope.initialR88rResponse[4],
+                        $scope.initialR88rResponse[6],
                         $scope.initialR88rResponse[1]];
                 break;
             case "My Sphere":
@@ -591,6 +595,7 @@
         $(".sphere-top-img-static, .sphere-middle-img-static, .sphere-bottom-img-static").fadeOut();
         $(".my-sphere-background").fadeIn();
         $("#breadcrumpSphereName").text("View All Spheres");
+        $("#viewAllSpheres").hide();
     }
 
     $scope.openAllSphereView = function() {
@@ -803,6 +808,7 @@
             return $scope.r88rResponse;
         } else {
             $(".my-sphere-background").fadeOut();
+            $("#viewAllSpheres").show();
             $(".sphere-top-img-static, .sphere-middle-img-static, .sphere-bottom-img-static").fadeIn();
             $("#breadcrumpSphereName").text($scope.preLoadedSpheres[currentSphereIndex].sphereName);
             $scope.getSphereFeeds($scope.preLoadedSpheres[currentSphereIndex].sphereName);

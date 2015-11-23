@@ -7,6 +7,33 @@ body {
     overflow:hidden;
 }
 
+#splashScreen{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: rgba(51, 102, 204, 1);
+    z-index:10;
+    color: white;
+}
+
+#splashScreen h1 {
+    margin-top: 10%;
+    font-weight: 100;
+    letter-spacing: 3px;
+}
+
+#splashScreen h3 {
+    font-weight: 100;
+    letter-spacing: 2px;
+}
+
+.splash-sphere-img {
+    height:50%;
+    width:auto;
+}
+
 .my-sphere-background {
     display:none;
 }
