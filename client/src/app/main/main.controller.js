@@ -32,8 +32,8 @@
   /** @ngInject */
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
     setTimeout(function(){ 
-        $("#splashScreen").fadeOut(800);
-     }, 3000);
+        $("#splashScreen").hide();
+     }, 4000);
 
     $scope.preLoadedSpheres = 
     [
