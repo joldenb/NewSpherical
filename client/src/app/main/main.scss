@@ -12,7 +12,7 @@ body {
     to {opacity: 0;}
 }
 
-#splashScreen.ready{
+#splashScreen{
     position:absolute;
     top:0;
     left:0;
@@ -23,17 +23,17 @@ body {
     color: white;
     animation-name: splashFade;
     animation-duration: 1s;
-    animation-delay:3s;
+    animation-delay:5s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     -webkit-animation-name: splashFade;
     -webkit-animation-duration: 1s;
-    -webkit-animation-delay:3s;
+    -webkit-animation-delay:5s;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-fill-mode: forwards;
     -moz-animation-name: splashFade;
     -moz-animation-duration: 1s;
-    -moz-animation-delay:3s;
+    -moz-animation-delay:5s;
     -moz-animation-iteration-count: 1;
     -moz-animation-fill-mode: forwards;
 }
@@ -378,7 +378,7 @@ body {
   and (max-device-width: 1024px) 
   and (orientation : portrait) {
     
-    #splashScreen.ready{
+   /* #splashScreen{
         animation-name: splashFade;
         animation-duration: 1s;
         animation-delay:5s;
@@ -394,7 +394,7 @@ body {
         -moz-animation-delay:5s;
         -moz-animation-iteration-count: 1;
         -moz-animation-fill-mode: forwards;
-    }
+    } */
 
 
 
@@ -441,7 +441,8 @@ body {
   and (max-device-width: 1024px) 
   and (orientation : landscape) {
 
-    #splashScreen.ready{
+/*
+    #splashScreen {
         animation-name: splashFade;
         animation-duration: 1s;
         animation-delay:5s;
@@ -458,7 +459,7 @@ body {
         -moz-animation-iteration-count: 1;
         -moz-animation-fill-mode: forwards;
     }
-
+*/
     
     .scrollBarWrapper {
         -webkit-overflow-scrolling: touch;
@@ -503,7 +504,8 @@ and (min-device-width : 320px)
 and (max-device-width : 667px) 
 and (orientation : portrait) {    
 
-    #splashScreen.ready{
+    /*
+    #splashScreen{
         animation-name: splashFade;
         animation-duration: 1s;
         animation-delay:5s;
@@ -520,6 +522,7 @@ and (orientation : portrait) {
         -moz-animation-iteration-count: 1;
         -moz-animation-fill-mode: forwards;
     }
+    */
 
     .storyBlock {
         display: inline-block;
@@ -582,7 +585,8 @@ and (min-device-width : 320px)
 and (max-device-width : 667px) 
 and (orientation : landscape) {   
 
-    #splashScreen.ready{
+    /*
+    #splashScreen {
         animation-name: splashFade;
         animation-duration: 1s;
         animation-delay:5s;
@@ -599,7 +603,8 @@ and (orientation : landscape) {
         -moz-animation-iteration-count: 1;
         -moz-animation-fill-mode: forwards;
     }
-    
+*/
+
     .storyBlock {
         display: inline-block;
         height: 7em;
