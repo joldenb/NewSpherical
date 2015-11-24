@@ -31,13 +31,10 @@
 
   /** @ngInject */
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
-    angular.element(document).ready(function () {
-        $("#splashScreen").addClass("ready");
-    });
+        setTimeout(function(){ 
+            $("#splashScreen").hide();
+        }, 6000);
 
-    setTimeout(function(){ 
-        $("#splashScreen").hide();
-     }, 4000);
 
     $scope.preLoadedSpheres = 
     [
