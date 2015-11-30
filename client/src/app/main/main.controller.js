@@ -31,9 +31,6 @@
 
   /** @ngInject */
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
-        setTimeout(function(){ 
-            $("#splashScreen").hide();
-        }, 6000);
 
 
     $scope.preLoadedSpheres = 
@@ -512,6 +509,10 @@
     }
 
     $scope.getSphereFeeds("Atmosphere");
+
+    $scope.closeSplashScreen = function() {
+        $("#splashScreen").fadeOut();
+    }
 
     $scope.clickStory = function(story) {
 
