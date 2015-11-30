@@ -433,7 +433,6 @@
                         $scope.initialR88rResponse[2],
                         $scope.initialR88rResponse[3],
                         $scope.initialR88rResponse[12],
-                        $scope.initialR88rResponse[15],
                         $scope.initialR88rResponse[21],
                         $scope.initialR88rResponse[30],
                         $scope.initialR88rResponse[22]];
