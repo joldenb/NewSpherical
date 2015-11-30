@@ -36,9 +36,9 @@ body {
     margin:0 auto;
 }
 
-#splashScreen h3:last-of-type {
+#close-splash {
     float:right;
-    margin-right:2em;
+    margin-right:2em !important;
 } 
 
 .splash-sphere-img {
@@ -101,6 +101,7 @@ body {
 }
 
 .text-center {
+    touch-action: pan-x;
     background-size: 40%;
     background-repeat: no-repeat;
     background-position: 50% 50%;

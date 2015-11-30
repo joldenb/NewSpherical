@@ -470,6 +470,7 @@
                 break;
             case "Education":
                 $scope.r88rResponse =  [$scope.initialR88rResponse[2],
+                        $scope.initialR88rResponse[1],
                         $scope.initialR88rResponse[9],
                         $scope.initialR88rResponse[10],
                         $scope.initialR88rResponse[16],
@@ -477,6 +478,7 @@
                 break;
             case "Built Environment":
                 $scope.r88rResponse =  [$scope.initialR88rResponse[4],
+                        $scope.initialR88rResponse[1],
                         $scope.initialR88rResponse[7],
                         $scope.initialR88rResponse[11],
                         $scope.initialR88rResponse[14],
@@ -485,6 +487,7 @@
                 break;
             case "Energy":
                 $scope.r88rResponse =  [$scope.initialR88rResponse[8],
+                        $scope.initialR88rResponse[1],
                         $scope.initialR88rResponse[9],
                         $scope.initialR88rResponse[10],
                         $scope.initialR88rResponse[16],
