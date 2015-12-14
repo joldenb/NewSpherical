@@ -18,21 +18,22 @@ body {
     left:0;
     right:0;
     bottom:0;
-    background-color: rgba(136,136,136,0.9);
+    background-color: rgba(136,136,136,0.8);
     z-index:10;
     color: white;
 }
 
 #splashScreen h1 {
+    font-size: 48px;
     margin-top: 4%;
-    font-weight: 100;
+    font-weight: 200;
     letter-spacing: 3px;
 }
 
-#splashScreen h3 {
-    font-weight: 100;
+#splashScreen h3, #splashScreen h2 {
+    font-weight: 200;
     letter-spacing: 2px;
-    max-width: 57%;
+    max-width: 73%;
     margin:0 auto;
 }
 
@@ -40,6 +41,10 @@ body {
     float:right;
     margin-right:2em !important;
 } 
+
+#close-splash:hover {
+    cursor: pointer;
+}
 
 .splash-sphere-img {
     height:50%;

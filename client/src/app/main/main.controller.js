@@ -32,6 +32,8 @@
   /** @ngInject */
   function MainController($scope, $http, $timeout, webDevTec, toastr) {
 
+    window.history.replaceState(null, null, "#");
+
     var currentSphereIndex = 1;
     var nextSphereUp = 2;
     var nextSphereDown; // = $scope.preLoadedSpheres[$scope.preLoadedSpheres.length - 1];
