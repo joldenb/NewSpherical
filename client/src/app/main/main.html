@@ -43,7 +43,7 @@
             <h3 class="allSpheresHeadline">Select Any Sphere:</h3>
             <span ng-repeat="sphere in preLoadedSpheres" class="sphereListItem">
                 <div class="sphereItemWrapper">
-                    <img class="sphereListItemImage" ng-click="openSphere({{sphere}})" src="{{sphere.src}}">
+                    <img class="sphereListItemImage" ng-click="openSphere({{sphere}})" ng-src="{{sphere.src}}">
                     <br>{{sphere.sphereName}}
                 </div>
             </span>

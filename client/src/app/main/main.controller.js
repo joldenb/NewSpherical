@@ -44,6 +44,7 @@
     $scope.mySavedStories = [];
     $scope.numberOfRows = 1;
 
+
     $http.get('/app/main/mainData.json').
     then(function(response) {
             $scope.initialR88rResponse = response.data.r88rData;
@@ -518,20 +519,6 @@
 
     });
 
-//from the internet
-    document.addEventListener('mousewheel', function(event) {
-        var maxX = this.scrollWidth - this.offsetWidth;
-        var maxY = this.scrollHeight - this.offsetHeight;
-
-        if ((this.scrollLeft && event.deltaX < 0) ||
-            (this.scrollLeft && event.deltaX > maxX) ||
-            (this.scrollTop && event.deltaY < 0) ||
-            (this.scrollTop && event.deltaY > maxY)) {
-                event.preventDefault();
-                this.scrollLeft = Math.max(0, Math.min(maxX, this.scrollLeft + event.deltaX));
-                this.scrollTop = Math.max(0, Math.min(maxY, this.scrollTop + event.deltaY));
-            }
-    }, false);
 
     $scope.toggleOptions = function() {
         if($scope.optionsNowVisible){
