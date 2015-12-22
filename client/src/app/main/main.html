@@ -1,5 +1,5 @@
 <div ng-controller="MainController" class="text-center" >
-    <div id="splashScreen">
+    <div id="splashScreen" ng-click="closeSplashScreen()">
         <h1>Spherical is Social for Climate.</h1>
         <h3></h3>
         <img class="splash-sphere-img" src="/assets/images/BIG-PLANET-transp.png">
@@ -11,7 +11,6 @@
         <br>
         <h3>Request an invitation.</h3>
         <br>
-        <h3 id="close-splash" ng-click="closeSplashScreen()">Close X</h3>
     </div>
 
     <img class="my-sphere" src="/assets/images/BIG-PLANET-transp.png" ng-click="openMySphere()">
