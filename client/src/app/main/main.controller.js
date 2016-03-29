@@ -156,6 +156,15 @@
                         $scope.initialR88rResponse[6],
                         $scope.initialR88rResponse[1]];
                 break;
+            case "Alt-Politics":
+                $scope.r88rResponse =  [$scope.initialR88rResponse[30],
+                        $scope.initialR88rResponse[2],
+                        $scope.initialR88rResponse[10],
+                        $scope.initialR88rResponse[12],
+                        $scope.initialR88rResponse[11],
+                        $scope.initialR88rResponse[3],
+                        $scope.initialR88rResponse[21]];
+                break;
             case "My Sphere":
                 $scope.r88rResponse = $scope.mySavedStories;
                 break;

@@ -271,6 +271,78 @@
             "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
         "img":{"src":
             "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
+        },
+        {
+        "headline":
+            "Transportation",
+        "url":
+            "http://v3.api.r88r.net/v3/headlines?cname=V3A.transportation",
+        "img":{"src":
+            "/assets/images/RapidTransit1.png"}
         }
     ],
     "feeds" :
@@ -352,6 +424,10 @@
         {
             "src":"/assets/images/oceans.png",
             "sphereName": "Hydrosphere"
+        } ,
+        {
+            "src":"/assets/images/alt_pol_sphereFIN.png",
+            "sphereName": "Alt-Politics"
         } 
     ]
 
