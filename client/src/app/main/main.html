@@ -1,17 +1,4 @@
 <div ng-controller="MainController" class="text-center" >
-    <div id="splashScreen" ng-click="closeSplashScreen()">
-        <h1>Spherical is Social for Climate.</h1>
-        <h3></h3>
-        <img class="splash-sphere-img" src="/assets/images/BIG-PLANET-transp.png">
-        <h2>Discover the organizations, journalists, scientists and citizens</h2>
-        <h2>working together to influence climate change.</h2>
-        <br>
-        <h2>Scroll horizontally for topics, vertically for spheres.</h2>
-        <h2>Drag, drop and share.</h2>
-        <br>
-        <h3>Request an invitation.</h3>
-        <br>
-    </div>
 
     <img class="my-sphere" src="/assets/images/BIG-PLANET-transp.png" ng-click="openMySphere()">
     <img class="my-sphere plus-one" src="/assets/images/plus-one.jpg">
@@ -50,7 +37,7 @@
         </div>
 
         <div id="breadCrumbs">
-            <h3><a ng-click="openAllSphereView()" id="viewAllSpheres">View All Spheres ></a></h3>
+            <h3><a ng-click="openAllSphereView()" id="viewAllSpheres">View All Spheres </a>></h3>
             <h3><a ng-click="getR88rResponse()" ng-href="{{sphereLink}}" id="breadcrumpSphereName"></a> </h3>
             <h3 ng-show="breadcrumbFeed">> <a ng-click="closeStoryView()" ng-href="{{feedLink}}">{{breadcrumbFeed}} </a></h3>
             <a ng-click="getfakeR88rResponse()" id="fakeButton" style="display:none;"></a>

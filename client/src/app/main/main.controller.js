@@ -253,7 +253,6 @@
     }
     
     $scope.openMySphere = function(){
-        $(".text-center").css("background-color","rgba(51, 102, 204, 0.8)");
         $scope.breadcrumbFeed = undefined;
         $scope.r88rResponse = $scope.mySavedStories;
         $(".sphere-top-img-static, .sphere-middle-img-static, .sphere-bottom-img-static").fadeOut();
