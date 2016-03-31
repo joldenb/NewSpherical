@@ -399,7 +399,7 @@
         } ,
         {
             "src":"/assets/images/forests.png",
-            "sphereName": "Forest"
+            "sphereName": "Forests"
         } , 
         {
             "src":"/assets/images/pollution.png",
@@ -423,7 +423,7 @@
         } ,
         {
             "src":"/assets/images/oceans.png",
-            "sphereName": "Hydrosphere"
+            "sphereName": "Water"
         } ,
         {
             "src":"/assets/images/alt_pol_sphereFIN.png",

@@ -89,7 +89,7 @@
                         $scope.initialR88rResponse[30],
                         $scope.initialR88rResponse[22]];
                 break;
-            case "Forest": //not done yet
+            case "Forests": //not done yet
                 $scope.r88rResponse =  [$scope.initialR88rResponse[1],
                         $scope.initialR88rResponse[2],
                         $scope.initialR88rResponse[4],
@@ -147,7 +147,7 @@
                         $scope.initialR88rResponse[32],
                         $scope.initialR88rResponse[12]];
                 break;
-            case "Hydrosphere":
+            case "Water":
                 $scope.r88rResponse =  [$scope.initialR88rResponse[4],
                         $scope.initialR88rResponse[2],
                         $scope.initialR88rResponse[20],
@@ -159,6 +159,13 @@
             case "Alt-Politics":
                 $scope.r88rResponse =  [$scope.initialR88rResponse[30],
                         $scope.initialR88rResponse[2],
+                        $scope.initialR88rResponse[1],
+                        $scope.initialR88rResponse[9],
+                        $scope.initialR88rResponse[20],
+                        $scope.initialR88rResponse[24],
+                        $scope.initialR88rResponse[26],
+                        $scope.initialR88rResponse[28],
+                        $scope.initialR88rResponse[32],
                         $scope.initialR88rResponse[10],
                         $scope.initialR88rResponse[12],
                         $scope.initialR88rResponse[11],
